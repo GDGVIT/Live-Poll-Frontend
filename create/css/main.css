@@ -1,0 +1,172 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    grid-template-rows: 11% 89%;
+    grid-template-columns: 20% 60% 20%;
+    grid-template-areas: "header header header" "left left right"
+}
+
+
+
+
+
+/* Header: Start */
+
+.header {
+    background: grey;
+    grid-area: header;
+    position: relative;
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    justify-items: center;
+    align-items: center;
+}
+.options-container{
+    position: relative;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 25% 25% 25% 25%;
+    justify-items: center;
+}
+.options-container > p{
+    padding: 10px 0;
+}
+.header > p:nth-child(1){
+    justify-self: left;
+    padding-left: 20px;
+}
+
+/* Header: End */
+
+
+
+
+
+.left {
+    background: lightgrey;
+    grid-area: left;
+}
+.left-container{
+    position: relative;
+    height: fit-content;
+    height: -moz-max-content;
+    max-height: 90%;
+    width: 90%;
+    margin: 0 auto;
+    background-color: white;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+}
+.user-login-left{
+    display: none;
+    text-align: center;
+    padding: 80px;
+}
+.home-control-left{
+    display: none;
+}
+.quiz-control-left{
+    display: none;
+}
+.feedback-control-left{
+    display: none;
+}
+.poll-control-left{
+    display: none;
+}
+
+
+
+
+
+/* Right: Start */
+
+.right {
+    grid-area: right;
+    position: relative;
+}
+.quiz-control{
+    display: none;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: lightcoral;
+}
+.right-container{
+    position: relative;
+    background-color: lightblue;
+    padding: 10px;
+    /* overflow-x: hidden;
+    overflow-y: scroll; */
+}
+.result-options{
+    position: relative;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(70px,1fr));
+}
+
+
+
+
+.inputs{
+    position: relative;
+}
+.inputs > input{
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+
+
+
+
+
+.poll-control{
+    display: none;
+}
+.feedback-control{
+    display: none;
+}
+.home-control{
+    display: none;
+}
+.add-actions{
+    display: none;
+}
+
+
+
+
+
+/* Right: End */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.show{
+    display: block;
+}
+.tab-border{
+    border-bottom: solid white 2px;
+}
