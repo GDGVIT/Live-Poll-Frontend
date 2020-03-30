@@ -1,26 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+:root{
+    --main-blue: rgb(39,132,251);
+    --main-shadow: -6px -6px 20px rgba(255,255,255,1),
+    6px 6px 20px rgba(0,0,0,.1);
+    --main-shadow-hover: inset -6px -6px 10px rgba(255,255,255,1),
+    inset 6px 6px 20px rgba(0,0,0,.05);
+    --neon-button-hover: 0 0 5px #03e9f4,
+    0 0 25px #03e9f4,
+    0 0 50px #03e9f4;
+}
+
 * {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 main {
     display: grid;
     height: 100vh;
     width: 100vw;
-    grid-template-rows: 11% 89%;
+    grid-template-rows: 10% 90%;
     grid-template-columns: 20% 60% 20%;
-    grid-template-areas: "header header header" "left left right"
+    grid-template-areas: "header header header" "left left right";
 }
-
-
-
 
 
 /* Header: Start */
 
 .header {
-    background: grey;
     grid-area: header;
     position: relative;
     display: grid;
@@ -36,11 +45,37 @@ main {
     justify-items: center;
 }
 .options-container > p{
-    padding: 10px 0;
+    padding: 13px 2.5vw;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: var(--main-shadow)
+}
+.options-container > p:hover{
+    box-shadow: var(--main-shadow-hover);
 }
 .header > p:nth-child(1){
     justify-self: left;
     padding-left: 20px;
+    align-self: center;
+}
+.header > button{
+    align-self: center;
+    border: none;
+    padding: 13px 3vw;
+    background-color: var(--main-blue);
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: white;
+    border-radius: 5px;
+    transition: 0.3s;
+    outline: none;
+}
+.header > button:hover{
+    background: #03e9f4;
+    color: black;
+    box-shadow: var(--neon-button-hover);
 }
 
 /* Header: End */
@@ -50,7 +85,7 @@ main {
 
 
 .left {
-    background: lightgrey;
+    background: rgb(240,240,240);
     grid-area: left;
 }
 .left-container{
@@ -58,6 +93,7 @@ main {
     height: fit-content;
     height: -moz-max-content;
     max-height: 90%;
+    min-height: 80%;
     width: 90%;
     margin: 0 auto;
     background-color: white;
@@ -94,6 +130,13 @@ main {
     grid-area: right;
     position: relative;
 }
+
+
+
+/* Quiz Right: Start */
+
+
+
 .quiz-control{
     display: none;
     position: relative;
@@ -105,8 +148,6 @@ main {
     position: relative;
     background-color: lightblue;
     padding: 10px;
-    /* overflow-x: hidden;
-    overflow-y: scroll; */
 }
 .result-options{
     position: relative;
@@ -114,14 +155,16 @@ main {
     width: 100%;
     grid-template-columns: repeat(auto-fit, minmax(70px,1fr));
 }
-
+.quiz-container > h3{
+    margin: 10px 0;
+} 
 
 
 
 .inputs{
     position: relative;
 }
-.inputs > input{
+.inputs  input{
     margin-bottom: 10px;
     width: 100%;
 }
@@ -168,5 +211,5 @@ main {
     display: block;
 }
 .tab-border{
-    border-bottom: solid white 2px;
+    border-bottom: solid lightskyblue 2px;
 }

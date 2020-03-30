@@ -39,7 +39,7 @@
                     </ul>
                 </div>
                 <div class="quiz-control-left left-content">
-                    This is Quiz
+                    
                 </div>
                 <div class="poll-control-left left-content">
                     This is Poll
@@ -52,23 +52,31 @@
         <div class="right">
             <div class="quiz-control tab-content show">
                 <div class="right-container quiz-container">
+                    <h3>Your Questions</h3>
                     <div class="inputs">
-                        <input type="text">
-                        <input type="text">
-                        <input type="text">
-                        <input type="text">
-                        <input type="text">
-                        <button>Add Question</button>
+                        <form action="" method="post" id="question_form">
+                            <input type="text" placeholder="What's the Question?" id="question_name">
+                            <div class="option-container options-quiz"></div>
+                            <button class="add-option-btn options-quiz">Add Option</button>
+                            <button class="delete-option-btn options-quiz">Delete Option</button>
+                            <input type="text" placeholder="Correct Option" id="correct_option">
+                            <button id="add_question_btn">Add Question</button>
+                        </form>
                     </div>
                     <div class="result-options">
                         <button class="result-option">Pie Chart</button>
                         <button class="result-option">Bar Graph</button>
                         <button class="result-option">Scatter Plot</button>
                     </div>
+                    <button id = "publish_quiz" style="display: none;" onclick="getQuizDetails()">Publish Quiz</button>
                 </div>
             </div>
             <div class="feedback-control tab-content">This is feedback</div>
-            <div class="poll-control tab-content">This is poll</div>
+            <div class="poll-control tab-content">
+                <div class="option-container options-poll"></div>
+                <button class="add-option-btn options-poll">Add Option</button>
+                <button class="delete-option-btn options-poll">Delete Option</button>
+            </div>
             <div class="home-control tab-content">
                 <div class="add-event">
                     <h2>Add Event</h2>
@@ -78,13 +86,14 @@
                     </form>
                 </div>
                 <div class="add-actions">
-                    <button onclick="goTo(quizSelector)">Quiz</button>
-                    <button onclick="goTo(pollSelector)">Poll</button>
-                    <button onclick="goTo(feedbackSelector)">Feedback</button>
+                    <button class="add_quiz add-event-btn">Quiz</button>
+                    <button class="add_poll add-event-btn">Poll</button>
+                    <button class="add_feedback add-event-btn">Feedback</button>
                 </div>
             </div>
         </div>
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="./js/main.js"></script>
 </body>
 
