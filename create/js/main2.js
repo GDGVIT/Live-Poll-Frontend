@@ -71,14 +71,21 @@ let goTo = (ele) => {
 const loginButton = document.querySelector("#login_button")
 const login = document.querySelector("#user_login");
 const userLoginDiv = document.querySelector(".user-login")
-
+const notLoggedIn = document.querySelectorAll(".not-logged-in");
+const content = document.querySelectorAll(".content");
 let loggedIn = () => {
 	if (!(sessionStorage.getItem("auth_key"))) {
 		console.log("Not logged in")
 	}
 	else {
 		console.log("Logged In");
-		userLoginDiv.classList.remove("show");
+        userLoginDiv.classList.remove("show");
+        notLoggedIn.forEach(ele => {
+            ele.classList.remove("show");
+        })
+        content.forEach(ele => {
+            ele.classList.add("show");
+        })
 		goTo(homeSelector);
 	}
 }
@@ -125,3 +132,39 @@ loginButton.addEventListener("click", handleLogin);
 
 
 /* Handling the login: End */
+
+
+
+const invertBtn = document.querySelectorAll(".invert-btn");
+
+function handleInvert(e){
+    e.preventDefault();
+    const thiscreate = document.querySelector(`.${this.id}-create`)
+    const thisresult = document.querySelector(`.${this.id}-result`)
+    thiscreate.classList.toggle("show");
+    thisresult.classList.toggle("show");
+}
+
+invertBtn.forEach(ele => {
+    ele.addEventListener("click", handleInvert);
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

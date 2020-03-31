@@ -79,9 +79,7 @@ main{
 
 .main{
     position: relative;
-    background-color: #F5F5F5;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    background-color: #F5F5F5;   
 }
 .main-container{
     position: relative;
@@ -95,6 +93,20 @@ main{
     -moz-transform:  translateY(-50%);
     box-shadow: var(--main-shadow);
     border-radius: 10px;
+    overflow-x: hidden;
+    overflow: auto;
+}
+.content{
+    display: none;
+    height: fit-content;
+    height: -moz-max-content;
+    width: 100%;
+}
+.create{
+    display: none;
+}
+.result{
+    display: none;
 }
 .tab-content{
     display: none;
@@ -102,8 +114,14 @@ main{
     height: 100%;
     width: 100%;
 }
-
-
+.not-logged-in{
+    display: none;
+}
+.invert-btn{
+    position: relative;
+    width: 10%;
+    margin: auto;
+}
 
 
 
@@ -162,23 +180,24 @@ main{
     grid-area: input1;
     margin-top: 60px;
     margin-bottom: 30px;
-    width: 90%;
+    width: calc(90% - 10px);
     padding: 10px 0;
+    padding-left: 10px;
     border: solid var(--main-color) 1.5px;
     border-radius: 5px;
     box-shadow: var(--main-shadow);
+    outline: none;
 }
 #user_pass{
     grid-area: input2;
-    width: 90%;
+    width: calc(90% - 10px);
     margin-bottom: 30px;
     padding: 10px 0;
+    padding-left: 10px;
     border: solid var(--main-color) 1.5px;
     border-radius: 5px;
     box-shadow: var(--main-shadow);
-}
-::placeholder {
-    padding-left: 10px;
+    outline: none;
 }
 #login_button{
     grid-area: button;
@@ -198,10 +217,8 @@ main{
 .choose-theme{
     position: relative;
     height: 100%;
-    margin-top: 40px;
+    margin: 40px auto;
     width: 70%;
-    margin-left: auto;
-    margin-right: auto;
     padding: 0 10px;
     border-radius: 10px;
     background-color: white;
@@ -254,11 +271,14 @@ main{
 
 
 
-
-
-
-
 /* Login Page: End */
+
+
+
+
+
+
+
 
 
 
