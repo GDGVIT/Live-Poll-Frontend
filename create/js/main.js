@@ -177,7 +177,7 @@ AddEventBtn.addEventListener("click", (e) => {
 
 	fetch("https://mighty-sea-62531.herokuapp.com/api/events/addEvent", requestOptions)
 		.then(response => { return response.json() })
-		.then(result => { console.log("Event Added", result); sessionStorage.setItem("event_id",result._id); AddActionDiv.style.display = "block" })
+		.then(result => { console.log("Event Added", result); sessionStorage.setItem("event_id", result._id); AddActionDiv.style.display = "block" })
 		.catch(error => console.log('Event Error', error));
 })
 
@@ -351,39 +351,37 @@ let quiz = {};
 let questions = [];
 let socket;
 const quizControlLeftDiv = document.querySelector(".quiz-control-left");
-let oldquizid = undefined;
+let oldquizid = "0";
 let getQuizDetails = () => {
-	if(/* question_no != 0 */ true){
-		/* if (oldquizid == sessionStorage.getItem("quiz_action_id")) {
-			socketConnection();
-			continueSocketConnection();
-		} */
-		
-			oldquizid = sessionStorage.getItem("quiz_action_id");
-			var requestOptions = {
-				method: 'GET',
-				redirect: 'follow'
-			};
-			fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-				.then(response => {
-					if (response.status == 200) {
-						return response.json();
-					}
-					else {
-						return "Error";
-					}
-				})
-				.then(result => {
-					if (result == "Error") {
-						console.log("Error")
-					}
-					else {
-						quiz = result;
-						getQuizOptions();
-					}
-				})
-				.catch(error => console.log('error', error));
-		
+
+	if (oldquizid == sessionStorage.getItem("quiz_action_id")) {
+		continueSocketConnection();
+	}
+	else {
+		oldquizid = sessionStorage.getItem("quiz_action_id");
+		var requestOptions = {
+			method: 'GET',
+			redirect: 'follow'
+		};
+		fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+			.then(response => {
+				if (response.status == 200) {
+					return response.json();
+				}
+				else {
+					return "Error";
+				}
+			})
+			.then(result => {
+				if (result == "Error") {
+					console.log("Error")
+				}
+				else {
+					quiz = result;
+					getQuizOptions();
+				}
+			})
+			.catch(error => console.log('error', error));
 	}
 }
 let getQuizOptions = () => {
