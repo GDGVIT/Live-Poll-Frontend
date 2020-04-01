@@ -32,8 +32,10 @@
                                 <h1>Create Event</h1>
                                 <form action="" method="post" id="create_event_form">
                                     <label for="event_name">Event Name</label>
-                                    <input type="text" id = "event_name" placeholder="Enter Event name" class="main-input">
-                                    <button type="submit" class="main-button" id="create_event_btn">Generate Event Code</button>
+                                    <input type="text" id="event_name" placeholder="Enter Event name"
+                                        class="main-input">
+                                    <button type="submit" class="main-button" id="create_event_btn">Generate Event
+                                        Code</button>
                                 </form>
                                 <p id="event_code" class="event-code"></p>
                                 <div class="add-action">
@@ -62,15 +64,39 @@
                     </div>
                 </div>
                 <div class="tab-content quiz-control">
-
                     <div class="content">
                         <div class="quiz-result result">
                             This is quiz result
                             <button class="invert-btn quiz">Invert Quiz</button>
                         </div>
                         <div class="quiz-create create show-select">
-                            This is quiz create
-                            <button class="invert-btn quiz">Invert Quiz</button>
+                            <form action="" method="post" class="quiz-create-container" id="question_form">
+                                <label for="question_name">Question</label>
+                                <input type="text" id="question_name" class="main-input" placeholder="Enter Question">
+                                <label for="correct_option">Correct Option</label>
+                                <input type="text" id="correct_option" class="main-input"
+                                    placeholder="Correct Option(must match an option)">
+                                <label for="quiz_options">Options</label>
+                                <div id="quiz_options_div"><input type="text" class="main-input quiz-option"
+                                        placeholder="Enter Option"></div>
+                                <div class="add-remove-options">
+                                    <button class="add-option-btn quiz_options main-button">+ Add</button>
+                                    <button class="delete-option-btn quiz_options main-button">- Remove</button>
+                                </div>
+                                <label for="theme">Theme</label>
+                                <div id="theme" class="theme">
+                                    <button class="main-button theme-btn pie" id="for_quiz"><img src="../img/pie.svg"
+                                            alt=""></button>
+                                    <button class="main-button theme-btn bar" id="for_quiz"><img src="../img/bar.svg"
+                                            alt=""></button>
+                                    <button class="main-button theme-btn scatter" id="for_quiz"><img
+                                            src="../img/scatter.svg" alt=""></button>
+                                </div>
+                                <div class="quiz-actions">
+                                    <button id="add_question_btn" class="main-button quiz">+ Add Question</button>
+                                    <button class="invert-btn quiz main-button" id="publish_quiz">Publish Quiz</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="not-logged-in show">
@@ -84,8 +110,29 @@
                             <button class="invert-btn poll">Invert Poll</button>
                         </div>
                         <div class="poll-create create show-select">
-                            This is poll create
-                            <button class="invert-btn poll">Invert Poll</button>
+                            <form action="" method="post" class="poll-create-container" id="poll_form">
+                                <label for="poll_name">Question</label>
+                                <input type="text" id="poll_name" class="main-input" placeholder="Enter Question">
+                                <label for="poll_options">Options</label>
+                                <div id="poll_options_div"><input type="text" class="main-input poll-option" placeholder="Enter Option"></div>
+                                <div class="add-remove-options">
+                                    <button class="add-option-btn poll_options main-button">+ Add</button>
+                                    <button class="delete-option-btn poll_options main-button">- Remove</button>
+                                </div>
+                                <label for="theme_poll">Theme</label>
+                                <div id="theme_poll" class="theme">
+                                    <button class="main-button theme-btn pie" id="for_poll"><img src="../img/pie.svg"
+                                            alt=""></button>
+                                    <button class="main-button theme-btn bar" id="for_poll"><img src="../img/bar.svg"
+                                            alt=""></button>
+                                    <button class="main-button theme-btn scatter" id="for_poll"><img
+                                            src="../img/scatter.svg" alt=""></button>
+                                </div>
+                                <div class="poll-actions">
+                                    <button id="add_poll_btn" class="main-button poll">+ Add Poll</button>
+                                    <button class="invert-btn poll main-button" id="publish_quiz">Publish Poll</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="not-logged-in show">

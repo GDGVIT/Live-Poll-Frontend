@@ -271,49 +271,180 @@ createEventBtn.addEventListener("click", (e) => {
 /* Adding Actions */
 
 function AddAction(e) {
-	e.preventDefault();
-	const action_data = {
-		action_type: this.innerHTML,
-	}
-	var requestOptions = {
-		method: 'POST',
-		headers: {
-			"Content-Type": "application/json",
-			"auth-token": "" + sessionStorage.getItem("auth_key")
-		},
-		body: JSON.stringify(action_data),
-		redirect: 'follow'
-	};
-	fetch("https://mighty-sea-62531.herokuapp.com/api/actions/addAction/" + sessionStorage.getItem("event_id"), requestOptions)
-		.then(response => { return response.json(); })
-		.then(result => {
-			console.log("Action Added", result);
-			if (this.innerHTML == "Quiz") {
-				sessionStorage.setItem("quiz_action_id", result._id);
-				console.log(sessionStorage.getItem("quiz_action_id"))
-				goTo(quizSelector);
-			}
-			if (this.innerHTML == "Poll") {
-				sessionStorage.setItem("poll_action_id", result._id)
-				goTo(pollSelector);
-			}
-			if (this.innerHTML == "Feedback") {
-				sessionStorage.setItem("feedback_action_id", result._id)
-				goTo(feedbackSelector)
-			}
-		})
-		.catch(error => console.log('Action Error', error));
+    e.preventDefault();
+    const action_data = {
+        action_type: this.innerHTML,
+    }
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "auth-token": "" + sessionStorage.getItem("auth_key")
+        },
+        body: JSON.stringify(action_data),
+        redirect: 'follow'
+    };
+    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/addAction/" + sessionStorage.getItem("event_id"), requestOptions)
+        .then(response => { return response.json(); })
+        .then(result => {
+            console.log("Action Added", result);
+            if (this.innerHTML == "Quiz") {
+                sessionStorage.setItem("quiz_action_id", result._id);
+                console.log(sessionStorage.getItem("quiz_action_id"))
+                goTo(quizSelector);
+            }
+            if (this.innerHTML == "Poll") {
+                sessionStorage.setItem("poll_action_id", result._id)
+                goTo(pollSelector);
+            }
+            if (this.innerHTML == "Feedback") {
+                sessionStorage.setItem("feedback_action_id", result._id)
+                goTo(feedbackSelector)
+            }
+        })
+        .catch(error => console.log('Action Error', error));
 }
 
 const AddActionBtn = document.querySelectorAll(".action-btn")
 AddActionBtn.forEach(ele => {
-	ele.addEventListener("click", AddAction)
+    ele.addEventListener("click", AddAction)
 })
 
 
 /* Adding Actions: End */
 
 
+
+/* Adding Question and answers */
+
+
+const AddQuestionBtn = document.querySelector("#add_question_btn");
+const AddPollBtn = document.querySelector("#add_poll_btn");
+let question_no = 0;
+function addQuestion(e) {
+    e.preventDefault();
+    let question;
+    let question_data;
+    let questionOptions = [];
+    let correctOption;
+    let Form;
+    if (this.classList[1] == "quiz") {
+        question = document.querySelector("#question_name")
+        questionOptions = document.querySelectorAll(".quiz-option");
+        correctOption = document.querySelector("#correct_option");
+        actionId = sessionStorage.getItem("quiz_action_id");
+        Form = document.querySelector("#question_form");
+        question_data = {
+            name: question.value,
+            correct: correctOption.value,
+        }
+    }
+    if (this.classList[1] == "poll") {
+        question = document.querySelector("#poll_name")
+        questionOptions = document.querySelectorAll(".poll-option");
+        actionId = sessionStorage.getItem("poll_action_id");
+        Form = document.querySelector("#poll_form")
+        question_data = {
+            name: question.value,
+        }
+    }
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "auth-token": "" + sessionStorage.getItem("auth_key")
+        },
+        body: JSON.stringify(question_data),
+        redirect: 'follow'
+    };
+    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addQuestion/" + actionId, requestOptions)
+        .then(response => { return response.json() })
+        .then(result => {
+            console.log("Question and Correct Option Added", result);
+            sessionStorage.setItem("question_id", result._id);
+            questionOptions.forEach(ele => {
+                let option_data = {
+                    option: ele.value
+                }
+                var requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": "" + sessionStorage.getItem("auth_key")
+                    },
+                    body: JSON.stringify(option_data),
+                    redirect: 'follow'
+                };
+                fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + sessionStorage.getItem("quiz_action_id") + "/" + sessionStorage.getItem("question_id"), requestOptions)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log(result);
+                        Form.reset();
+                    })
+                    .catch(error => console.log('error', error));
+            })
+            question_no++;
+        })
+        .catch(error => console.log('Question and Correct Option Error', error));
+}
+
+AddQuestionBtn.addEventListener("click", addQuestion);
+AddPollBtn.addEventListener("click", addQuestion);
+
+
+/* Adding Question and answers: End */
+
+
+
+
+
+
+
+
+
+
+/* Handling Adding and Removing Options */
+
+const AddOptionsBtn = document.querySelectorAll(".add-option-btn")
+const DeleteOptionsBtn = document.querySelectorAll(".delete-option-btn");
+
+function addOption(e) {
+    e.preventDefault();
+    console.log(this.classList)
+    const OptionsDiv = document.querySelector(`#${this.classList[1]}_div`)
+    let inputField = document.createElement("input");
+    inputField.placeholder = "Enter Option";
+    if (this.classList[1] == "quiz_options") {
+        inputField.classList.add("quiz-option");
+    }
+    if (this.classList[1] == "poll_options") {
+        inputField.classList.add("poll-option");
+    }
+    inputField.classList.add("main-input");
+    OptionsDiv.appendChild(inputField)
+}
+function deleteOption(e) {
+    e.preventDefault();
+    const OptionsDiv = document.querySelector(`#${this.classList[1]}_div`);
+    if (OptionsDiv.innerHTML === "") {
+        return;
+    }
+    else {
+        OptionsDiv.removeChild(OptionsDiv.lastChild)
+    }
+}
+
+AddOptionsBtn.forEach(ele => {
+    ele.addEventListener("click", addOption);
+})
+DeleteOptionsBtn.forEach(ele => {
+    ele.addEventListener("click", deleteOption);
+})
+
+
+/* Handling Adding and Removing Options: End */
 
 
 

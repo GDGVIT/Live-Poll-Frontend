@@ -81,7 +81,7 @@ main {
     -moz-transform: translateY(-50%);
     box-shadow: var(--main-shadow);
     border-radius: 10px;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow: auto;
 }
 .content {
@@ -106,11 +106,6 @@ main {
     display: none;
 }
 .invert-btn {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
     
 }
 
@@ -354,27 +349,117 @@ main {
     display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Home page Create Event: End */
 
+.quiz-create-container{
+    position: relative;
+    display: grid;
+    grid-template-areas: "l1 i1" "l2 i2" "l3 i3" ". i4" "l5 i5" ". i6";
+    width: 90%;
+    margin: auto;
+    row-gap: 40px;
+    padding-top: 13vh;
+}
+.quiz-create-container  input{
+    padding-top: 17px;
+    padding-bottom: 17px;
+    border-radius: 7px;
+}
+.quiz-create-container > label, .poll-create-container > label{
+    font-weight: 900;
+    font-size: 1.3rem;
+}
+label[for = "question_name"], label[for = "poll_name"]{
+    grid-area: l1;
+}
+#question_name, #poll_name{
+    grid-area: i1;
+}
+label[for = "correct_option"]{
+    grid-area: l2;
+}
+#correct_option{
+    grid-area: i2;
+}
+label[for = "quiz_options"], label[for = "quiz_options"]{
+    grid-area: l3;
+}
+#quiz_options_div, #poll_options_div{
+    grid-area: i3;
+    position: relative;
+    display: grid;
+    grid-template-columns: 48% 48%;
+    column-gap: 4%;
+    row-gap: 20px;
+}
+.add-remove-options{
+    grid-area: i4;
+}
+label[for = "theme"], label[for = "theme_poll"]{
+    grid-area: l5;
+}
+.theme{
+    grid-area: i5;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 100%;
+    column-gap: 10px;
+}
+.quiz-actions, .poll-actions{
+    grid-area: i6;
+    margin-top: 30px;
+}
+.quiz-actions > button, .poll-actions > button{
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 5px;
+}
+.add-remove-options > button{
+    padding: 10px 60px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 5px;
+}
+.theme > button{
+    background-color: white;
+    border-radius: 30px;
+}
+.theme > button:hover{
+    background-color: var(--main-color);
+}
+
+.poll-create-container{
+    position: relative;
+    display: grid;
+    grid-template-areas: "l1 i1" "l3 i3" ". i4" "l5 i5" ". i6";
+    width: 90%;
+    margin: auto;
+    row-gap: 40px;
+    padding-top: 15vh;
+}
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+button{
+    outline: none;
+}
 
 .main-button{
     padding: 12px 40px;
