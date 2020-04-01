@@ -1,28 +1,21 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-
-:root{
+@import url('https://fonts.googleapis.com/css?family=Montserrat &display=swap');:root {
     --main-color: #2784FB;
-    --main-shadow: -5px -5px 10px rgba(255,255,255,0.05),
-    5px 5px 15px rgba(0,0,0,.2);
-    --main-shadow-hover: inset -6px -6px 10px rgba(39,132,251,1),
-    inset 6px 6px 20px rgba(0,0,0,.2);
-    --neon-button-hover: 0 0 5px #03e9f4,
-    0 0 25px #03e9f4,
-    0 0 50px #03e9f4;
+    --main-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, .2);
+    --main-shadow-hover: inset -6px -6px 10px rgba(39, 132, 251, 1), inset 6px 6px 20px rgba(0, 0, 0, .2);
+    --neon-button-hover: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4;
 }
 
 
-
-*{
+* {
     margin: 0;
     padding: 0;
     /* box-sizing: border-box; */
     font-family: 'Montserrat', sans-serif;
 }
-body{
+body {
     position: relative;
 }
-main{
+main {
     position: relative;
     display: grid;
     height: 100vh;
@@ -33,35 +26,32 @@ main{
 }
 
 
-
-
-
-.header{
+.header {
     position: relative;
     display: grid;
     grid-template-columns: 20% 60% 20%;
     justify-items: center;
     align-items: center;
 }
-.options-container{
+.options-container {
     position: relative;
     display: grid;
     grid-template-columns: repeat(4, 25%);
     justify-items: center;
     width: 100%;
 }
-.options-container > p{
+.options-container > p {
     padding: 13px 2.5vw;
     font-weight: 800;
     font-size: 1.1rem;
     cursor: pointer;
 }
-.header > img{
+.header > img {
     justify-self: left;
     padding-left: 20px;
     align-self: center;
 }
-.header > button{
+.header > button {
     align-self: center;
     border: none;
     padding: 13px 3vw;
@@ -75,61 +65,62 @@ main{
 }
 
 
-
-
-.main{
+.main {
     position: relative;
-    background-color: #F5F5F5;   
+    background-color: #F5F5F5;
 }
-.main-container{
+.main-container {
     position: relative;
     height: 90%;
     width: 90%;
-    margin: auto auto;
+    margin: auto;
     background-color: white;
     top: 50%;
     transform: translateY(-50%);
-    -webkit-transform:  translateY(-50%);
-    -moz-transform:  translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
     box-shadow: var(--main-shadow);
     border-radius: 10px;
     overflow-x: hidden;
     overflow: auto;
 }
-.content{
+.content {
     display: none;
     height: fit-content;
     height: -moz-max-content;
     width: 100%;
 }
-.create{
+.create {
     display: none;
 }
-.result{
+.result {
     display: none;
 }
-.tab-content{
+.tab-content {
     display: none;
     position: relative;
     height: 100%;
     width: 100%;
 }
-.not-logged-in{
+.not-logged-in {
     display: none;
 }
-.invert-btn{
-    position: relative;
-    width: 10%;
-    margin: auto;
+.invert-btn {
+    position: absolute;
+    display: none;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    
 }
-
 
 
 
 /* Login Page */
 
 
-.user-login-container{
+.user-login-container {
     position: relative;
     width: 70%;
     height: fit-content;
@@ -141,13 +132,13 @@ main{
     -moz-transform:  translateY(-50%); */
     text-align: center;
 }
-.user-login-container > h1{
+.user-login-container > h1 {
     position: relative;
     font-size: 3rem;
     color: var(--main-color);
     margin-bottom: 20px;
 }
-#login_form{
+#login_form {
     position: relative;
     display: grid;
     width: 70%;
@@ -157,49 +148,45 @@ main{
     border-radius: 10px;
     padding: 0 10px;
     grid-template-columns: 20% 80%;
-    grid-template-areas: "label1 input1"
-    "label2 input2"
-    "button button";
+    grid-template-areas: "label1 input1" "label2 input2" "button button";
     align-items: center;
     justify-items: center;
 }
-.login-label-1{
+.login-label-1 {
     grid-area: label1;
     margin-top: 60px;
     margin-bottom: 30px;
     font-weight: 900;
     font-size: 1.2rem;
 }
-.login-label-2{
+.login-label-2 {
     grid-area: label2;
     margin-bottom: 30px;
     font-weight: 900;
     font-size: 1.2rem;
 }
-#user_email{
+#user_email {
     grid-area: input1;
     margin-top: 60px;
     margin-bottom: 30px;
     width: calc(90% - 10px);
-    padding: 10px 0;
-    padding-left: 10px;
+    padding: 10px 0 10px 10px;
     border: solid var(--main-color) 1.5px;
     border-radius: 5px;
     box-shadow: var(--main-shadow);
     outline: none;
 }
-#user_pass{
+#user_pass {
     grid-area: input2;
     width: calc(90% - 10px);
     margin-bottom: 30px;
-    padding: 10px 0;
-    padding-left: 10px;
+    padding: 10px 0 10px 10px;
     border: solid var(--main-color) 1.5px;
     border-radius: 5px;
     box-shadow: var(--main-shadow);
     outline: none;
 }
-#login_button{
+#login_button {
     grid-area: button;
     justify-self: center;
     margin-bottom: 30px;
@@ -211,10 +198,10 @@ main{
     font-size: 1.1rem;
     box-shadow: var(--main-shadow);
 }
-#login_button:hover{
+#login_button:hover {
     box-shadow: var(--main-shadow-hover);
 }
-.choose-theme{
+.choose-theme {
     position: relative;
     height: 100%;
     margin: 40px auto;
@@ -224,13 +211,13 @@ main{
     background-color: white;
     box-shadow: var(--main-shadow);
 }
-.choose-theme > h1{
+.choose-theme > h1 {
     position: relative;
     padding-top: 10px;
 }
-.choose-theme > button{
+.choose-theme > button {
     position: relative;
-    margin: 20px; 
+    margin: 20px;
     border-radius: 100px;
     height: 50px;
     width: 50px;
@@ -238,42 +225,74 @@ main{
     box-shadow: var(--main-shadow);
     outline: none;
 }
-#red_theme{
+#red_theme {
     background-color: rgb(234, 76, 137);
 }
-#red_theme:hover{
-    box-shadow: inset -6px -6px 10px rgba(234, 76, 137,1),
-    inset 6px 6px 20px rgba(0,0,0,.15);
+#red_theme:hover {
+    box-shadow: inset -6px -6px 10px rgba(234, 76, 137, 1), inset 6px 6px 20px rgba(0, 0, 0, .15);
 }
-#green_theme{
+#green_theme {
     background-color: rgb(131, 211, 157);
 }
-#green_theme:hover{
-    box-shadow: inset -6px -6px 10px rgb(131, 211, 157),
-    inset 6px 6px 20px rgba(0,0,0,.15);
+#green_theme:hover {
+    box-shadow: inset -6px -6px 10px rgb(131, 211, 157), inset 6px 6px 20px rgba(0, 0, 0, .15);
 }
-#blue_theme{
-    background-color:  rgb(39, 132, 251);
+#blue_theme {
+    background-color: rgb(39, 132, 251);
 }
-#blue_theme:hover{
-    box-shadow: inset -6px -6px 10px rgb(39, 132, 251),
-    inset 6px 6px 20px rgba(0,0,0,.15);
+#blue_theme:hover {
+    box-shadow: inset -6px -6px 10px rgb(39, 132, 251), inset 6px 6px 20px rgba(0, 0, 0, .15);
 }
-#dark_theme{
-    background-color:  black;
+#dark_theme {
+    background-color: black;
     transition: 0.3s;
 }
-#dark_theme:hover{
+#dark_theme:hover {
     background-color: #03e9f4;
     box-shadow: var(--neon-button-hover);
 }
 
 
-
-
 /* Login Page: End */
 
 
+.icons{
+    position: relative;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: calc(100% - 40px);
+    padding: 20px;
+    justify-items: right;
+}
+.history-icon{
+    position: relative;
+    width: 100px;
+    justify-self: left;
+}
+.add-event-btn{
+    position: relative;
+    padding: 10px 20px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 1.05rem;
+    left: initial;
+    transform: none;
+    -webkit-transform: none;
+    -moz-transform: none;
+}
+.history-grid{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    width: 90%;
+    padding-top: 20px;
+    margin: auto;
+    height: fit-content;
+    height: -moz-max-content;
+}
 
 
 
@@ -297,14 +316,16 @@ main{
 
 
 
-
-.show{
+.show {
     display: block;
 }
-.tab-border{
+.show-select {
+    display: block;
+}
+.tab-border {
     border-bottom: solid 2px var(--main-color);
 }
-.login-background{
+.login-background {
     background-color: #F5F5F5;
     box-shadow: none;
 }

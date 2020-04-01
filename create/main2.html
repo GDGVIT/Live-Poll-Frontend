@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main2.css">
     <title>Document</title>
 </head>
+
 <body>
     <main>
         <div class="header">
-            <img src = "../img/logo.svg">
+            <img src="../img/logo.svg">
             <div class="options-container">
                 <p class="home-section tab-item tab-border" id="home-control">Home</p>
                 <p class="quiz-section tab-item" id="quiz-control">Quiz</p>
@@ -19,56 +21,72 @@
             <button id="user_login">Login</button>
         </div>
         <div class="main">
+            <button class="invert-btn quiz" id="quiz-control_btn">Invert Quiz</button>
+            <button class="invert-btn poll" id="poll-control_btn">Invert Poll</button>
+            <button class="invert-btn feedback" id="feedback-control_btn">Invert Feedback</button>
             <div class="main-container">
                 <div class="tab-content home-control show">
                     <div class="content">
-                        This is home
-                    </div>       
+                        <div class="home-create create">
+                            This is event Create
+                        </div>
+                        <div class="home-result result show-select">
+                            <div class="icons">
+                                <img src="../img/Group 130.svg" alt="" class="history-icon">
+                                <button class="invert-btn home add-event-btn" id="home-control_btn">+ Add Event</button>
+                            </div>
+                            <div class="history-grid">
+                                <p>Events</p>
+                                <p>Last updated</p>
+                                <p>No. of participants</p>
+                                <p>Exports</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="not-logged-in show">
                         Please login to use these features
-                    </div>             
+                    </div>
                 </div>
                 <div class="tab-content quiz-control">
-                    <button class="invert-btn" id="quiz">Invert</button>
+
                     <div class="content">
                         <div class="quiz-result result">
                             This is quiz result
                         </div>
-                        <div class="quiz-create create show">
+                        <div class="quiz-create create show-select">
                             This is quiz create
                         </div>
-                    </div>       
+                    </div>
                     <div class="not-logged-in show">
                         Please login to use these features
-                    </div> 
+                    </div>
                 </div>
                 <div class="tab-content poll-control">
-                    <button class="invert-btn" id="poll">Invert</button>
                     <div class="content">
                         <div class="poll-result result">
                             This is poll result
                         </div>
-                        <div class="poll-create create show">
+                        <div class="poll-create create show-select">
                             This is poll create
                         </div>
-                    </div>       
+                    </div>
                     <div class="not-logged-in show">
                         Please login to use these features
-                    </div> 
+                    </div>
                 </div>
                 <div class="tab-content feedback-control">
-                    <button class="invert-btn" id="feedback">Invert</button>
+
                     <div class="content">
                         <div class="feedback-result result">
                             This is feedback result
                         </div>
-                        <div class="feedback-create create show">
+                        <div class="feedback-create create show-select">
                             This is feedback create
                         </div>
-                    </div>       
+                    </div>
                     <div class="not-logged-in show">
                         Please login to use these features
-                    </div> 
+                    </div>
                 </div>
                 <div class="user-login tab-content">
                     <div class="user-login-container">
@@ -94,4 +112,5 @@
     </main>
     <script src="./js/main2.js"></script>
 </body>
+
 </html>
