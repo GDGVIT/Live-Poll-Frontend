@@ -17,8 +17,6 @@ function selectItem(e) {
     mainContainer.classList.remove("login-background")
     this.classList.add('tab-border');
     const tabCont = document.querySelector(`.${this.id}`);
-    const invBtn = document.querySelector(`#${this.id}_btn`)
-    invBtn.classList.add("show");
     tabCont.classList.add('show');
 }
 
@@ -65,8 +63,6 @@ let goTo = (ele) => {
     ele.classList.add('tab-border');
     mainContainer.classList.remove("login-background")
     const tabCont = document.querySelector(`.${ele.id}`);
-    const invBtn = document.querySelector(`#${ele.id}_btn`)
-    invBtn.classList.add("show");
     tabCont.classList.add('show');
 }
 
@@ -95,9 +91,9 @@ let getEventDetails = () => {
             redirect: 'follow'
         };
 
-        fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/"+event_id, requestOptions)
+        fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
             .then(response => response.json())
-            .then(result => {event_deets.push(result); renderEventDeets();})
+            .then(result => { event_deets.push(result); renderEventDeets(); })
             .catch(error => console.log('error', error));
     })
 }
@@ -166,13 +162,13 @@ let loggedIn = () => {
 }
 loggedIn();
 let handleLogin = (e) => {
-    /* e.preventDefault(); */
+    e.preventDefault();
     const userEmail = document.querySelector("#user_email");
     const userPass = document.querySelector("#user_pass");
     const loginForm = document.querySelector("#login_form");
     var myHeaders_login = new Headers();
     myHeaders_login.append("Content-Type", "application/json");
-    var raw_login = JSON.stringify({ "email": "prakhar0912@gmail.com", "password": "nice.com" });
+    var raw_login = JSON.stringify({ "email": userEmail.value, "password": userPass.value });
     var requestOptions = {
         method: 'POST',
         headers: myHeaders_login,
@@ -202,8 +198,7 @@ login.addEventListener("click", () => {
     userLoginDiv.classList.add("show");
 
 })
-/* loginButton.addEventListener("click", handleLogin); */
-handleLogin();
+loginButton.addEventListener("click", handleLogin);
 
 
 
@@ -221,9 +216,6 @@ function handleInvert(e) {
     const thisresult = document.querySelector(`.${this.classList[1]}-result`)
     thiscreate.classList.toggle("show-select");
     thisresult.classList.toggle("show-select");
-    /* if(this.id === "quiz"){
-
-    } */
 }
 
 invertBtn.forEach(ele => {
@@ -234,9 +226,92 @@ invertBtn.forEach(ele => {
 
 
 
+/* Adding Events */
+
+const createEventBtn = document.querySelector("#create_event_btn");
+const AddActionDiv = document.querySelector(".add-action");
+const EventCodeDiv = document.querySelector("#event_code");
 
 
+createEventBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const EventName = document.querySelector("#event_name");
+    const data = {
+        Name: EventName.value,
+    }
+    var raw = JSON.stringify(data);
 
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "auth-token": "" + sessionStorage.getItem("auth_key")
+        },
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("https://mighty-sea-62531.herokuapp.com/api/events/addEvent", requestOptions)
+        .then(response => { return response.json() })
+        .then(result => {
+            console.log("Event Added", result);
+            sessionStorage.setItem("event_id", result._id);
+            AddActionDiv.classList.add("show");
+            EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
+            EventCodeDiv.classList.add("show");
+
+        })
+        .catch(error => console.log('Event Error', error));
+});
+
+
+/* Adding Events: End */
+
+
+/* Adding Actions */
+
+function AddAction(e) {
+	e.preventDefault();
+	const action_data = {
+		action_type: this.innerHTML,
+	}
+	var requestOptions = {
+		method: 'POST',
+		headers: {
+			"Content-Type": "application/json",
+			"auth-token": "" + sessionStorage.getItem("auth_key")
+		},
+		body: JSON.stringify(action_data),
+		redirect: 'follow'
+	};
+	fetch("https://mighty-sea-62531.herokuapp.com/api/actions/addAction/" + sessionStorage.getItem("event_id"), requestOptions)
+		.then(response => { return response.json(); })
+		.then(result => {
+			console.log("Action Added", result);
+			if (this.innerHTML == "Quiz") {
+				sessionStorage.setItem("quiz_action_id", result._id);
+				console.log(sessionStorage.getItem("quiz_action_id"))
+				goTo(quizSelector);
+			}
+			if (this.innerHTML == "Poll") {
+				sessionStorage.setItem("poll_action_id", result._id)
+				goTo(pollSelector);
+			}
+			if (this.innerHTML == "Feedback") {
+				sessionStorage.setItem("feedback_action_id", result._id)
+				goTo(feedbackSelector)
+			}
+		})
+		.catch(error => console.log('Action Error', error));
+}
+
+const AddActionBtn = document.querySelectorAll(".action-btn")
+AddActionBtn.forEach(ele => {
+	ele.addEventListener("click", AddAction)
+})
+
+
+/* Adding Actions: End */
 
 
 

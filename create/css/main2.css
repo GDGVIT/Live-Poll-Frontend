@@ -60,7 +60,7 @@ main {
     font-size: 1.1rem;
     color: white;
     border-radius: 5px;
-
+    box-shadow: var(--main-shadow);
     outline: none;
 }
 
@@ -107,7 +107,6 @@ main {
 }
 .invert-btn {
     position: absolute;
-    display: none;
     left: 50%;
     transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
@@ -190,13 +189,6 @@ main {
     grid-area: button;
     justify-self: center;
     margin-bottom: 30px;
-    padding: 12px 40px;
-    border-radius: 3px;
-    background-color: var(--main-color);
-    border: none;
-    color: white;
-    font-size: 1.1rem;
-    box-shadow: var(--main-shadow);
 }
 #login_button:hover {
     box-shadow: var(--main-shadow-hover);
@@ -255,7 +247,7 @@ main {
 
 /* Login Page: End */
 
-
+/* Home page History */
 .icons{
     position: relative;
     display: grid;
@@ -294,6 +286,73 @@ main {
     height: -moz-max-content;
 }
 
+/* Home page History: End */
+
+/* Home page Create Event */
+
+.event-create-container{
+    position: relative;
+    width: 90%;
+    margin: auto;
+    height: 100%;
+    text-align: center;
+}
+.event-create-container > h1{
+    padding-top: 130px;
+    margin-bottom: 40px;
+    position: relative;
+    font-size: 2.2rem;
+    color: var(--main-color);
+    margin-bottom: 20px;
+}
+#create_event_form{
+    position: relative;
+    width: 100%;
+
+}
+#create_event_form > button{
+    display: block;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+#create_event_form > input{
+    width: calc(60% - 10px);
+}
+#create_event_form > label{
+    margin-right: 30px;
+    font-weight: 900;
+    font-size: 1.2rem;
+}
+.add-action{
+    position: relative;
+    margin-top: 70px;
+    display: none;
+}
+.add-action > h1{
+    font-size: 2.2rem;
+    color: var(--main-color);
+    margin-bottom: 20px;
+}
+.back-btn{
+    left: initial;
+    transform: none;
+    -webkit-transform: none;
+    -moz-transform: none;
+    width: fit-content;
+    border: none;
+    outline: none;
+    background: white;
+    margin-top: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.back-btn > img{
+    width: 30px;
+}
+#event-code{
+    display: none;
+}
 
 
 
@@ -310,10 +369,32 @@ main {
 
 
 
+/* Home page Create Event: End */
 
 
 
 
+
+
+.main-button{
+    padding: 12px 40px;
+    border-radius: 3px;
+    background-color: var(--main-color);
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    box-shadow: var(--main-shadow);
+}
+.main-button:hover{
+    box-shadow: var(--main-shadow-hover);
+}
+.main-input{
+    padding: 10px 0 10px 10px;
+    border: solid var(--main-color) 1.5px;
+    border-radius: 5px;
+    box-shadow: var(--main-shadow);
+    outline: none;
+}
 
 
 .show {

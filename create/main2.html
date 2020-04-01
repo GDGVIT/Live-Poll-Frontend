@@ -18,22 +18,36 @@
                 <p class="poll-section tab-item" id="poll-control">Poll</p>
                 <p class="feedback-section tab-item" id="feedback-control">Feedback</p>
             </div>
-            <button id="user_login">Login</button>
+            <button id="user_login" class="main-button">Login</button>
         </div>
         <div class="main">
-            <button class="invert-btn quiz" id="quiz-control_btn">Invert Quiz</button>
-            <button class="invert-btn poll" id="poll-control_btn">Invert Poll</button>
-            <button class="invert-btn feedback" id="feedback-control_btn">Invert Feedback</button>
             <div class="main-container">
                 <div class="tab-content home-control show">
                     <div class="content">
                         <div class="home-create create">
-                            This is event Create
+                            <button class="invert-btn home back-btn">
+                                <img src="../img/back.png" alt="">
+                            </button>
+                            <div class="event-create-container">
+                                <h1>Create Event</h1>
+                                <form action="" method="post" id="create_event_form">
+                                    <label for="event_name">Event Name</label>
+                                    <input type="text" id = "event_name" placeholder="Enter Event name" class="main-input">
+                                    <button type="submit" class="main-button" id="create_event_btn">Generate Event Code</button>
+                                </form>
+                                <p id="event_code" class="event-code"></p>
+                                <div class="add-action">
+                                    <h1>Add Action</h1>
+                                    <button class="action-btn main-button">Quiz</button>
+                                    <button class="action-btn main-button">Feedback</button>
+                                    <button class="action-btn main-button">Poll</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="home-result result show-select">
                             <div class="icons">
                                 <img src="../img/Group 130.svg" alt="" class="history-icon">
-                                <button class="invert-btn home add-event-btn" id="home-control_btn">+ Add Event</button>
+                                <button class="invert-btn home add-event-btn main-button">+ Add Event</button>
                             </div>
                             <div class="history-grid">
                                 <p>Events</p>
@@ -52,9 +66,11 @@
                     <div class="content">
                         <div class="quiz-result result">
                             This is quiz result
+                            <button class="invert-btn quiz">Invert Quiz</button>
                         </div>
                         <div class="quiz-create create show-select">
                             This is quiz create
+                            <button class="invert-btn quiz">Invert Quiz</button>
                         </div>
                     </div>
                     <div class="not-logged-in show">
@@ -65,9 +81,11 @@
                     <div class="content">
                         <div class="poll-result result">
                             This is poll result
+                            <button class="invert-btn poll">Invert Poll</button>
                         </div>
                         <div class="poll-create create show-select">
                             This is poll create
+                            <button class="invert-btn poll">Invert Poll</button>
                         </div>
                     </div>
                     <div class="not-logged-in show">
@@ -79,9 +97,11 @@
                     <div class="content">
                         <div class="feedback-result result">
                             This is feedback result
+                            <button class="invert-btn feedback">Invert Feedback</button>
                         </div>
                         <div class="feedback-create create show-select">
                             This is feedback create
+                            <button class="invert-btn feedback">Invert Feedback</button>
                         </div>
                     </div>
                     <div class="not-logged-in show">
@@ -96,7 +116,7 @@
                             <input type="email" name="" id="user_email" placeholder="Email">
                             <label for="user_pass" class="login-label-2">Password</label>
                             <input type="text" id="user_pass" placeholder="Password">
-                            <button id="login_button">Login</button>
+                            <button id="login_button" class="main-button">Login</button>
                         </form>
                         <div class="choose-theme">
                             <h1>Choose a Theme</h1>
