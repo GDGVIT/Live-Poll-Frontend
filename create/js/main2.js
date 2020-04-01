@@ -166,13 +166,13 @@ let loggedIn = () => {
 }
 loggedIn();
 let handleLogin = (e) => {
-    e.preventDefault();
+    /* e.preventDefault(); */
     const userEmail = document.querySelector("#user_email");
     const userPass = document.querySelector("#user_pass");
     const loginForm = document.querySelector("#login_form");
     var myHeaders_login = new Headers();
     myHeaders_login.append("Content-Type", "application/json");
-    var raw_login = JSON.stringify({ "email": userEmail.value, "password": userPass.value });
+    var raw_login = JSON.stringify({ "email": "prakhar0912@gmail.com", "password": "nice.com" });
     var requestOptions = {
         method: 'POST',
         headers: myHeaders_login,
@@ -202,7 +202,8 @@ login.addEventListener("click", () => {
     userLoginDiv.classList.add("show");
 
 })
-loginButton.addEventListener("click", handleLogin);
+/* loginButton.addEventListener("click", handleLogin); */
+handleLogin();
 
 
 
