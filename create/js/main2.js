@@ -1,7 +1,19 @@
-
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
+}
+/* const start = async () => {
+    await asyncForEach([1, 2, 3], async (num) => {
+        console.log(num);
+    });
+    console.log('Done');
+}
+start(); */
 
 
 let oldquizid = "0";
+
 
 
 /* Handling Movement between tabs */
@@ -84,24 +96,23 @@ let renderEventDeets = () => {
 
 
 
-let getEventDetails = () => {
-    event_ids.forEach(event_id => {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
+let getEventDetails = async () => {
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+    await asyncForEach(event_ids, async (event_id) => {
         fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
             .then(response => response.json())
-            .then(result => { event_deets.push(result); renderEventDeets(); })
+            .then(result => { event_deets.push(result); })
             .catch(error => console.log('error', error));
     })
+    renderEventDeets();
 }
 
 
 
 let handleHistory = () => {
-    console.log("nice");
     var myHeaders = new Headers();
     myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
 
@@ -115,7 +126,6 @@ let handleHistory = () => {
         .then(response => response.json())
         .then(result => {
             event_ids = result;
-            console.log(event_ids)
             getEventDetails();
         })
         .catch(error => console.log('error', error));
@@ -182,9 +192,7 @@ let handleLogin = (e) => {
             return res.json()
         })
         .then(result => {
-            console.log(result["Auth Token"])
             sessionStorage.setItem("auth_key", result["Auth Token"])
-            console.log(sessionStorage.getItem("auth_key"))
             loggedIn();
         })
         .catch(error => console.log('error', error));
@@ -348,6 +356,7 @@ function addQuestion(e) {
             name: question.value,
         }
     }
+    console.log(questionOptions)
     var requestOptions = {
         method: 'POST',
         headers: {
@@ -375,7 +384,7 @@ function addQuestion(e) {
                     body: JSON.stringify(option_data),
                     redirect: 'follow'
                 };
-                fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + sessionStorage.getItem("quiz_action_id") + "/" + sessionStorage.getItem("question_id"), requestOptions)
+                fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + actionId + "/" + sessionStorage.getItem("question_id"), requestOptions)
                     .then(response => {
                         return response.json();
                     })
@@ -412,7 +421,6 @@ const DeleteOptionsBtn = document.querySelectorAll(".delete-option-btn");
 
 function addOption(e) {
     e.preventDefault();
-    console.log(this.classList)
     const OptionsDiv = document.querySelector(`#${this.classList[1]}_div`)
     let inputField = document.createElement("input");
     inputField.placeholder = "Enter Option";
@@ -450,6 +458,85 @@ DeleteOptionsBtn.forEach(ele => {
 
 
 
+
+/* SelectTheme */
+
+const themeBtn = document.querySelectorAll(".theme-btn");
+const icons = document.querySelectorAll(".icon");
+
+let putwhite = () => {
+    themeBtn.forEach(ele => {
+        ele.classList.remove("blue-select");
+    })
+    icons.forEach(ele => {
+        ele.classList.remove("white-select")
+    })
+}
+
+function themeSelector(e) {
+    e.preventDefault();
+    putwhite();
+    this.classList.add("blue-select");
+    let icon = document.querySelector(`.${this.classList[4]}-white`);
+    icon.classList.add("white-select")
+
+    if (this.classList[2] === "quiz") {
+        sessionStorage.setItem("quizTheme", this.classList[3]);
+    }
+    if (this.classList[2] === "poll") {
+        sessionStorage.setItem("pollTheme", this.classList[3]);
+    }
+    if (this.classList[2] === "feedback") {
+        sessionStorage.setItem("feedbackTheme", this.classList[3]);
+    }
+    console.log(sessionStorage.getItem("quizTheme"),
+        sessionStorage.getItem("pollTheme"),
+        sessionStorage.getItem("feedbackTheme"))
+}
+function changeWhite(e) {
+    let icon = document.querySelector(`.${this.classList[4]}-white`);
+    icon.classList.toggle("white")
+}
+themeBtn.forEach(ele => {
+    ele.addEventListener("click", themeSelector);
+})
+themeBtn.forEach(ele => {
+    ele.addEventListener("mouseover", changeWhite);
+    ele.addEventListener("mouseout", changeWhite)
+})
+
+
+/* SelectTheme: End */
+
+
+
+const addFeedbackBtn = document.querySelector("#add_feedback_btn");
+
+function addFeedbackQuestion(e) {
+    e.preventDefault();
+    const feedbackQuestion = document.querySelector("#feedback_name")
+    question_data = {
+        name: feedbackQuestion.value,
+    }
+    console.log(question_data)
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "auth-token": "" + sessionStorage.getItem("auth_key")
+        },
+        body: JSON.stringify(question_data),
+        redirect: 'follow'
+    };
+    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addQuestion/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
+        .then(response => { return response.json() })
+        .then(result => {
+            console.log("Feedback Question Added", result);
+        })
+        .catch(error => console.log('Question Error', error));
+}
+
+addFeedbackBtn.addEventListener("click", addFeedbackQuestion)
 
 
 

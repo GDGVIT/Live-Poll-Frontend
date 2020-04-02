@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat &display=swap');
+
+        :root {
+            --main-color: #2784FB;
+            --main-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, .2);
+            --main-shadow-hover: inset -6px -6px 10px rgba(39, 132, 251, 1), inset 6px 6px 20px rgba(0, 0, 0, .2);
+            --neon-button-hover: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            position: relative;
+        }
+
+        main {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            display: grid;
+            grid-template-rows: 10% 90%;
+        }
+
+        .header {
+            position: relative;
+            width: 100%;
+            display: grid;
+            justify-items: left;
+            align-items: center;
+        }
+
+        .header>img {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .main {
+            position: relative;
+            background-color: #F5F5F5;
+        }
+
+        .main-container {
+            position: relative;
+            width: 70%;
+            height: 70%;
+            margin: auto;
+            background-color: white;
+            border-radius: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            box-shadow: var(--main-shadow);
+            overflow-x: auto;
+            overflow: auto;
+            text-align: center;
+        }
+
+        .main-button {
+            padding: 12px 0px;
+            border-radius: 5px;
+            margin: 0 5px;
+            width: 13%;
+            background-color: var(--main-color);
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            box-shadow: var(--main-shadow);
+            margin-bottom: 30px;
+            min-width: 100px;
+        }
+
+        .main-button:hover {
+            box-shadow: var(--main-shadow-hover);
+        }
+
+        input {
+            width: 40%;
+            border: none;
+            border-bottom: solid black 1px;
+            margin: auto;
+            margin-bottom: 6vh;
+            display: block;
+            padding: 10px;
+            font-size: 1.2rem;
+            outline: none;
+        }
+
+        .main-container>h1 {
+            margin-top: 60px;
+            margin-bottom: 8vh;
+        }
+
+        .active-actions>h1 {
+            margin-bottom: 4vh;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .main-container {
+                width: 90%;
+                height: 90%;
+            }
+
+            h1 {
+                font-size: 1.1rem;
+            }
+
+            input {
+                width: 70%;
+            }
+            .main-button{
+                padding: 12px 0;
+                width: 43%;
+                display: block;
+                margin: auto;
+                margin-bottom: 30px;
+                min-width: 0;
+            }
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <main>
+        <div class="header">
+            <img src="../img/logo.svg" alt="">
+        </div>
+        <div class="main">
+            <div class="main-container">
+                <h1>Enter the authentication code</h1>
+                <input type="text" id="event_code" placeholder="Enter the Auth code">
+                <button class="main-button" id="join_event_btn">Join</button>
+                <div class="active-actions"></div>
+            </div>
+        </div>
+    </main>
+    <script>
+        if(window.innerWidth < 600){
+            const main = document.querySelector("main");
+            main.style.minHeight = window.innerHeight + "px";
+        }
+        const eventbtn = document.querySelector("#join_event_btn");
+        const eventCode = document.querySelector("#event_code");
+        const activeActionsDiv = document.querySelector(".active-actions");
+        eventbtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            activeActionsDiv.innerHTML = "";
+            console.log("clicked")
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEvent/" + eventCode.value, requestOptions)
+                .then(response => {
+                    console.log(response)
+                    return response.json();
+                })
+                .then(result => {
+                    showActions(result)
+                })
+                .catch(error => console.log('error', error));
+        })
+        function showActions(res) {
+            actions = res["Actions"];
+            activeActionsDiv.innerHTML = "<h1>Active Actions</h1>";
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+            actions.forEach((ele) => {
+                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + ele, requestOptions)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log(result)
+                        let button = document.createElement("button");
+                        button.innerHTML = result["action_type"];
+                        button.classList.add("main-button");
+                        button.classList.add("action-button");
+                        button.id = result["_id"];
+                        activeActionsDiv.appendChild(button);
+                        /* if (result["action_type"] == "Quiz") {
+                            sessionStorage.setItem("quiz_action_id", ele);
+                            window.location.href = "quiz.html";
+                        } */
+                    })
+                    .catch(error => console.log('error', error));
+            })
+        }
+    </script>
+</body>
+
+</html>
