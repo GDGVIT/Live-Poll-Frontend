@@ -154,6 +154,14 @@
         const eventbtn = document.querySelector("#join_event_btn");
         const eventCode = document.querySelector("#event_code");
         const activeActionsDiv = document.querySelector(".active-actions");
+
+
+        function handleActions(e){
+            e.preventDefault();
+            window.location.href = "action.html?id="+this.id;
+        }
+
+
         eventbtn.addEventListener("click", (e) => {
             e.preventDefault();
             activeActionsDiv.innerHTML = "";
@@ -193,10 +201,7 @@
                         button.classList.add("action-button");
                         button.id = result["_id"];
                         activeActionsDiv.appendChild(button);
-                        /* if (result["action_type"] == "Quiz") {
-                            sessionStorage.setItem("quiz_action_id", ele);
-                            window.location.href = "quiz.html";
-                        } */
+                        button.addEventListener("click", handleActions);
                     })
                     .catch(error => console.log('error', error));
             })

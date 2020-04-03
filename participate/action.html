@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var actionId = url.searchParams.get("id");
+
+        const body = document.querySelector("body");
+        let quiz = {};
+        let quiz_id, action_type, theQuestion, theQuestionId, currentOptions,
+            questions = [], options = [], options_rendering = [];
+        let socket;
+
+        let fetchQuestions = () => {
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + actionId, requestOptions)
+                .then(response => {
+                    if (response.status == 200) {
+                        return response.json();
+                    }
+                    else {
+                        return "Error";
+                    }
+                })
+                .then(result => {
+                    if (result == "Error") {
+                        console.log("Error")
+                    }
+                    else {
+                        quiz = result;
+                        getQuiz();
+                    }
+                })
+                .catch(error => console.log('error', error));
+        }
+        fetchQuestions();
+
+        //Logging quiz variables
+        let showQuiz = () => {
+            console.log(quiz);
+            console.log(quiz_id)
+            console.log(questions)
+            console.log(options)
+            console.log(options_rendering)
+        }
+
+        let fetchNextQuestion = () => {
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/nextQuestion/"+actionId+"/"+theQuestionId, requestOptions)
+                .then(response => response.json())
+                .then(result => {console.log(result); theQuestionId = result["_id"]; theQuestion = result; renderQuiz(theQuestion);})
+                .catch(error => console.log('error', error));
+        }
+
+
+
+
+
+        //Connecting to the socket
+        let socketConnection = () => {
+            socket = io('https://mighty-sea-62531.herokuapp.com/');
+            socket.on("connect", () => {
+                console.log(socket.connected)
+                socket.on("New Connection", (updated_data) => {
+                    console.log(updated_data)
+                    if (updated_data.length != 0) {
+                        for (let i of updated_data) {
+                            for (let j of options) {
+                                if (i._id == j._id) {
+                                    j.stat = i.stat;
+                                }
+                            }
+                        }
+                    }
+                })
+            })
+            socket.on("next", data => {
+                if (data == actionId) {
+                    fetchNextQuestion();
+                }
+            })
+        }
+
+        //Handling the answers
+        let handleAnswers = (option_id) => {
+            for (let k of options) {
+                if (option_id == k._id) {
+                    data = k;
+                }
+            }
+            socket.emit("option", data);
+            socket.on('all options', (new_data) => {
+                console.log(new_data)
+                for (let k of options) {
+                    if (new_data._id == k._id) {
+                        k.stat = new_data.stat;
+                    }
+                }
+            })
+        }
+
+
+        //Rendering the quiz
+        let renderQuiz = (question) => {
+            console.log(question)
+            if (question) {
+                body.innerHTML = "";
+                let question_div = document.createElement("div")
+                let h2 = document.createElement("h2")
+                h2.innerHTML = question["name"];
+                question_div.appendChild(h2);
+                let options_div = document.createElement("div")
+                question["options"].forEach(opt => {
+                    let button = document.createElement("button");
+                    button.innerHTML = opt["option"];
+                    button.value = opt["_id"];
+                    button.addEventListener("click", () => {
+                        handleAnswers(opt["_id"]);
+                    })
+                    options_div.appendChild(button);
+                })
+                question_div.appendChild(options_div);
+                body.appendChild(question_div);
+            }
+            else {
+                body.innerHTML = "<p>waiting for the admin to post a question</p>"
+            }
+        }
+
+
+        //Setting variables of Quiz
+        let getQuiz = () => {
+            quiz_id = quiz["_id"]
+            action_type = quiz["action_type"]
+            questions = quiz["Questions"];
+            questions.forEach(ele => {
+                ele["options"].forEach(elem => {
+                    options.push(elem);
+                })
+            });
+            theQuestion = questions[0];
+            renderQuiz(theQuestion);
+            theQuestionId = questions[0]["_id"];
+            socketConnection();
+        }
+
+
+
+    </script>
+</body>
+
+</html>

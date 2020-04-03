@@ -544,6 +544,141 @@ addFeedbackBtn.addEventListener("click", addFeedbackQuestion)
 
 
 
+/* let quiz_opts = [];
+let quiz = {};
+let questions = [];
+let socket;
+const quizControlLeftDiv = document.querySelector(".quiz-control-left");
+let oldquizid = "0";
+let getQuizDetails = () => {
+
+	{
+		var requestOptions = {
+			method: 'GET',
+			redirect: 'follow'
+		};
+		fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+			.then(response => {
+				if (response.status == 200) {
+					return response.json();
+				}
+				else {
+					return "Error";
+				}
+			})
+			.then(result => {
+				if (result == "Error") {
+					console.log("Error")
+				}
+				else {
+					quiz = result;
+					getQuizOptions();
+				}
+			})
+			.catch(error => console.log('error', error));
+	}
+}
+let getQuizOptions = () => {
+	questions = quiz["Questions"];
+	questions.forEach(ele => {
+		quiz_opts.push(ele["options"])
+	})
+	console.log(quiz_opts)
+	socketConnection();
+}
+
+let socketConnection = () => {
+	socket = io('https://mighty-sea-62531.herokuapp.com/');
+	socket.on("connect", () => {
+		console.log(socket.connected)
+		socket.on("New Connection", (updated_data) => {
+			console.log(updated_data)
+			if (updated_data.length != 0) {
+				for (let i of updated_data) {
+					quiz_opts.forEach(ele => {
+						ele.forEach(elem => {
+							if (i._id == elem._id) {
+								elem.stat = i.stat;
+							}
+						})
+					})
+				}
+			}
+			renderQuizDetails();
+			continueSocketConnection();
+		})
+	})
+}
+let continueSocketConnection = () => {
+	socket.on('all options', (new_data) => {
+		console.log(new_data)
+		for (let k of quiz_opts) {
+			k.forEach(ele => {
+				if (new_data._id == ele._id) {
+					ele.stat = new_data.stat;
+				}
+			})
+		}
+		renderQuizDetails();
+	})
+} */
+/* let renderQuizDetails = () => {
+	quizControlLeftDiv.innerHTML = "";
+	for (i = 0; i < questions.length; i++) {
+		let h2 = document.createElement("h2");
+		h2.innerHTML = questions[i]["name"];
+		let optionDiv = document.createElement("div");
+		quiz_opts[i].forEach(ele => {
+			let p = document.createElement("p")
+			p.innerHTML = `${ele["option"]} with stat: ${ele["stat"]}`;
+			optionDiv.appendChild(p);
+		})
+		quizControlLeftDiv.append(h2);
+		quizControlLeftDiv.appendChild(optionDiv)
+	}
+} */
+
+
+
+/* Handling the rendering and functioning of a live Quiz Event: End */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let nextQuestion = () => {
+    console.log("nice")
+    socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
+}
+
+
+
+
+const PublishQuizBtn = document.querySelector("#publish_quiz");
+const nextQuestionBtn = document.querySelector("#nxtq");
+nextQuestionBtn.addEventListener("click", nextQuestion);
+PublishQuizBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    socket = io('https://mighty-sea-62531.herokuapp.com/');
+    socket.on("connect", () => {
+        console.log(socket.connected);
+        nextQuestion();
+    })
+})
+
+
+
 
 
 
