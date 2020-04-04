@@ -68,12 +68,14 @@ const homeSelector = document.querySelector(".home-section");
 const quizSelector = document.querySelector(".quiz-section");
 const pollSelector = document.querySelector(".poll-section");
 const feedbackSelector = document.querySelector(".feedback-section");
+const navText = document.querySelector(".nav-text");
 
 let goTo = (ele) => {
     removeBorder();
     removeShow();
     ele.classList.add('tab-border');
     mainContainer.classList.remove("login-background")
+    navText.innerHTML = ele.innerHTML;
     const tabCont = document.querySelector(`.${ele.id}`);
     tabCont.classList.add('show');
 }
@@ -676,6 +678,54 @@ PublishQuizBtn.addEventListener("click", (e) => {
         nextQuestion();
     })
 })
+
+
+
+
+
+
+
+
+
+
+
+/* handling the ham functionality */
+
+
+const ham = document.querySelector(".ham");
+const mobileNav = document.querySelector(".options-container-mobile");
+
+
+let open = () => {
+    mobileNav.classList.toggle("open");
+}
+let changeText = (ele) => {
+    navText.innerHTML = ele.innerHTML;
+}
+ham.addEventListener("click", open);
+const navButtons = document.querySelectorAll(".options-container-mobile p");
+navButtons.forEach(ele => {
+    ele.addEventListener("click", () => {
+        open();
+        changeText(ele);
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* handling the ham functionality: End */
 
 
 
