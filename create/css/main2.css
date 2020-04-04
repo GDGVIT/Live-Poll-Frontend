@@ -565,8 +565,14 @@ button {
 
 
 @media(max-width: 600px) {
-    * {
+    /* * {
         box-sizing: border-box;
+    } */
+    main{
+        grid-template-rows: 8% 92;
+    }
+    .main-container{
+        height: 90%;
     }
     .not-mobile {
         display: none;
@@ -625,7 +631,7 @@ button {
         width: 40px;
     }
     .nav-control{
-        position: relative;
+        position: absolute;
         display: grid;
         width:fit-content;
         width: -moz-fit-content;
