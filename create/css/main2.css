@@ -14,6 +14,7 @@
 }
 body {
     position: relative;
+    background-color: #F5F5F5;
 }
 main {
     position: relative;
@@ -32,6 +33,7 @@ main {
     grid-template-columns: 20% 60% 20%;
     justify-items: center;
     align-items: center;
+    background-color: white;
 }
 .options-container {
     position: relative;
