@@ -641,7 +641,7 @@ button {
         height: -moz-fit-content;
         grid-template-columns: auto auto;
         margin-top: 15px;
-        margin-left: 10px;
+        margin-left: 6%;
         column-gap: 10px;
         display: none;
         margin-bottom: 0;
