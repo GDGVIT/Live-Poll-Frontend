@@ -633,17 +633,18 @@ button {
         width: 40px;
     }
     .nav-control{
-        position: absolute;
+        position: relative;
         display: grid;
         width:fit-content;
         width: -moz-fit-content;
         height: fit-content;
         height: -moz-fit-content;
         grid-template-columns: auto auto;
-        margin-top: 10px;
+        margin-top: 15px;
         margin-left: 10px;
         column-gap: 10px;
         display: none;
+        margin-bottom: 0;
     }
     .options-container-mobile {
         position: absolute;
