@@ -297,7 +297,14 @@
         </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-
+    <script>
+        if(window.innerWidth < 600){
+            const main = document.querySelector("main");
+            main.style.height = window.innerHeight + "px";
+            vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+    </script>
     <script src="./js/main2.js"></script>
 </body>
 
