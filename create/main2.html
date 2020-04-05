@@ -64,10 +64,13 @@
                                 <button class="invert-btn home add-event-btn main-button">+ Add Event</button>
                             </div>
                             <div class="history-grid">
-                                <p>Events</p>
-                                <p>Last updated</p>
-                                <p>No. of participants</p>
-                                <p>Exports</p>
+                                <div class="this-event">
+                                    <p>Events</p>
+                                    <p>Last updated</p>
+                                    <p>No. of participants</p>
+                                    <p>Exports</p>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -298,7 +301,7 @@
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script>
-        if(window.innerWidth < 600){
+        if (window.innerWidth < 600) {
             const main = document.querySelector("main");
             main.style.height = window.innerHeight + "px";
             vh = window.innerHeight * 0.01;

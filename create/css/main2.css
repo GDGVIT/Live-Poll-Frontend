@@ -271,14 +271,30 @@ main {
 .history-grid {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(4, auto);
     width: 90%;
+    grid-template-columns: 100%;
     padding-top: 20px;
     margin: auto;
     height: fit-content;
     height: -moz-max-content;
+    border-collapse:collapse;
+    border-spacing: 0 0;
 }
-
+.this-event{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    padding: 10px 0;
+    border-bottom: solid 1px rgb(202, 202, 202);
+    border-collapse:collapse;
+    border-spacing: 0 0;
+    justify-items: center;
+    align-items: center;
+}
+.this-event > button{
+    font-size: 0.9rem;
+    padding: 12px 30px;
+}
 /* Home page History: End */
 
 /* Home page Create Event */
@@ -626,7 +642,7 @@ button {
     }
     .choose-theme > h1 {
         font-size: 1.5rem;
-    }
+    } 
     .choose-theme > button {
         margin: 10px;
         height: 40px;

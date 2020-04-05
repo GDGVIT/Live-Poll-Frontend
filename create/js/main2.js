@@ -64,20 +64,29 @@ tabItems.forEach(item => {
 /* GoTo function */
 
 
-const homeSelector = document.querySelector(".home-section");
-const quizSelector = document.querySelector(".quiz-section");
-const pollSelector = document.querySelector(".poll-section");
-const feedbackSelector = document.querySelector(".feedback-section");
+const homeSelector = document.querySelectorAll(".home-section");
+const quizSelector = document.querySelectorAll(".quiz-section");
+const pollSelector = document.querySelectorAll(".poll-section");
+const feedbackSelector = document.querySelectorAll(".feedback-section");
 const navText = document.querySelector(".nav-text");
 
 let goTo = (ele) => {
     removeBorder();
     removeShow();
-    ele.classList.add('tab-border');
-    mainContainer.classList.remove("login-background")
-    navText.innerHTML = ele.innerHTML;
-    const tabCont = document.querySelector(`.${ele.id}`);
-    tabCont.classList.add('show');
+    if (window.innerWidth < 600) {
+        ele[0].classList.add('tab-border');
+        mainContainer.classList.remove("login-background")
+        navText.innerHTML = ele.innerHTML;
+        const tabCont = document.querySelector(`.${ele[0].id}`);
+        tabCont.classList.add('show');
+    }
+    else {
+        ele[1].classList.add('tab-border');
+        mainContainer.classList.remove("login-background")
+        navText.innerHTML = ele[1].innerHTML;
+        const tabCont = document.querySelector(`.${ele[1].id}`);
+        tabCont.classList.add('show');
+    }
 }
 
 
@@ -90,26 +99,43 @@ let goTo = (ele) => {
 
 let event_ids = [];
 let event_deets = [];
+const historyGrid = document.querySelector(".history-grid");
 
 
-let renderEventDeets = () => {
-    console.log(event_deets)
+let renderEventDeets = (event) => {
+
+    let eventDiv = document.createElement("div");
+    eventDiv.classList.add("this-event");
+    let pName = document.createElement("p");
+    let pTime = document.createElement("p");
+    let pPartMan = document.createElement("p");
+    let eventbut = document.createElement("button");
+    eventbut.classList.add("main-button")
+    pName.innerHTML = `${event["Name"]}`;
+    pTime.innerHTML = "Not provided";
+    pPartMan.innerHTML = `${event["Participants"]}`;
+    eventbut.innerHTML = "Download Stats";
+    eventDiv.appendChild(pName);
+    eventDiv.appendChild(pTime);
+    eventDiv.appendChild(pPartMan);
+    eventDiv.appendChild(eventbut);
+    historyGrid.appendChild(eventDiv);
 }
 
 
 
-let getEventDetails = async () => {
-    var requestOptions = {
-        method: 'GET',
-        redirect: 'follow'
-    };
-    await asyncForEach(event_ids, async (event_id) => {
+let getEventDetails = () => {
+    event_ids.forEach(event_id => {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
         fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
             .then(response => response.json())
-            .then(result => { event_deets.push(result); })
+            .then(result => { renderEventDeets(result); })
             .catch(error => console.log('error', error));
     })
-    renderEventDeets();
 }
 
 
