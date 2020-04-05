@@ -757,7 +757,13 @@ button {
         margin-bottom: 20px;
     }
 
-
+    .this-event{
+        grid-template-columns: none;
+        grid-template-areas: ;
+    }
+    .this-event > p:nth-child(1){
+        color: red;
+    }
 
 
 

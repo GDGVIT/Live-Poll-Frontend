@@ -103,7 +103,6 @@ const historyGrid = document.querySelector(".history-grid");
 
 
 let renderEventDeets = (event) => {
-
     let eventDiv = document.createElement("div");
     eventDiv.classList.add("this-event");
     let pName = document.createElement("p");
