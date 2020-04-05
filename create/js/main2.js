@@ -350,36 +350,7 @@ AddActionBtn.forEach(ele => {
 
 /* Adding Question and answers */
 
-const addOptions = (quesopts, actid, questionid) => {
-    return new Promise((resolve, reject) => {
-        quesopts.forEach((ele,index) => {
-            let option_data = {
-                option: ele.value
-            }
-            var requestOptions = {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "auth-token": "" + sessionStorage.getItem("auth_key")
-                },
-                body: JSON.stringify(option_data),
-                redirect: 'follow'
-            };
-            fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + actid + "/" + questionid, requestOptions)
-                .then(response => {
-                    return response.json();
-                })
-                .then(result => {
-                    console.log(result);
-                    console.log(index)
-                    if(index == quesopts.length - 1){
-                        resolve();
-                    }
-                })
-                .catch(error => console.log('error', error));
-        })
-    })
-}
+
 
 
 
@@ -410,40 +381,58 @@ function addQuestion(e) {
         correctOption = document.querySelector("#correct_option");
         actionId = sessionStorage.getItem("quiz_action_id");
         Form = document.querySelector("#question_form");
-        question_data = {
+        question_data = JSON.stringify({
             name: question.value,
             correct: correctOption.value
-        }
+        })
     }
     if (this.classList[1] == "poll") {
         question = document.querySelector("#poll_name")
         questionOptions = document.querySelectorAll(".poll-option");
         actionId = sessionStorage.getItem("poll_action_id");
         Form = document.querySelector("#poll_form")
-        question_data = {
-            name: question.value
-        }
+        question_data = JSON.stringify({
+            name: question.value,
+        })
     }
-    console.log(questionOptions)
     var requestOptions = {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
             "auth-token": "" + sessionStorage.getItem("auth_key")
         },
-        body: JSON.stringify(question_data),
+        body: question_data,
         redirect: 'follow'
     };
     fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addQuestion/" + actionId, requestOptions)
         .then(response => { return response.json() })
         .then(result => {
             console.log("Question and Correct Option Added", result);
-            addOptions(questionOptions, actionId, result._id)
-                .then(() => {
-                    console.log("done")
-                    question_no++;
-                    Form.reset();
-                })
+            let question_id = result["_id"];
+            questionOptions.forEach((ele) => {
+                let option_data = {
+                    option: ele.value
+                }
+                let optionsData = JSON.stringify(option_data);
+                var requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": "" + sessionStorage.getItem("auth_key")
+                    },
+                    body: optionsData,
+                    redirect: 'follow'
+                };
+                fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + actionId + "/" + question_id, requestOptions)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log(result);
+                        Form.reset();
+                    })
+                    .catch(error => console.log('error', error));
+            })
 
         })
         .catch(error => console.log('Question and Correct Option Error', error));
@@ -615,6 +604,7 @@ const nextQuestionBtn = document.querySelector("#nxtq");
 
 
 let nextQuestionSocket = () => {
+    console.log(currentQuestionId)
     socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
 }
 
@@ -623,7 +613,7 @@ let nextQuestionSocket = () => {
 
 
 
-let nextQuestionTrue = (currentQuestionId) => {
+let nextQuestionTrue = () => {
     var myHeaders = new Headers();
     myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
 
@@ -638,8 +628,9 @@ let nextQuestionTrue = (currentQuestionId) => {
         .then(result => {
             console.log(result);
             questionNumber++;
-            currentQuestionId = questions[questionNumber]["_id"];
-            nextQuestionSocket();
+            currentQuestionId = result["_id"];
+            console.log(currentQuestionId);
+            socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
             renderQuizDetails();
         })
         .catch(error => console.log('error', error));
