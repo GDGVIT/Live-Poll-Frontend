@@ -352,19 +352,6 @@ AddActionBtn.forEach(ele => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 const AddQuestionBtn = document.querySelector("#add_question_btn");
 const AddPollBtn = document.querySelector("#add_poll_btn");
 let question_no = 0;
@@ -382,8 +369,8 @@ function addQuestion(e) {
         actionId = sessionStorage.getItem("quiz_action_id");
         Form = document.querySelector("#question_form");
         question_data = JSON.stringify({
-            name: question.value,
-            correct: correctOption.value
+            "name": question.value,
+            "correct": correctOption.value
         })
     }
     if (this.classList[1] == "poll") {
@@ -392,7 +379,7 @@ function addQuestion(e) {
         actionId = sessionStorage.getItem("poll_action_id");
         Form = document.querySelector("#poll_form")
         question_data = JSON.stringify({
-            name: question.value,
+            "name": question.value,
         })
     }
     var requestOptions = {
@@ -411,7 +398,7 @@ function addQuestion(e) {
             let question_id = result["_id"];
             questionOptions.forEach((ele) => {
                 let option_data = {
-                    option: ele.value
+                    "option": ele.value
                 }
                 let optionsData = JSON.stringify(option_data);
                 var requestOptions = {
@@ -499,6 +486,12 @@ DeleteOptionsBtn.forEach(ele => {
 
 
 /* SelectTheme */
+
+
+sessionStorage.setItem("quizTheme", "pie");
+sessionStorage.setItem("pollTheme", "bar");
+sessionStorage.setItem("feedbackTheme", "cont");
+
 
 const themeBtn = document.querySelectorAll(".theme-btn");
 const icons = document.querySelectorAll(".icon");
@@ -589,7 +582,7 @@ addFeedbackBtn.addEventListener("click", addFeedbackQuestion)
 
 
 
-
+/* Handling the god damn fucking live quiz */
 
 
 let quiz_opts = [];
@@ -604,7 +597,6 @@ const nextQuestionBtn = document.querySelector("#nxtq");
 
 
 let nextQuestionSocket = () => {
-    console.log(currentQuestionId)
     socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
 }
 
@@ -644,31 +636,30 @@ nextQuestionBtn.addEventListener("click", () => {
 
 let getQuizDetails = () => {
 
-    {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-            .then(response => {
-                if (response.status == 200) {
-                    return response.json();
-                }
-                else {
-                    return "Error";
-                }
-            })
-            .then(result => {
-                if (result == "Error") {
-                    console.log("Error")
-                }
-                else {
-                    quiz = result;
-                    getQuizOptions();
-                }
-            })
-            .catch(error => console.log('error', error));
-    }
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+        .then(response => {
+            if (response.status == 200) {
+                return response.json();
+            }
+            else {
+                return "Error";
+            }
+        })
+        .then(result => {
+            if (result == "Error") {
+                console.log("Error")
+            }
+            else {
+                quiz = result;
+                getQuizOptions();
+            }
+        })
+        .catch(error => console.log('error', error));
+
 }
 let getQuizOptions = () => {
     questions = quiz["Questions"];
@@ -717,18 +708,59 @@ let continueSocketConnection = () => {
     })
 }
 
-let renderQuizDetails = () => {
-    quizDetailsDiv.innerHTML = "";
-    let h2 = document.createElement("h2");
-    h2.innerHTML = questions[questionNumber]["name"];
-    let optionDiv = document.createElement("div");
-    quiz_opts[questionNumber].forEach(ele => {
-        let p = document.createElement("p")
-        p.innerHTML = `${ele["option"]} with stat: ${ele["stat"]}`;
-        optionDiv.appendChild(p);
+let quiz_labels = [];
+let quiz_data = [];
+let temp = {};
+let ctx = document.querySelector('.quiz-details').getContext('2d');
+let MyChart = new Chart(ctx, temp);
+
+let createChart = () => {
+    MyChart.destroy();
+    MyChart = new Chart(ctx, {
+        type: sessionStorage.getItem("quizTheme"),
+        data: {
+            labels: [],
+            datasets: [{
+                label: "No. of ppl chose",
+                data: [],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: ""
+            }
+        }
+
     })
-    quizDetailsDiv.append(h2);
-    quizDetailsDiv.appendChild(optionDiv)
+}
+
+
+let renderQuizDetails = () => {
+    MyChart.options.title.text = questions[questionNumber]["name"];
+    quiz_opts[questionNumber].forEach((ele, index) => {
+        quiz_labels.push(ele["option"])
+        MyChart.data.labels[index] = ele["option"]
+        quiz_data.push(ele["stat"]);
+        MyChart.data.datasets[0].data[index] = ele["stat"];
+    })
+    MyChart.update();
+
 }
 
 
@@ -736,15 +768,53 @@ let renderQuizDetails = () => {
 /* Handling the rendering and functioning of a live Quiz Event: End */
 
 
+/* Handling the rendering and functioning of a live Poll Event  */
+
+/* let poll_opts = [];
+let poll = {};
+let poll_questions = [];
+let socket;
+const quizDetailsDiv = document.querySelector(".quiz-details");
+let currentQuestionId;
+let questionNumber = 0;
+const nextQuestionBtn = document.querySelector("#nxtq");
 
 
 
 
 
 
+let getQuizDetails = () => {
+
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("poll_action_id"), requestOptions)
+        .then(response => {
+            if (response.status == 200) {
+                return response.json();
+            }
+            else {
+                return "Error";
+            }
+        })
+        .then(result => {
+            if (result == "Error") {
+                console.log("Error")
+            }
+            else {
+                quiz = result;
+                getPollOptions();
+            }
+        })
+        .catch(error => console.log('error', error));
+
+} */
 
 
 
+/* Handling the rendering and functioning of a live Poll Event: End */
 
 
 
@@ -775,9 +845,11 @@ let firstQuestionPublish = (id, type) => {
             console.log(result);
             if (type == "quiz") {
                 getQuizDetails();
+                createChart();
             }
             if (type == "poll") {
                 console.log("Action is poll")
+                getPollDetails()
             }
             if (type == "feedback") {
                 console.log("action type is feedback");
