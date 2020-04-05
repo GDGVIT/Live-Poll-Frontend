@@ -12,8 +12,6 @@ async function asyncForEach(array, callback) {
 start(); */
 
 
-let oldquizid = "0";
-
 
 
 /* Handling Movement between tabs */
@@ -76,7 +74,7 @@ let goTo = (ele) => {
     if (window.innerWidth < 600) {
         ele[0].classList.add('tab-border');
         mainContainer.classList.remove("login-background")
-        navText.innerHTML = ele.innerHTML;
+        navText.innerHTML = ele[0].innerHTML;
         const tabCont = document.querySelector(`.${ele[0].id}`);
         tabCont.classList.add('show');
     }
@@ -352,6 +350,49 @@ AddActionBtn.forEach(ele => {
 
 /* Adding Question and answers */
 
+const addOptions = (quesopts, actid, questionid) => {
+    return new Promise((resolve, reject) => {
+        quesopts.forEach((ele,index) => {
+            let option_data = {
+                option: ele.value
+            }
+            var requestOptions = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": "" + sessionStorage.getItem("auth_key")
+                },
+                body: JSON.stringify(option_data),
+                redirect: 'follow'
+            };
+            fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + actid + "/" + questionid, requestOptions)
+                .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    console.log(result);
+                    console.log(index)
+                    if(index == quesopts.length - 1){
+                        resolve();
+                    }
+                })
+                .catch(error => console.log('error', error));
+        })
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const AddQuestionBtn = document.querySelector("#add_question_btn");
 const AddPollBtn = document.querySelector("#add_poll_btn");
@@ -371,7 +412,7 @@ function addQuestion(e) {
         Form = document.querySelector("#question_form");
         question_data = {
             name: question.value,
-            correct: correctOption.value,
+            correct: correctOption.value
         }
     }
     if (this.classList[1] == "poll") {
@@ -380,7 +421,7 @@ function addQuestion(e) {
         actionId = sessionStorage.getItem("poll_action_id");
         Form = document.querySelector("#poll_form")
         question_data = {
-            name: question.value,
+            name: question.value
         }
     }
     console.log(questionOptions)
@@ -397,31 +438,13 @@ function addQuestion(e) {
         .then(response => { return response.json() })
         .then(result => {
             console.log("Question and Correct Option Added", result);
-            sessionStorage.setItem("question_id", result._id);
-            questionOptions.forEach(ele => {
-                let option_data = {
-                    option: ele.value
-                }
-                var requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "auth-token": "" + sessionStorage.getItem("auth_key")
-                    },
-                    body: JSON.stringify(option_data),
-                    redirect: 'follow'
-                };
-                fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + actionId + "/" + sessionStorage.getItem("question_id"), requestOptions)
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(result => {
-                        console.log(result);
-                        Form.reset();
-                    })
-                    .catch(error => console.log('error', error));
-            })
-            question_no++;
+            addOptions(questionOptions, actionId, result._id)
+                .then(() => {
+                    console.log("done")
+                    question_no++;
+                    Form.reset();
+                })
+
         })
         .catch(error => console.log('Question and Correct Option Error', error));
 }
@@ -571,99 +594,151 @@ addFeedbackBtn.addEventListener("click", addFeedbackQuestion)
 
 
 
-/* let quiz_opts = [];
+
+
+
+
+
+
+
+
+
+let quiz_opts = [];
 let quiz = {};
 let questions = [];
 let socket;
-const quizControlLeftDiv = document.querySelector(".quiz-control-left");
-let oldquizid = "0";
+const quizDetailsDiv = document.querySelector(".quiz-details");
+let currentQuestionId;
+let questionNumber = 0;
+const nextQuestionBtn = document.querySelector("#nxtq");
+
+
+
+let nextQuestionSocket = () => {
+    socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
+}
+
+
+
+
+
+
+let nextQuestionTrue = (currentQuestionId) => {
+    var myHeaders = new Headers();
+    myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/next/" + sessionStorage.getItem("quiz_action_id") + "/" + currentQuestionId, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            questionNumber++;
+            currentQuestionId = questions[questionNumber]["_id"];
+            nextQuestionSocket();
+            renderQuizDetails();
+        })
+        .catch(error => console.log('error', error));
+}
+
+nextQuestionBtn.addEventListener("click", () => {
+    nextQuestionTrue(currentQuestionId);
+});
+
+
+
 let getQuizDetails = () => {
 
-	{
-		var requestOptions = {
-			method: 'GET',
-			redirect: 'follow'
-		};
-		fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-			.then(response => {
-				if (response.status == 200) {
-					return response.json();
-				}
-				else {
-					return "Error";
-				}
-			})
-			.then(result => {
-				if (result == "Error") {
-					console.log("Error")
-				}
-				else {
-					quiz = result;
-					getQuizOptions();
-				}
-			})
-			.catch(error => console.log('error', error));
-	}
+    {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                }
+                else {
+                    return "Error";
+                }
+            })
+            .then(result => {
+                if (result == "Error") {
+                    console.log("Error")
+                }
+                else {
+                    quiz = result;
+                    getQuizOptions();
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
 }
 let getQuizOptions = () => {
-	questions = quiz["Questions"];
-	questions.forEach(ele => {
-		quiz_opts.push(ele["options"])
-	})
-	console.log(quiz_opts)
-	socketConnection();
+    questions = quiz["Questions"];
+    console.log(questions)
+    questions.forEach(ele => {
+        quiz_opts.push(ele["options"])
+    })
+    console.log(quiz_opts)
+    currentQuestionId = questions[0]["_id"];
+    socketConnection();
 }
 
 let socketConnection = () => {
-	socket = io('https://mighty-sea-62531.herokuapp.com/');
-	socket.on("connect", () => {
-		console.log(socket.connected)
-		socket.on("New Connection", (updated_data) => {
-			console.log(updated_data)
-			if (updated_data.length != 0) {
-				for (let i of updated_data) {
-					quiz_opts.forEach(ele => {
-						ele.forEach(elem => {
-							if (i._id == elem._id) {
-								elem.stat = i.stat;
-							}
-						})
-					})
-				}
-			}
-			renderQuizDetails();
-			continueSocketConnection();
-		})
-	})
+    socket = io('https://mighty-sea-62531.herokuapp.com/');
+    socket.on("connect", () => {
+        console.log(socket.connected)
+        socket.on("New Connection", (updated_data) => {
+            console.log(updated_data)
+            if (updated_data.length != 0) {
+                for (let i of updated_data) {
+                    quiz_opts.forEach(ele => {
+                        ele.forEach(elem => {
+                            if (i._id == elem._id) {
+                                elem.stat = i.stat;
+                            }
+                        })
+                    })
+                }
+            }
+            renderQuizDetails();
+            continueSocketConnection();
+        })
+    })
 }
 let continueSocketConnection = () => {
-	socket.on('all options', (new_data) => {
-		console.log(new_data)
-		for (let k of quiz_opts) {
-			k.forEach(ele => {
-				if (new_data._id == ele._id) {
-					ele.stat = new_data.stat;
-				}
-			})
-		}
-		renderQuizDetails();
-	})
-} */
-/* let renderQuizDetails = () => {
-	quizControlLeftDiv.innerHTML = "";
-	for (i = 0; i < questions.length; i++) {
-		let h2 = document.createElement("h2");
-		h2.innerHTML = questions[i]["name"];
-		let optionDiv = document.createElement("div");
-		quiz_opts[i].forEach(ele => {
-			let p = document.createElement("p")
-			p.innerHTML = `${ele["option"]} with stat: ${ele["stat"]}`;
-			optionDiv.appendChild(p);
-		})
-		quizControlLeftDiv.append(h2);
-		quizControlLeftDiv.appendChild(optionDiv)
-	}
-} */
+    socket.on('all options', (new_data) => {
+        console.log(new_data)
+        for (let k of quiz_opts) {
+            k.forEach(ele => {
+                if (new_data._id == ele._id) {
+                    ele.stat = new_data.stat;
+                }
+            })
+        }
+        renderQuizDetails();
+    })
+}
+
+let renderQuizDetails = () => {
+    quizDetailsDiv.innerHTML = "";
+    let h2 = document.createElement("h2");
+    h2.innerHTML = questions[questionNumber]["name"];
+    let optionDiv = document.createElement("div");
+    quiz_opts[questionNumber].forEach(ele => {
+        let p = document.createElement("p")
+        p.innerHTML = `${ele["option"]} with stat: ${ele["stat"]}`;
+        optionDiv.appendChild(p);
+    })
+    quizDetailsDiv.append(h2);
+    quizDetailsDiv.appendChild(optionDiv)
+}
 
 
 
@@ -684,30 +759,113 @@ let continueSocketConnection = () => {
 
 
 
-let nextQuestion = () => {
-    console.log("nice")
-    socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
+
+
+
+
+
+/* Handling turning isOpen on actions to true */
+
+
+
+let firstQuestionPublish = (id, type) => {
+    var myHeaders = new Headers();
+    myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/publishQuestion/" + id, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            console.log(result);
+            if (type == "quiz") {
+                getQuizDetails();
+            }
+            if (type == "poll") {
+                console.log("Action is poll")
+            }
+            if (type == "feedback") {
+                console.log("action type is feedback");
+            }
+        })
+        .catch(error => console.log('error', error));
 }
 
 
 
 
-const PublishQuizBtn = document.querySelector("#publish_quiz");
-const nextQuestionBtn = document.querySelector("#nxtq");
-nextQuestionBtn.addEventListener("click", nextQuestion);
-PublishQuizBtn.addEventListener("click", (e) => {
+
+function publishAction(e) {
     e.preventDefault();
-    socket = io('https://mighty-sea-62531.herokuapp.com/');
-    socket.on("connect", () => {
-        console.log(socket.connected);
-        nextQuestion();
-    })
+    let actid = "0";
+    if (this.id == "publish_quiz") {
+        if (sessionStorage.getItem("quiz_action_id")) {
+            actid = sessionStorage.getItem("quiz_action_id");
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                .then(response => response.text())
+                .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); })
+                .catch(error => console.log('error', error));
+        }
+        else {
+            console.log("no quiz made");
+        }
+    }
+    if (this.id == "publish_poll") {
+        if (sessionStorage.getItem("poll_action_id")) {
+            actid = sessionStorage.getItem("poll_action_id");
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+        }
+        else {
+            console.log("no poll made");
+        }
+    }
+    if (this.id == "publish_feedback") {
+        if (sessionStorage.getItem("feedback_action_id")) {
+            actid = sessionStorage.getItem("feedback_action_id");
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+        }
+        else {
+            console.log("no feedback made");
+        }
+    }
+    if (actid == "0") {
+        console.log("nice")
+    }
+}
+
+
+
+const PublishBtn = document.querySelectorAll(".publish-btn");
+PublishBtn.forEach(ele => {
+    ele.addEventListener("click", publishAction);
 })
 
-
-
-
-
+/* Handling turning isOpen on actions to true: End */
 
 
 

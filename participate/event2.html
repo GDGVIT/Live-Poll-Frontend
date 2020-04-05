@@ -119,7 +119,8 @@
             input {
                 width: 70%;
             }
-            .main-button{
+
+            .main-button {
                 padding: 12px 0;
                 width: 43%;
                 display: block;
@@ -147,7 +148,7 @@
         </div>
     </main>
     <script>
-        if(window.innerWidth < 600){
+        if (window.innerWidth < 600) {
             const main = document.querySelector("main");
             main.style.minHeight = window.innerHeight + "px";
         }
@@ -156,10 +157,7 @@
         const activeActionsDiv = document.querySelector(".active-actions");
 
 
-        function handleActions(e){
-            e.preventDefault();
-            window.location.href = "action.html?id="+this.id;
-        }
+        
 
 
         eventbtn.addEventListener("click", (e) => {
@@ -195,13 +193,9 @@
                     })
                     .then(result => {
                         console.log(result)
-                        let button = document.createElement("button");
-                        button.innerHTML = result["action_type"];
-                        button.classList.add("main-button");
-                        button.classList.add("action-button");
-                        button.id = result["_id"];
-                        activeActionsDiv.appendChild(button);
-                        button.addEventListener("click", handleActions);
+                        if (result["isOpen"] == true) {
+                            window.location.href = "action.html?id=" + result["_id"];
+                        }
                     })
                     .catch(error => console.log('error', error));
             })

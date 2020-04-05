@@ -759,7 +759,6 @@ button {
 
     .this-event{
         grid-template-columns: none;
-        grid-template-areas: ;
     }
     .this-event > p:nth-child(1){
         color: red;
