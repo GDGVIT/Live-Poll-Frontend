@@ -589,6 +589,7 @@ let quiz_opts = [];
 let quiz = {};
 let questions = [];
 let socket;
+let questionIds = [];
 const quizDetailsDiv = document.querySelector(".quiz-details");
 let currentQuestionId;
 let questionNumber = 0;
@@ -674,6 +675,7 @@ let getQuizOptions = () => {
     console.log(questions)
     questions.forEach(ele => {
         quiz_opts.push(ele["options"])
+        questionIds.push(ele["_id"])
     })
     console.log(quiz_opts)
     currentQuestionId = questions[0]["_id"];
@@ -778,7 +780,40 @@ let resetActionVariables = () => {
     quiz_opts = [];
     quiz = {};
     questions = [];
+    questionIds = []
     socket = undefined;
+}
+
+
+let updateStats = (type) => {
+    let url;
+    if (type == "quiz") {
+        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + sessionStorage.getItem("quiz_action_id")
+    }
+    if (type == "poll") {
+        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + sessionStorage.getItem("poll_action_id")
+    }
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+
+    questionIds.forEach((questionId,index) => {
+        quiz_opts[index].forEach(opt => {
+            let raw = JSON.stringify({ "stat": `${opt["stat"]}`, "option": `${opt["option"]}` });
+
+            let requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch(url + "/" + questionId + "/" + opt["_id"], requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+        })
+    })
 }
 
 
@@ -803,10 +838,12 @@ let closeAction = (type) => {
             if (type == "quiz") {
                 socket.emit("close quiz", sessionStorage.getItem("quiz_action_id"));
                 socket.disconnect();
+                updateStats("quiz")
             }
             if (type == "poll") {
                 socket.emit("close quiz", sessionStorage.getItem("poll_action_id"));
                 socket.disconnect();
+                updateStats("poll");
             }
             resetActionVariables();
         })
