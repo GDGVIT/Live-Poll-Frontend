@@ -368,10 +368,7 @@ function addQuestion(e) {
         correctOption = document.querySelector("#correct_option");
         actionId = sessionStorage.getItem("quiz_action_id");
         Form = document.querySelector("#question_form");
-        question_data = JSON.stringify({
-            "name": question.value,
-            "correct": correctOption.value
-        })
+        question_data = JSON.stringify({"name":`${question.value}`,"correct":`${correctOption.value}`})
     }
     if (this.classList[1] == "poll") {
         question = document.querySelector("#poll_name")
