@@ -764,6 +764,26 @@ let renderQuizDetails = () => {
 }
 
 
+let closeQuiz = () => {
+
+
+
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+
+    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/5e57f66e89d8c00024e03296", requestOptions)
+        .then(response => response.text())
+        .then(result => { console.log(result); socket.emit("close quiz", sessionStorage.getItem("quiz_action_id")); })
+        .catch(error => console.log('error', error));
+    
+
+}
+
+const closeQuizBtn = document.querySelector("#close_quiz");
+closeQuizBtn.addEventListener("click", closeQuiz);
+
 
 /* Handling the rendering and functioning of a live Quiz Event: End */
 

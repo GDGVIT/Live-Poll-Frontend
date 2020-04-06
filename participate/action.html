@@ -88,10 +88,12 @@
             box-shadow: var(--main-shadow-hover);
             background-color: #83D39D;
         }
-        .select{
+
+        .select {
             box-shadow: var(--main-shadow-hover);
             background-color: #83D39D;
         }
+
         input {
             width: 40%;
             border: none;
@@ -281,6 +283,14 @@
                         }
                     }
                 })
+                socket.on("quiz ended", (data) => {
+                    if (data == actionId) {
+                        renderQuiz({
+                            name: "The quiz has ended",
+                            options: []
+                        })
+                    }
+                })
             })
             socket.on("next", data => {
                 if (data == actionId) {
@@ -302,11 +312,15 @@
             console.log(id)
             mainButton.forEach(ele => {
                 console.log(ele.id)
-                if(ele.value == id){
+                if (ele.value == id) {
                     ele.classList.add("select");
                 }
             })
         }
+
+
+
+
 
         //Handling the answers
         let handleAnswers = (option_id) => {
@@ -320,7 +334,6 @@
         //Rendering the quiz
         let renderQuiz = (question) => {
             let i = 0;
-            console.log(question["options"])
             const questionDiv = document.querySelector("#question");
             questionDiv.innerHTML = question["name"];
             let options_div = document.querySelector(".options-div")
