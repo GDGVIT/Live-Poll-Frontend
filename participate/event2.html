@@ -162,7 +162,6 @@
 
         eventbtn.addEventListener("click", (e) => {
             e.preventDefault();
-            activeActionsDiv.innerHTML = "";
             console.log("clicked")
             var requestOptions = {
                 method: 'GET',
@@ -181,7 +180,6 @@
         })
         function showActions(res) {
             actions = res["Actions"];
-            activeActionsDiv.innerHTML = "<h1>Active Actions</h1>";
             var requestOptions = {
                 method: 'GET',
                 redirect: 'follow'

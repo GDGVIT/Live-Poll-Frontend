@@ -5,9 +5,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat &display=swap');
+
+        :root {
+            --main-color: #2784FB;
+            --main-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, .2);
+            --main-shadow-hover: inset -6px -6px 10px #83D39D, inset 6px 6px 20px rgba(0, 0, 0, .2);
+            --neon-button-hover: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            position: relative;
+        }
+
+        main {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            display: grid;
+            grid-template-rows: 10% 90%;
+        }
+
+        .header {
+            position: relative;
+            width: 100%;
+            display: grid;
+            justify-items: left;
+            align-items: center;
+        }
+
+        .header>img {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .main {
+            position: relative;
+            background-color: #F5F5F5;
+        }
+
+        .main-container {
+            position: relative;
+            width: 80%;
+            height: 80%;
+            margin: auto;
+            background-color: white;
+            border-radius: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            box-shadow: var(--main-shadow);
+            overflow-x: auto;
+            overflow: auto;
+            text-align: center;
+        }
+
+        .main-button {
+            padding: 16px 0px;
+            border-radius: 5px;
+            margin: 0 5px;
+            width: 10vw;
+            background-color: white;
+            border: none;
+            color: var(--main-color);
+            font-size: 1.4rem;
+            font-weight: bolder;
+            box-shadow: var(--main-shadow);
+            margin-bottom: 30px;
+            min-width: 100px;
+            outline: none;
+        }
+
+        .main-button:hover {
+            box-shadow: var(--main-shadow-hover);
+            background-color: #83D39D;
+        }
+        .select{
+            box-shadow: var(--main-shadow-hover);
+            background-color: #83D39D;
+        }
+        input {
+            width: 40%;
+            border: none;
+            border-bottom: solid black 1px;
+            margin: auto;
+            margin-bottom: 6vh;
+            display: block;
+            padding: 10px;
+            font-size: 1.2rem;
+            outline: none;
+        }
+
+        .question {
+            position: relative;
+            margin: auto;
+            margin-top: 5vh;
+            text-align: left;
+            width: 90%;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .options-div {
+            position: relative;
+            margin: auto;
+            margin-top: 18vh;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            justify-items: center;
+            align-items: center;
+            width: 70%;
+
+        }
+
+        .text {
+            position: relative;
+            text-align: left;
+            margin: auto;
+            margin-top: 7vh;
+            width: 90%;
+            font-weight: 800;
+            color: #707070;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .main-container {
+                width: 90%;
+                height: 90%;
+            }
+
+            .question {
+                text-align: center;
+                font-size: 1.1rem;
+            }
+
+            .text {
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 1.1rem;
+            }
+
+            .options-div {
+                width: 90%;
+                grid-template-columns: auto;
+            }
+
+            input {
+                width: 70%;
+            }
+
+            .main-button {
+                padding: 12px 0;
+                width: 100%;
+                display: block;
+                margin: auto;
+                margin-bottom: 30px;
+                min-width: 0;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <main>
+        <div class="header">
+            <img src="../img/logo.svg" alt="">
+        </div>
+        <div class="main">
+            <div class="main-container">
+                <h1 class="question" id="question">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi
+                    possimus laborum exercitationem aspernatur quam natus expedita tempore! Quibusdam sequi officia
+                    architecto soluta aliquid impedit, reprehenderit vel nesciunt. Voluptate, accusantium ea.</h1>
+                <p class="text">Select the most appropriate option</p>
+                <div class="options-div">
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script>
         var url_string = window.location.href;
@@ -62,9 +254,9 @@
                 redirect: 'follow'
             };
             console.log(theQuestionId)
-            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/nextQuestion/"+actionId+"/"+theQuestionId, requestOptions)
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/nextQuestion/" + actionId + "/" + theQuestionId, requestOptions)
                 .then(response => response.json())
-                .then(result => {console.log(result); theQuestionId = result["_id"]; theQuestion = result; renderQuiz(theQuestion);})
+                .then(result => { console.log(result); theQuestionId = result["_id"]; theQuestion = result; renderQuiz(theQuestion); })
                 .catch(error => console.log('error', error));
         }
 
@@ -105,6 +297,17 @@
             })
         }
 
+        let selectOption = (id) => {
+            let mainButton = document.querySelectorAll(".main-button");
+            console.log(id)
+            mainButton.forEach(ele => {
+                console.log(ele.id)
+                if(ele.value == id){
+                    ele.classList.add("select");
+                }
+            })
+        }
+
         //Handling the answers
         let handleAnswers = (option_id) => {
             for (let k of options) {
@@ -114,33 +317,28 @@
             }
             socket.emit("option", data);
         }
-
-
         //Rendering the quiz
         let renderQuiz = (question) => {
-            console.log(question)
-            if (question) {
-                body.innerHTML = "";
-                let question_div = document.createElement("div")
-                let h2 = document.createElement("h2")
-                h2.innerHTML = question["name"];
-                question_div.appendChild(h2);
-                let options_div = document.createElement("div")
-                question["options"].forEach(opt => {
-                    let button = document.createElement("button");
-                    button.innerHTML = opt["option"];
-                    button.value = opt["_id"];
-                    button.addEventListener("click", () => {
+            let i = 0;
+            console.log(question["options"])
+            const questionDiv = document.querySelector("#question");
+            questionDiv.innerHTML = question["name"];
+            let options_div = document.querySelector(".options-div")
+            options_div.innerHTML = "";
+            question["options"].forEach(opt => {
+                let button = document.createElement("button");
+                button.innerHTML = opt["option"];
+                button.value = opt["_id"];
+                button.classList.add("main-button");
+                button.addEventListener("click", () => {
+                    if (i == 0) {
                         handleAnswers(opt["_id"]);
-                    })
-                    options_div.appendChild(button);
+                        selectOption(opt["_id"]);
+                        i++
+                    }
                 })
-                question_div.appendChild(options_div);
-                body.appendChild(question_div);
-            }
-            else {
-                body.innerHTML = "<p>waiting for the admin to post a question</p>"
-            }
+                options_div.appendChild(button);
+            })
         }
 
 
@@ -153,7 +351,7 @@
                 ele["options"].forEach(elem => {
                     options.push(elem);
                 })
-                if(ele["isOpen"] == true){
+                if (ele["isOpen"] == true) {
                     theQuestion = ele;
                 }
             });
@@ -162,7 +360,6 @@
             socketConnection();
             renderQuiz(theQuestion);
         }
-
 
 
     </script>
