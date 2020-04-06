@@ -593,19 +593,14 @@ const quizDetailsDiv = document.querySelector(".quiz-details");
 let currentQuestionId;
 let questionNumber = 0;
 const nextQuestionBtn = document.querySelector("#nxtq");
-
-
-
-let nextQuestionSocket = () => {
-    socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
-}
+const nextPollBtn = document.querySelector("#next_poll")
 
 
 
 
 
 
-let nextQuestionTrue = () => {
+let nextQuestionTrue = (type) => {
     var myHeaders = new Headers();
     myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
 
@@ -614,24 +609,37 @@ let nextQuestionTrue = () => {
         headers: myHeaders,
         redirect: 'follow'
     };
-
-    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/next/" + sessionStorage.getItem("quiz_action_id") + "/" + currentQuestionId, requestOptions)
+    let url;
+    if (type == "quiz") {
+        url = "https://mighty-sea-62531.herokuapp.com/api/questions/next/" + sessionStorage.getItem("quiz_action_id") + "/" + currentQuestionId;
+    }
+    if (type == "poll") {
+        url = "https://mighty-sea-62531.herokuapp.com/api/questions/next/" + sessionStorage.getItem("poll_action_id") + "/" + currentQuestionId
+    }
+    fetch(url, requestOptions)
         .then(response => response.json())
         .then(result => {
             console.log(result);
             questionNumber++;
             currentQuestionId = result["_id"];
-            console.log(currentQuestionId);
-            socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
+            if (type == "quiz") {
+                socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
+            }
+            if (type == "poll") {
+                socket.emit("next question", sessionStorage.getItem("poll_action_id"));
+            }
             renderQuizDetails();
         })
         .catch(error => console.log('error', error));
 }
 
 nextQuestionBtn.addEventListener("click", () => {
-    nextQuestionTrue(currentQuestionId);
+    nextQuestionTrue("quiz");
 });
 
+nextPollBtn.addEventListener("click", () => {
+    nextQuestionTrue("poll");
+});
 
 
 let getQuizDetails = () => {
@@ -712,12 +720,13 @@ let quiz_labels = [];
 let quiz_data = [];
 let temp = {};
 let ctx = document.querySelector('.quiz-details').getContext('2d');
+let pollChart = document.querySelector('.poll-details').getContext('2d');
 let MyChart = new Chart(ctx, temp);
 
-let createChart = () => {
+let createChart = (chartDiv, ty) => {
     MyChart.destroy();
-    MyChart = new Chart(ctx, {
-        type: sessionStorage.getItem("quizTheme"),
+    MyChart = new Chart(chartDiv, {
+        type: ty,
         data: {
             labels: [],
             datasets: [{
@@ -763,26 +772,58 @@ let renderQuizDetails = () => {
 
 }
 
+let resetActionVariables = () => {
+    currentQuestionId = "";
+    questionNumber = 0;
+    quiz_opts = [];
+    quiz = {};
+    questions = [];
+    socket = undefined;
+}
 
-let closeQuiz = () => {
 
 
-
+let closeAction = (type) => {
+    let closeUrl;
+    if (type == "quiz") {
+        closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("quiz_action_id");
+    }
+    if (type == "poll") {
+        closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("poll_action_id");
+    }
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
     };
 
-    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/5e57f66e89d8c00024e03296", requestOptions)
+    fetch(closeUrl, requestOptions)
         .then(response => response.text())
-        .then(result => { console.log(result); socket.emit("close quiz", sessionStorage.getItem("quiz_action_id")); })
+        .then(result => {
+            console.log(result);
+            if (type == "quiz") {
+                socket.emit("close quiz", sessionStorage.getItem("quiz_action_id"));
+                socket.disconnect();
+            }
+            if (type == "poll") {
+                socket.emit("close quiz", sessionStorage.getItem("poll_action_id"));
+                socket.disconnect();
+            }
+            resetActionVariables();
+        })
         .catch(error => console.log('error', error));
-    
+
 
 }
 
 const closeQuizBtn = document.querySelector("#close_quiz");
-closeQuizBtn.addEventListener("click", closeQuiz);
+closeQuizBtn.addEventListener("click", () => {
+    closeAction("quiz");
+});
+const closePollBtn = document.querySelector('#close_poll');
+closePollBtn.addEventListener("click", () => {
+    closeAction("poll")
+})
+
 
 
 /* Handling the rendering and functioning of a live Quiz Event: End */
@@ -790,21 +831,10 @@ closeQuizBtn.addEventListener("click", closeQuiz);
 
 /* Handling the rendering and functioning of a live Poll Event  */
 
-/* let poll_opts = [];
-let poll = {};
-let poll_questions = [];
-let socket;
-const quizDetailsDiv = document.querySelector(".quiz-details");
-let currentQuestionId;
-let questionNumber = 0;
-const nextQuestionBtn = document.querySelector("#nxtq");
 
 
 
-
-
-
-let getQuizDetails = () => {
+let getPollDetails = () => {
 
     var requestOptions = {
         method: 'GET',
@@ -825,12 +855,12 @@ let getQuizDetails = () => {
             }
             else {
                 quiz = result;
-                getPollOptions();
+                getQuizOptions();
             }
         })
         .catch(error => console.log('error', error));
 
-} */
+}
 
 
 
@@ -865,11 +895,12 @@ let firstQuestionPublish = (id, type) => {
             console.log(result);
             if (type == "quiz") {
                 getQuizDetails();
-                createChart();
+                createChart(ctx, sessionStorage.getItem("quizTheme"));
             }
             if (type == "poll") {
                 console.log("Action is poll")
-                getPollDetails()
+                getPollDetails();
+                createChart(pollChart, sessionStorage.getItem("pollTheme"));
             }
             if (type == "feedback") {
                 console.log("action type is feedback");
@@ -912,7 +943,7 @@ function publishAction(e) {
 
             fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
                 .then(response => response.text())
-                .then(result => console.log(result))
+                .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); })
                 .catch(error => console.log('error', error));
         }
         else {

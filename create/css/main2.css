@@ -479,16 +479,16 @@ label[for = "theme_feedback"] {
 
 /* Quiz Result */
 
-.quiz-result{
+.quiz-result, .poll-result{
     position: relative;
     display: grid;
     height: 100%;
     width: 100%;
 }
-.quiz-details{
+.quiz-details, .poll-details{
     position: relative;
 }
-.quiz-result-buttons{
+.quiz-result-buttons, .poll-result-buttons{
     position: relative;
     text-align: center;
     margin-top: 30px;

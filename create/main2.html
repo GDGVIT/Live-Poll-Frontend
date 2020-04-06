@@ -166,8 +166,14 @@
                 <div class="tab-content poll-control">
                     <div class="content">
                         <div class="poll-result result">
-                            This is poll result
-                            <button class="invert-btn poll">Invert Poll</button>
+                            <button class="invert-btn poll back-btn"><img src="../img/back.png" alt=""></button>
+                            <canvas class="poll-details" >
+
+                            </canvas>
+                            <div class="poll-result-buttons">
+                                <button id="next_poll" class="main-button">Next Poll Question</button>
+                                <button id="close_poll" class="main-button">Close Poll Session</button>
+                            </div>
                         </div>
                         <div class="poll-create create show-select">
                             <form action="" method="post" class="poll-create-container" id="poll_form">
