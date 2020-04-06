@@ -147,7 +147,7 @@ let handleHistory = () => {
         redirect: 'follow'
     };
 
-    fetch("http://mighty-sea-62531.herokuapp.com/api/user/getEvents", requestOptions)
+    fetch("https://mighty-sea-62531.herokuapp.com/api/user/getEvents", requestOptions)
         .then(response => response.json())
         .then(result => {
             event_ids = result;
