@@ -97,7 +97,6 @@ let goTo = (ele) => {
 /* GoTo function: End */
 
 if (!sessionStorage.getItem("quiz_action_id")) {
-    console.log("nice")
     quizSelector.forEach(ele => {
         ele.style.color = "rgb(189, 189, 189)";
         ele.removeEventListener("click", selectItem);
@@ -255,6 +254,10 @@ let loggedIn = () => {
                 ele.removeEventListener("click", selectItem);
             })
         }
+        homeSelector.forEach(ele => {
+            ele.style.color = "black";
+            ele.addEventListener("click", selectItem);
+        })
         login.innerHTML = "Logout";
         goTo(homeSelector);
         handleHistory();
