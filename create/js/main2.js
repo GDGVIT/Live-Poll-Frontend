@@ -294,11 +294,21 @@ let handleLogin = (e) => {
 
 }
 
+let logout = () => {
+    if(login.innerHTML == "Logout"){
+        sessionStorage.clear();
+        location.reload();
+    }
+}
+
+
 
 
 login.addEventListener("click", goToLogin);
+login.addEventListener("click", logout);
 
 loginButton.addEventListener("click", handleLogin);
+
 
 
 
