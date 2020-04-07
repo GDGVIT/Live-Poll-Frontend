@@ -3,6 +3,12 @@ async function asyncForEach(array, callback) {
         await callback(array[index], index, array);
     }
 }
+let disableBtn = (btn) => {
+    btn.disabled = true;
+    setTimeout(() => {
+        btn.disabled = false;
+    }, 10000)
+}
 /* const start = async () => {
     await asyncForEach([1, 2, 3], async (num) => {
         console.log(num);
@@ -90,6 +96,25 @@ let goTo = (ele) => {
 
 /* GoTo function: End */
 
+if (!sessionStorage.getItem("quiz_action_id")) {
+    console.log("nice")
+    quizSelector.forEach(ele => {
+        ele.style.color = "rgb(189, 189, 189)";
+        ele.removeEventListener("click", selectItem);
+    })
+}
+if (!sessionStorage.getItem("poll_action_id")) {
+    pollSelector.forEach(ele => {
+        ele.style.color = "rgb(189, 189, 189)";
+        ele.removeEventListener("click", selectItem);
+    })
+}
+if (!sessionStorage.getItem("feedback_action_id")) {
+    feedbackSelector.forEach(ele => {
+        ele.style.color = "rgb(189, 189, 189)"
+        ele.removeEventListener("click", selectItem);
+    })
+}
 
 
 /* Handling History */
@@ -164,7 +189,12 @@ let handleHistory = () => {
 
 
 
-
+let goToLogin = () => {
+    removeBorder();
+    removeShow();
+    mainContainer.classList.add("login-background")
+    userLoginDiv.classList.add("show");
+}
 
 
 
@@ -179,8 +209,24 @@ const userLoginDiv = document.querySelector(".user-login")
 const notLoggedIn = document.querySelectorAll(".not-logged-in");
 const content = document.querySelectorAll(".content");
 let loggedIn = () => {
-    if (!(sessionStorage.getItem("auth_key"))) {
+    if (!sessionStorage.getItem("auth_key")) {
         console.log("Not logged in")
+        goToLogin();
+        homeSelector.forEach(ele => {
+            ele.style.color = "rgb(189, 189, 189)";
+        })
+        quizSelector.forEach(ele => {
+            ele.style.color = "rgb(189, 189, 189)"
+        })
+        pollSelector.forEach(ele => {
+            ele.style.color = "rgb(189, 189, 189)"
+        })
+        feedbackSelector.forEach(ele => {
+            ele.style.color = "rgb(189, 189, 189)"
+        })
+        tabItems.forEach(ele => {
+            ele.removeEventListener("click", selectItem);
+        })
     }
     else {
         console.log("Logged In");
@@ -191,6 +237,25 @@ let loggedIn = () => {
         content.forEach(ele => {
             ele.classList.add("show");
         })
+        if (!sessionStorage.getItem("quiz_action_id")) {
+            quizSelector.forEach(ele => {
+                ele.style.color = "rgb(189, 189, 189)";
+                ele.removeEventListener("click", selectItem);
+            })
+        }
+        if (!sessionStorage.getItem("poll_action_id")) {
+            pollSelector.forEach(ele => {
+                ele.style.color = "rgb(189, 189, 189)";
+                ele.removeEventListener("click", selectItem);
+            })
+        }
+        if (!sessionStorage.getItem("feedback_action_id")) {
+            feedbackSelector.forEach(ele => {
+                ele.style.color = "rgb(189, 189, 189)"
+                ele.removeEventListener("click", selectItem);
+            })
+        }
+        login.innerHTML = "Logout";
         goTo(homeSelector);
         handleHistory();
     }
@@ -222,16 +287,16 @@ let handleLogin = (e) => {
         })
         .catch(error => console.log('error', error));
 
+    disableBtn(loginButton);
+
 }
 
-login.addEventListener("click", () => {
-    removeBorder();
-    removeShow();
-    mainContainer.classList.add("login-background")
-    userLoginDiv.classList.add("show");
 
-})
+
+login.addEventListener("click", goToLogin);
+
 loginButton.addEventListener("click", handleLogin);
+
 
 
 
@@ -291,10 +356,13 @@ createEventBtn.addEventListener("click", (e) => {
             sessionStorage.setItem("event_id", result._id);
             AddActionDiv.classList.add("show");
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
+            console.log(result["Code"])
             EventCodeDiv.classList.add("show");
 
         })
         .catch(error => console.log('Event Error', error));
+
+    disableBtn(createEventBtn);
 });
 
 
@@ -324,18 +392,33 @@ function AddAction(e) {
             if (this.innerHTML == "Quiz") {
                 sessionStorage.setItem("quiz_action_id", result._id);
                 console.log(sessionStorage.getItem("quiz_action_id"))
+
+                quizSelector.forEach(ele => {
+                    ele.style.color = "black";
+                    ele.addEventListener("click", selectItem);
+                })
+
                 goTo(quizSelector);
             }
             if (this.innerHTML == "Poll") {
                 sessionStorage.setItem("poll_action_id", result._id)
+                pollSelector.forEach(ele => {
+                    ele.style.color = "black";
+                    ele.addEventListener("click", selectItem);
+                })
                 goTo(pollSelector);
             }
             if (this.innerHTML == "Feedback") {
                 sessionStorage.setItem("feedback_action_id", result._id)
+                feedbackSelector.forEach(ele => {
+                    ele.style.color = "black";
+                    ele.addEventListener("click", selectItem);
+                })
                 goTo(feedbackSelector)
             }
         })
         .catch(error => console.log('Action Error', error));
+    disableBtn(this);
 }
 
 const AddActionBtn = document.querySelectorAll(".action-btn")
@@ -352,78 +435,60 @@ AddActionBtn.forEach(ele => {
 
 
 
+
+
+let pollQuestionsData = [];
+
+function AddPollQuestion(e) {
+    e.preventDefault();
+    let questionOptions = document.querySelectorAll(".poll-option");
+    let questionName = document.querySelector("#poll_name").value
+    let Form = document.querySelector("#poll_form");
+    let question = {};
+    question.name = questionName;
+    question.options = [];
+    questionOptions.forEach(ele => {
+        let opti = {
+            option: ele.value
+        }
+        question.options.push(opti);
+    })
+    pollQuestionsData.push(question);
+    console.log(questionsData)
+    Form.reset()
+}
+
+
+
+
 const AddQuestionBtn = document.querySelector("#add_question_btn");
 const AddPollBtn = document.querySelector("#add_poll_btn");
+let questionsData = [];
 let question_no = 0;
 function addQuestion(e) {
     e.preventDefault();
-    let question;
-    let question_data;
-    let questionOptions = [];
-    let correctOption;
-    let Form;
-    if (this.classList[1] == "quiz") {
-        question = document.querySelector("#question_name")
-        questionOptions = document.querySelectorAll(".quiz-option");
-        correctOption = document.querySelector("#correct_option");
-        actionId = sessionStorage.getItem("quiz_action_id");
-        Form = document.querySelector("#question_form");
-        question_data = JSON.stringify({"name":`${question.value}`,"correct":`${correctOption.value}`})
-    }
-    if (this.classList[1] == "poll") {
-        question = document.querySelector("#poll_name")
-        questionOptions = document.querySelectorAll(".poll-option");
-        actionId = sessionStorage.getItem("poll_action_id");
-        Form = document.querySelector("#poll_form")
-        question_data = JSON.stringify({
-            "name": question.value,
-        })
-    }
-    var requestOptions = {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            "auth-token": "" + sessionStorage.getItem("auth_key")
-        },
-        body: question_data,
-        redirect: 'follow'
-    };
-    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addQuestion/" + actionId, requestOptions)
-        .then(response => { return response.json() })
-        .then(result => {
-            console.log("Question and Correct Option Added", result);
-            let question_id = result["_id"];
-            questionOptions.forEach((ele) => {
-                let option_data = {
-                    "option": ele.value
-                }
-                let optionsData = JSON.stringify(option_data);
-                var requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "auth-token": "" + sessionStorage.getItem("auth_key")
-                    },
-                    body: optionsData,
-                    redirect: 'follow'
-                };
-                fetch("https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + actionId + "/" + question_id, requestOptions)
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(result => {
-                        console.log(result);
-                        Form.reset();
-                    })
-                    .catch(error => console.log('error', error));
-            })
-
-        })
-        .catch(error => console.log('Question and Correct Option Error', error));
+    let questionOptions = document.querySelectorAll(".quiz-option");
+    let questionName = document.querySelector("#question_name").value
+    let correctOption = document.querySelector("#correct_option").value;
+    let Form = document.querySelector("#question_form");
+    let question = {};
+    question.name = questionName;
+    question.correct = correctOption;
+    question.options = [];
+    questionOptions.forEach(ele => {
+        let opti = {
+            option: ele.value
+        }
+        question.options.push(opti);
+    })
+    questionsData.push(question);
+    console.log(questionsData)
+    Form.reset();
 }
 
+
 AddQuestionBtn.addEventListener("click", addQuestion);
-AddPollBtn.addEventListener("click", addQuestion);
+AddPollBtn.addEventListener("click", AddPollQuestion);
 
 
 /* Adding Question and answers: End */
@@ -732,12 +797,10 @@ let createChart = (chartDiv, ty) => {
                 label: "No. of ppl chose",
                 data: [],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(254, 87, 81, 1)',
+                    'rgba(82, 156, 251, 1)',
+                    'rgba(50, 179, 115, 1)',
+                    'rgba(254, 200, 52, 1)'
                 ]
             }]
         },
@@ -794,7 +857,7 @@ let updateStats = (type) => {
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
 
-    questionIds.forEach((questionId,index) => {
+    questionIds.forEach((questionId, index) => {
         quiz_opts[index].forEach(opt => {
             let raw = JSON.stringify({ "stat": `${opt["stat"]}`, "option": `${opt["option"]}` });
 
@@ -953,14 +1016,34 @@ function publishAction(e) {
     if (this.id == "publish_quiz") {
         if (sessionStorage.getItem("quiz_action_id")) {
             actid = sessionStorage.getItem("quiz_action_id");
+
+            var myHeaders = new Headers();
+            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+            myHeaders.append("Content-Type", "application/json")
+            var raw = JSON.stringify(questionsData);
+            console.log(raw)
+
             var requestOptions = {
-                method: 'GET',
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
                 redirect: 'follow'
             };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                .then(response => response.text())
-                .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); })
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        .then(response => response.text())
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); })
+                        .catch(error => console.log('error', error));
+                })
                 .catch(error => console.log('error', error));
         }
         else {
@@ -970,15 +1053,35 @@ function publishAction(e) {
     if (this.id == "publish_poll") {
         if (sessionStorage.getItem("poll_action_id")) {
             actid = sessionStorage.getItem("poll_action_id");
+
+            var myHeaders = new Headers();
+            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+            myHeaders.append("Content-Type", "application/json")
+            var raw = JSON.stringify(pollQuestionsData);
+
             var requestOptions = {
-                method: 'GET',
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
                 redirect: 'follow'
             };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
                 .then(response => response.text())
-                .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); })
+                .then(result => {
+                    console.log(result);
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        .then(response => response.text())
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); })
+                        .catch(error => console.log('error', error));
+                })
                 .catch(error => console.log('error', error));
+
         }
         else {
             console.log("no poll made");

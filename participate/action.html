@@ -234,8 +234,13 @@
                         console.log("Error")
                     }
                     else {
-                        quiz = result;
-                        getQuiz();
+                        if(result["isOpen"] == true){
+                            quiz = result;
+                            getQuiz();
+                        }
+                        else{
+                            console.log("action is not open")
+                        }
                     }
                 })
                 .catch(error => console.log('error', error));
