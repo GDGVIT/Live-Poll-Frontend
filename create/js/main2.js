@@ -9,6 +9,14 @@ let disableBtn = (btn) => {
         btn.disabled = false;
     }, 10000)
 }
+const notify = document.querySelector(".notify");
+let popup = (text) => {
+    notify.innerHTML = text;
+    notify.classList.add("enter");
+    setTimeout(() => {
+        notify.classList.remove("enter");
+    }, 4000);
+}
 /* const start = async () => {
     await asyncForEach([1, 2, 3], async (num) => {
         console.log(num);
@@ -378,6 +386,7 @@ createEventBtn.addEventListener("click", (e) => {
             console.log(result["Code"])
             EventCodeDiv.classList.add("show");
             renderEventDeets(result, "just");
+            popup("Event Generated");
         })
         .catch(error => console.log('Event Error', error));
 
@@ -409,6 +418,7 @@ function AddAction(e) {
         .then(result => {
             console.log("Action Added", result);
             if (this.innerHTML == "Quiz") {
+                popup("Quiz Added")
                 sessionStorage.setItem("quiz_action_id", result._id);
                 console.log(sessionStorage.getItem("quiz_action_id"))
 
@@ -420,6 +430,7 @@ function AddAction(e) {
                 goTo(quizSelector);
             }
             if (this.innerHTML == "Poll") {
+                popup("Poll Added")
                 sessionStorage.setItem("poll_action_id", result._id)
                 pollSelector.forEach(ele => {
                     ele.style.color = "black";
@@ -428,6 +439,7 @@ function AddAction(e) {
                 goTo(pollSelector);
             }
             if (this.innerHTML == "Feedback") {
+                popup("Feedback Added")
                 sessionStorage.setItem("feedback_action_id", result._id)
                 feedbackSelector.forEach(ele => {
                     ele.style.color = "black";
@@ -474,6 +486,7 @@ function AddPollQuestion(e) {
     })
     pollQuestionsData.push(question);
     console.log(questionsData)
+    popup("Poll Question Added")
     Form.reset()
 }
 
@@ -502,6 +515,7 @@ function addQuestion(e) {
     })
     questionsData.push(question);
     console.log(questionsData)
+    popup("Quiz Question Added")
     Form.reset();
 }
 
@@ -1053,6 +1067,7 @@ function publishAction(e) {
                 .then(response => response.json())
                 .then(result => {
                     console.log(result);
+                    popup("Quiz Published")
                     var requestOptions = {
                         method: 'GET',
                         redirect: 'follow'
@@ -1089,6 +1104,7 @@ function publishAction(e) {
                 .then(response => response.text())
                 .then(result => {
                     console.log(result);
+                    popup("Poll Published")
                     var requestOptions = {
                         method: 'GET',
                         redirect: 'follow'
