@@ -187,9 +187,7 @@
         </div>
         <div class="main">
             <div class="main-container">
-                <h1 class="question" id="question">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi
-                    possimus laborum exercitationem aspernatur quam natus expedita tempore! Quibusdam sequi officia
-                    architecto soluta aliquid impedit, reprehenderit vel nesciunt. Voluptate, accusantium ea.</h1>
+                <h1 class="question" id="question"></h1>
                 <p class="text">Select the most appropriate option</p>
                 <div class="options-div">
 
@@ -295,6 +293,7 @@
                             name: "The quiz has ended",
                             options: []
                         })
+                        document.querySelector(".text").innerHTML = "";
                     }
                 })
             })

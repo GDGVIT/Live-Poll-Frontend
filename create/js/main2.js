@@ -124,23 +124,29 @@ let event_deets = [];
 const historyGrid = document.querySelector(".history-grid");
 
 
-let renderEventDeets = (event) => {
+let renderEventDeets = (event, just) => {
+    console.log(event)
     let eventDiv = document.createElement("div");
     eventDiv.classList.add("this-event");
     let pName = document.createElement("p");
-    let pTime = document.createElement("p");
+    let pCode = document.createElement("p");
     let pPartMan = document.createElement("p");
     let eventbut = document.createElement("button");
     eventbut.classList.add("main-button")
     pName.innerHTML = `${event["Name"]}`;
-    pTime.innerHTML = "Not provided";
+    pCode.innerHTML = `${event["Code"]}`;
     pPartMan.innerHTML = `${event["Participants"]}`;
     eventbut.innerHTML = "Download Stats";
     eventDiv.appendChild(pName);
-    eventDiv.appendChild(pTime);
+    eventDiv.appendChild(pCode);
     eventDiv.appendChild(pPartMan);
     eventDiv.appendChild(eventbut);
-    historyGrid.appendChild(eventDiv);
+    if(just == "just"){
+        historyGrid.insertBefore(eventDiv, historyGrid.childNodes[1]);
+    }
+    else{
+        historyGrid.appendChild(eventDiv);
+    }
 }
 
 
@@ -371,7 +377,7 @@ createEventBtn.addEventListener("click", (e) => {
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
             console.log(result["Code"])
             EventCodeDiv.classList.add("show");
-
+            renderEventDeets(result, "just");
         })
         .catch(error => console.log('Event Error', error));
 
@@ -882,7 +888,7 @@ let updateStats = (type) => {
             };
 
             fetch(url + "/" + questionId + "/" + opt["_id"], requestOptions)
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(result => console.log(result))
                 .catch(error => console.log('error', error));
         })
