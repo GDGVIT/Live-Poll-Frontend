@@ -201,7 +201,7 @@
                 method: 'GET',
                 redirect: 'follow'
             };
-            actions.forEach((ele) => {
+            actions.forEach((ele, index) => {
                 fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + ele, requestOptions)
                     .then(response => {
                         return response.json();
@@ -218,6 +218,9 @@
                         }
                     })
                     .catch(error => console.log('error', error));
+                if(index == action.length){
+                    activeActionsDiv.innerHTML = "No Active Actions"
+                }
             })
         }
     </script>
