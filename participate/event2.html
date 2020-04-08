@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <style>
-
         :root {
             --main-color: #2784FB;
             --main-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, .2);
@@ -160,6 +159,7 @@
         eventbtn.addEventListener("click", async (e) => {
             e.preventDefault();
             console.log("clicked")
+            activeActionsDiv.innerHTML = "";
             var requestOptions = {
                 method: 'GET',
                 redirect: 'follow'
@@ -197,6 +197,7 @@
 
         function showActions(res) {
             actions = res["Actions"];
+            let i = 0;
             var requestOptions = {
                 method: 'GET',
                 redirect: 'follow'
@@ -214,13 +215,21 @@
                                 await addParticipant();
                                 console.log("done")
                             }
-                            window.location.href = "action.html?id=" + result["_id"];
+
+
+
+                            /* window.location.href = "action.html?id=" + result["_id"]; */
+                        }
+                        else {
+                            i++;
+                        }
+                        console.log(i)
+                        if (i == (actions.length )) {
+                            activeActionsDiv.innerHTML = "No Active Actions"
                         }
                     })
                     .catch(error => console.log('error', error));
-                if(index == actions.length){
-                    activeActionsDiv.innerHTML = "No Active Actions"
-                }
+
             })
         }
     </script>
