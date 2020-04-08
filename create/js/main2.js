@@ -104,24 +104,7 @@ let goTo = (ele) => {
 
 /* GoTo function: End */
 
-if (!sessionStorage.getItem("quiz_action_id")) {
-    quizSelector.forEach(ele => {
-        ele.style.color = "rgb(189, 189, 189)";
-        ele.removeEventListener("click", selectItem);
-    })
-}
-if (!sessionStorage.getItem("poll_action_id")) {
-    pollSelector.forEach(ele => {
-        ele.style.color = "rgb(189, 189, 189)";
-        ele.removeEventListener("click", selectItem);
-    })
-}
-if (!sessionStorage.getItem("feedback_action_id")) {
-    feedbackSelector.forEach(ele => {
-        ele.style.color = "rgb(189, 189, 189)"
-        ele.removeEventListener("click", selectItem);
-    })
-}
+
 
 
 /* Handling History */
@@ -133,7 +116,6 @@ const historyGrid = document.querySelector(".history-grid");
 
 
 let renderEventDeets = (event, just) => {
-    console.log(event)
     let eventDiv = document.createElement("div");
     eventDiv.classList.add("this-event");
     let pName = document.createElement("p");
@@ -149,10 +131,10 @@ let renderEventDeets = (event, just) => {
     eventDiv.appendChild(pCode);
     eventDiv.appendChild(pPartMan);
     eventDiv.appendChild(eventbut);
-    if(just == "just"){
-        historyGrid.insertBefore(eventDiv, historyGrid.childNodes[1]);
+    if (just == "just") {
+        historyGrid.insertBefore(eventDiv, historyGrid.childNodes[2]);
     }
-    else{
+    else {
         historyGrid.appendChild(eventDiv);
     }
 }
@@ -207,7 +189,7 @@ let goToLogin = () => {
     removeShow();
     mainContainer.classList.add("login-background")
     userLoginDiv.classList.add("show");
-    if(window.innerWidth < 600){
+    if (window.innerWidth < 600) {
         navText.innerHTML = "Login";
     }
 }
@@ -312,7 +294,7 @@ let handleLogin = (e) => {
 }
 
 let logout = () => {
-    if(login.innerHTML == "Logout"){
+    if (login.innerHTML == "Logout") {
         sessionStorage.clear();
         location.reload();
     }
@@ -359,11 +341,19 @@ invertBtn.forEach(ele => {
 const createEventBtn = document.querySelector("#create_event_btn");
 const AddActionDiv = document.querySelector(".add-action");
 const EventCodeDiv = document.querySelector("#event_code");
-
+const EventName = document.querySelector("#event_name");
 
 createEventBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const EventName = document.querySelector("#event_name");
+    if (sessionStorage.getItem("event_id")) {
+        sessionStorage.removeItem("event_name")
+        sessionStorage.removeItem("event_code")
+        sessionStorage.removeItem("event_id")
+        sessionStorage.removeItem("quiz_action_id");
+        sessionStorage.removeItem("poll_action_id");
+        sessionStorage.removeItem("feedback_action_id");
+        performCheck();
+    }
     const data = {
         Name: EventName.value,
     }
@@ -384,9 +374,10 @@ createEventBtn.addEventListener("click", (e) => {
         .then(result => {
             console.log("Event Added", result);
             sessionStorage.setItem("event_id", result._id);
+            sessionStorage.setItem("event_name", result["Name"]);
             AddActionDiv.classList.add("show");
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
-            console.log(result["Code"])
+            sessionStorage.setItem("event_code", result["Code"]);
             EventCodeDiv.classList.add("show");
             renderEventDeets(result, "just");
             popup("Event Generated");
@@ -398,6 +389,10 @@ createEventBtn.addEventListener("click", (e) => {
 
 
 /* Adding Events: End */
+
+
+
+
 
 
 /* Adding Actions */
@@ -1201,7 +1196,32 @@ navButtons.forEach(ele => {
 
 
 
-
-
+let performCheck = () => {
+    if (!sessionStorage.getItem("quiz_action_id")) {
+        quizSelector.forEach(ele => {
+            ele.style.color = "rgb(189, 189, 189)";
+            ele.removeEventListener("click", selectItem);
+        })
+    }
+    if (!sessionStorage.getItem("poll_action_id")) {
+        pollSelector.forEach(ele => {
+            ele.style.color = "rgb(189, 189, 189)";
+            ele.removeEventListener("click", selectItem);
+        })
+    }
+    if (!sessionStorage.getItem("feedback_action_id")) {
+        feedbackSelector.forEach(ele => {
+            ele.style.color = "rgb(189, 189, 189)"
+            ele.removeEventListener("click", selectItem);
+        })
+    }
+    if (sessionStorage.getItem("event_id")) {
+        EventName.value = sessionStorage.getItem("event_name")
+        AddActionDiv.classList.add("show");
+        EventCodeDiv.innerHTML = `Event Code: ${sessionStorage.getItem("event_code")}`;
+        EventCodeDiv.classList.add("show")
+    }
+}
+performCheck();
 
 

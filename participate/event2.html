@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Montserrat &display=swap');
 
         :root {
             --main-color: #2784FB;
@@ -157,10 +157,7 @@
         const activeActionsDiv = document.querySelector(".active-actions");
 
 
-        
-
-
-        eventbtn.addEventListener("click", (e) => {
+        eventbtn.addEventListener("click", async (e) => {
             e.preventDefault();
             console.log("clicked")
             var requestOptions = {
@@ -173,11 +170,31 @@
                     console.log(response)
                     return response.json();
                 })
-                .then(result => {
-                    showActions(result)
+                .then(async (result) => {
+                    console.log(result);
+                    showActions(result);
                 })
                 .catch(error => console.log('error', error));
         })
+
+        function addParticipant() {
+            return new Promise((resolve, reject) => {
+                var requestOptions = {
+                    method: 'GET',
+                    redirect: 'follow'
+                };
+
+                fetch("https://mighty-sea-62531.herokuapp.com/api/events/updateparticipant/" + eventCode.value, requestOptions)
+                    .then(response => response.text())
+                    .then(result => { console.log(result); resolve(); })
+                    .catch(error => console.log('error', error));
+            })
+        }
+
+
+
+
+
         function showActions(res) {
             actions = res["Actions"];
             var requestOptions = {
@@ -189,9 +206,14 @@
                     .then(response => {
                         return response.json();
                     })
-                    .then(result => {
+                    .then(async (result) => {
                         console.log(result)
                         if (result["isOpen"] == true) {
+                            if (eventCode.value != localStorage.getItem("prev_event_code")) {
+                                localStorage.setItem("prev_event_code", eventCode.value)
+                                await addParticipant();
+                                console.log("done")
+                            }
                             window.location.href = "action.html?id=" + result["_id"];
                         }
                     })
