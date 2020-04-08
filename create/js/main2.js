@@ -207,6 +207,9 @@ let goToLogin = () => {
     removeShow();
     mainContainer.classList.add("login-background")
     userLoginDiv.classList.add("show");
+    if(window.innerWidth < 600){
+        navText.innerHTML = "Login";
+    }
 }
 
 
