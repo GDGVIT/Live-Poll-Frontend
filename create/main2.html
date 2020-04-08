@@ -250,8 +250,20 @@
 
                     <div class="content">
                         <div class="feedback-result result">
-                            This is feedback result
-                            <button class="invert-btn feedback">Invert Feedback</button>
+                            <button class="invert-btn feedback back-btn"><img src="../img/back.png" alt=""></button>
+                            <button class="refresh-btn"><img src="../img/refresh.png" alt=""></button>
+                            <div class="feedback-result-grid">
+                                <div class="feedback-details" >
+                                    <h1 class="feedback-question"></h1>
+                                    <div class="feedback-answer">
+                                    </div>
+                                </div>
+                                <div class="feedback-result-buttons">
+                                    <button class="main-button" id="prev_feedback_btn">Prev Feedback question</button>
+                                    <button id="close_feedback" class="invert-btn feedback main-button">Close Feedback Action</button>
+                                    <button class="main-button" id="next_feedback_btn">Next Feedback Question</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="feedback-create create show-select">
                             <form action="" method="post" class="feedback-create-container">

@@ -636,29 +636,18 @@ themeBtn.forEach(ele => {
 
 
 const addFeedbackBtn = document.querySelector("#add_feedback_btn");
-
+let feedbackQuestions = [];
 function addFeedbackQuestion(e) {
     e.preventDefault();
-    const feedbackQuestion = document.querySelector("#feedback_name")
-    question_data = {
-        name: feedbackQuestion.value,
-    }
-    console.log(question_data)
-    var requestOptions = {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            "auth-token": "" + sessionStorage.getItem("auth_key")
-        },
-        body: JSON.stringify(question_data),
-        redirect: 'follow'
-    };
-    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addQuestion/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
-        .then(response => { return response.json() })
-        .then(result => {
-            console.log("Feedback Question Added", result);
-        })
-        .catch(error => console.log('Question Error', error));
+    let feedbackQuestion = document.querySelector("#feedback_name").value;
+    const Form = document.querySelector(".feedback-create-container");
+    let question = {};
+    question.name = feedbackQuestion;
+    feedbackQuestions.push(question);
+    console.log(feedbackQuestions)
+    Form.reset();
+    popup("Feedback Question Added")
+
 }
 
 addFeedbackBtn.addEventListener("click", addFeedbackQuestion)
@@ -876,13 +865,13 @@ let resetActionVariables = () => {
 }
 
 
-let updateStats = (type) => {
+let updateStats = (type,id) => {
     let url;
     if (type == "quiz") {
-        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + sessionStorage.getItem("quiz_action_id")
+        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + id;
     }
     if (type == "poll") {
-        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + sessionStorage.getItem("poll_action_id")
+        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + id;
     }
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -917,6 +906,9 @@ let closeAction = (type) => {
     if (type == "poll") {
         closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("poll_action_id");
     }
+    if(type == "feedback"){
+        closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("feedback_action_id");
+    }
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
@@ -929,12 +921,26 @@ let closeAction = (type) => {
             if (type == "quiz") {
                 socket.emit("close quiz", sessionStorage.getItem("quiz_action_id"));
                 socket.disconnect();
-                updateStats("quiz")
+                updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
+                popup("Quiz Closed")
+                goTo(homeSelector);
+                
+                performCheck();
             }
             if (type == "poll") {
                 socket.emit("close quiz", sessionStorage.getItem("poll_action_id"));
                 socket.disconnect();
-                updateStats("poll");
+                updateStats("poll", sessionStorage.getItem("poll_action_id"));
+                popup("Poll Closed")
+                goTo(homeSelector);
+                sessionStorage.removeItem("poll_action_id");
+                performCheck();
+            }
+            if(type == "feedback"){
+                popup("Feedback Closed")
+                goTo(homeSelector);
+                sessionStorage.removeItem("feedback_action_id");
+                performCheck();
             }
             resetActionVariables();
         })
@@ -951,7 +957,10 @@ const closePollBtn = document.querySelector('#close_poll');
 closePollBtn.addEventListener("click", () => {
     closeAction("poll")
 })
-
+const closeFeedbackBtn = document.querySelector("#close_feedback");
+closeFeedbackBtn.addEventListener("click", () => {
+    closeAction("feedback")
+})
 
 
 /* Handling the rendering and functioning of a live Quiz Event: End */
@@ -998,6 +1007,102 @@ let getPollDetails = () => {
 
 
 
+let feedbackResultQuestions = [];
+let feedbackAnswers = [];
+const feedbackQuestionDiv = document.querySelector(".feedback-question");
+const feedbackAnswerDiv = document.querySelector(".feedback-answer");
+const nextFeedbackBtn = document.querySelector("#next_feedback_btn");
+const prevFeedbackBtn = document.querySelector("#prev_feedback_btn");
+let feedbackNo = 0;
+let renderFeedbackDeets = (question, answers) => {
+    feedbackQuestionDiv.innerHTML = "";
+    feedbackAnswerDiv.innerHTML = "";
+    feedbackQuestionDiv.innerHTML = question;
+    answers.forEach(answer => {
+        let div = document.createElement("div");
+        if(window.innerWidth > 600){
+            div.style.maxWidth = (0.5*window.innerWidth) + "px";
+        }
+        else{
+
+            div.style.maxWidth = (0.8*window.innerWidth) + "px";
+        }
+        div.innerHTML = answer["option"];
+        div.classList.add("answer")
+        feedbackAnswerDiv.appendChild(div)
+    })
+
+}
+
+
+nextFeedbackBtn.addEventListener("click", () => {
+    if (feedbackNo > (feedbackResultQuestions.length - 2)) {
+        console.log("no more questions")
+    }
+    else {
+        feedbackNo++;
+        renderFeedbackDeets(feedbackResultQuestions[feedbackNo], feedbackAnswers[feedbackNo]);
+    }
+})
+prevFeedbackBtn.addEventListener("click", () => {
+
+    if (feedbackNo < 1) {
+        console.log("can't go more back");
+    }
+    else {
+        feedbackNo--;
+        renderFeedbackDeets(feedbackResultQuestions[feedbackNo], feedbackAnswers[feedbackNo]);
+    }
+})
+
+
+
+
+
+
+
+let getFeedbackAnswers = (data) => {
+    data.Questions.forEach(question => {
+        feedbackResultQuestions.push(question["name"]);
+        feedbackAnswers.push(question["options"]);
+    })
+    console.log(feedbackResultQuestions, feedbackAnswers)
+    renderFeedbackDeets(feedbackResultQuestions[0], feedbackAnswers[0]);
+}
+
+
+
+
+let getFeedbackDeets = () => {
+    return new Promise((resolve, reject) => {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+    
+        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                getFeedbackAnswers(result);
+                resolve();
+            })
+            .catch(error => console.log('error', error));
+    })
+}
+
+
+
+const refreshBtn = document.querySelector(".refresh-btn");
+refreshBtn.addEventListener("click", async () => {
+    feedbackResultQuestions = [];
+    feedbackAnswers = [];
+    await getFeedbackDeets();
+    popup("Refreshed")
+});
+
+
+
 
 
 
@@ -1032,6 +1137,7 @@ let firstQuestionPublish = (id, type) => {
             }
             if (type == "feedback") {
                 console.log("action type is feedback");
+                getFeedbackDeets()
             }
         })
         .catch(error => console.log('error', error));
@@ -1123,14 +1229,33 @@ function publishAction(e) {
     if (this.id == "publish_feedback") {
         if (sessionStorage.getItem("feedback_action_id")) {
             actid = sessionStorage.getItem("feedback_action_id");
+
+            var myHeaders = new Headers();
+            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+            myHeaders.append("Content-Type", "application/json")
+            var raw = JSON.stringify(feedbackQuestions);
+
             var requestOptions = {
-                method: 'GET',
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
                 redirect: 'follow'
             };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
                 .then(response => response.text())
-                .then(result => console.log(result))
+                .then(result => {
+                    console.log(result);
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        .then(response => response.text())
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "feedback") })
+                        .catch(error => console.log('error', error));
+                })
                 .catch(error => console.log('error', error));
         }
         else {
@@ -1141,8 +1266,6 @@ function publishAction(e) {
         console.log("nice")
     }
 }
-
-
 
 const PublishBtn = document.querySelectorAll(".publish-btn");
 PublishBtn.forEach(ele => {
