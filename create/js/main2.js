@@ -861,6 +861,8 @@ let resetActionVariables = () => {
     quiz = {};
     questions = [];
     questionIds = []
+    questionsData = [];
+    pollQuestionsData = [];
     socket = undefined;
 }
 
@@ -921,6 +923,7 @@ let closeAction = (type) => {
             if (type == "quiz") {
                 socket.emit("close quiz", sessionStorage.getItem("quiz_action_id"));
                 socket.disconnect();
+
                 updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
                 popup("Quiz Closed")
                 goTo(homeSelector);
