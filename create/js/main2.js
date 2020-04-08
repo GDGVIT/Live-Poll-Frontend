@@ -353,6 +353,7 @@ createEventBtn.addEventListener("click", (e) => {
         sessionStorage.removeItem("poll_action_id");
         sessionStorage.removeItem("feedback_action_id");
         performCheck();
+        resetActionVariables();
     }
     const data = {
         Name: EventName.value,
