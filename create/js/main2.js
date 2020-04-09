@@ -402,7 +402,9 @@ function AddAction(e) {
     e.preventDefault();
     const action_data = {
         action_type: this.innerHTML,
+        title: this.innerHTML
     }
+    console.log(JSON.stringify(action_data))
     var requestOptions = {
         method: 'POST',
         headers: {
