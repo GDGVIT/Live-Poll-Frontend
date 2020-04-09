@@ -885,6 +885,7 @@ let socketConnection = () => {
             continueSocketConnection();
         })
     })
+
 }
 let continueSocketConnection = () => {
     socket.on('all options', (new_data) => {
@@ -899,6 +900,22 @@ let continueSocketConnection = () => {
         renderQuizDetails();
     })
 }
+
+let resetStat = () => {
+    let optionids = [];
+    quiz_opts[questionNumber].forEach(opt => {
+        optionids.push(opt["_id"]);
+        opt["stat"] = 0;
+    })
+    socket.emit("reset options", optionids);
+    renderQuizDetails();
+}
+
+
+const resetStatBtn = document.querySelector("#reset_stat");
+resetStatBtn.addEventListener("click", resetStat)
+
+
 
 let quiz_labels = [];
 let quiz_data = [];
@@ -1020,8 +1037,15 @@ let closeAction = (type) => {
         .then(response => response.text())
         .then(result => {
             console.log(result);
+            let emitingData = [];
             if (type == "quiz") {
-                socket.emit("close quiz", sessionStorage.getItem("quiz_action_id"));
+                emitingData.push(sessionStorage.getItem("quiz_action_id"));
+                quiz_opts.forEach(ele => {
+                    ele.forEach(opt => {
+                        emitingData.push(opt["_id"]);
+                    })  
+                })
+                socket.emit("close quiz", emitingData);
                 socket.disconnect();
                 updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
                 popup("Quiz Closed")
@@ -1029,7 +1053,13 @@ let closeAction = (type) => {
                 performCheck();
             }
             if (type == "poll") {
-                socket.emit("close quiz", sessionStorage.getItem("poll_action_id"));
+                emitingData.push(sessionStorage.getItem("poll_action_id"));
+                quiz_opts.forEach(ele => {
+                    ele.forEach(opt => {
+                        emitingData.push(opt["_id"]);
+                    })  
+                })
+                socket.emit("close quiz", emitingData);
                 socket.disconnect();
                 updateStats("poll", sessionStorage.getItem("poll_action_id"));
                 popup("Poll Closed")

@@ -407,18 +407,6 @@
             socket = io('https://mighty-sea-62531.herokuapp.com/');
             socket.on("connect", () => {
                 console.log(socket.connected)
-                socket.on("New Connection", (updated_data) => {
-                    console.log(updated_data)
-                    if (updated_data.length != 0) {
-                        for (let i of updated_data) {
-                            for (let j of options) {
-                                if (i._id == j._id) {
-                                    j.stat = i.stat;
-                                }
-                            }
-                        }
-                    }
-                })
                 socket.on("quiz ended", (data) => {
                     if (data == actionId) {
                         renderQuiz({
@@ -435,14 +423,6 @@
             socket.on("next", data => {
                 if (data == actionId) {
                     fetchNextQuestion();
-                }
-            })
-            socket.on('all options', (new_data) => {
-                console.log(new_data)
-                for (let k of options) {
-                    if (new_data._id == k._id) {
-                        k.stat = new_data.stat;
-                    }
                 }
             })
         }
@@ -464,12 +444,8 @@
 
         //Handling the answers
         let handleAnswers = (option_id) => {
-            for (let k of options) {
-                if (option_id == k._id) {
-                    data = k;
-                }
-            }
-            socket.emit("option", data);
+            console.log(option_id)
+            socket.emit("option", option_id);
         }
         //Rendering the quiz
         let renderQuiz = (question) => {
