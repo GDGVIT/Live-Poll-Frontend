@@ -115,29 +115,123 @@ let event_deets = [];
 const historyGrid = document.querySelector(".history-grid");
 
 
-let renderEventDeets = (event, just) => {
-    let eventDiv = document.createElement("div");
-    eventDiv.classList.add("this-event");
-    let pName = document.createElement("p");
-    let pCode = document.createElement("p");
-    let pPartMan = document.createElement("p");
-    let eventbut = document.createElement("button");
-    eventbut.classList.add("main-button")
-    pName.innerHTML = `${event["Name"]}`;
-    pCode.innerHTML = `${event["Code"]}`;
-    pPartMan.innerHTML = `${event["Participants"]}`;
-    eventbut.innerHTML = "Download Stats";
-    eventDiv.appendChild(pName);
-    eventDiv.appendChild(pCode);
-    eventDiv.appendChild(pPartMan);
-    eventDiv.appendChild(eventbut);
-    if (just == "just") {
-        historyGrid.insertBefore(eventDiv, historyGrid.childNodes[2]);
-    }
-    else {
-        historyGrid.appendChild(eventDiv);
-    }
+document.addEventListener('DOMContentLoaded', function () {
+
+});
+
+
+
+let renderEventHistory = (event, actions) => {
+    console.log(event, actions)
+    let EventDiv = document.createElement("li");
+    let EventHeader = document.createElement("div");
+    EventDiv.classList.add("event-div");
+    EventHeader.classList.add("collapsible-header")
+    EventHeader.classList.add("event");
+    EventHeader.innerHTML = `<p>${event["Name"]}</p>
+    <p>${event["Code"]}</p>
+    <p>${event["Participants"]}</p>
+    <p><i class="material-icons drop">arrow_drop_down</i></p>`;
+    EventDiv.appendChild(EventHeader)
+
+    let EventBody = document.createElement("div");
+    EventBody.classList.add("collapsible-body")
+    EventBody.classList.add("action-deets");
+    let ActionsDiv = document.createElement("ul");
+    ActionsDiv.classList.add("collapsible");
+    let li1 = document.createElement("li");
+    let li2 = document.createElement("li");
+    let li3 = document.createElement("li");
+    let li1Header = document.createElement("div");
+    let li2Header = document.createElement("div");
+    let li3Header = document.createElement("div");
+    li1Header.classList.add("collapsible-header")
+    li1Header.classList.add("action-type")
+    li2Header.classList.add("collapsible-header")
+    li2Header.classList.add("action-type")
+    li3Header.classList.add("collapsible-header")
+    li3Header.classList.add("action-type")
+    li1Header.innerHTML = 'Quizzes   <i class = "material-icons">arrow_drop_down</i>'
+    li2Header.innerHTML = 'Polls<i class = "material-icons">arrow_drop_down</i>';
+    li3Header.innerHTML = 'Feedbacks<i class = "material-icons">arrow_drop_down</i>';
+    li1.appendChild(li1Header)
+    li2.appendChild(li2Header)
+    li3.appendChild(li3Header)
+    let quizzesDiv = document.createElement("div");
+    let pollsDiv = document.createElement("div");
+    let feedbacksDiv = document.createElement("div");
+    quizzesDiv.classList.add("collapsible-body")
+    quizzesDiv.classList.add("actions")
+    pollsDiv.classList.add("collapsible-body")
+    pollsDiv.classList.add("actions")
+    feedbacksDiv.classList.add("collapsible-body")
+    feedbacksDiv.classList.add("actions")
+    actions.forEach(ele => {
+        let p = document.createElement("p");
+        p.id = `${ele["_id"]}`
+        p.value = `${event["_id"]}`
+        p.innerHTML = `${ele["title"]}`
+        if (ele["action_type"] == "Quiz") {
+            quizzesDiv.appendChild(p)
+        }
+        if (ele["action_type"] == "Poll") {
+            pollsDiv.appendChild(p)
+        }
+        if (ele["action_type"] == "Feedback") {
+            feedbacksDiv.appendChild(p)
+        }
+    })
+    li1.appendChild(quizzesDiv);
+    li2.appendChild(pollsDiv)
+    li3.appendChild(feedbacksDiv)
+    ActionsDiv.appendChild(li1)
+    ActionsDiv.appendChild(li2)
+    ActionsDiv.appendChild(li3)
+    EventBody.appendChild(ActionsDiv)
+    EventDiv.appendChild(EventBody);
+    historyGrid.appendChild(EventDiv);
+
+
 }
+
+
+
+
+let getActions = async (event) => {
+    console.log(event)
+    let actionDeets = [];
+    const GatherActions = new Promise((resolve, reject) => {
+        let i = 0;
+        event["Actions"].forEach(action => {
+
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + action, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    actionDeets.push(result);
+                    i++;
+                    if (i == event["Actions"].length) {
+                        resolve();
+                    }
+                })
+                .catch(error => console.log('error', error));
+        })
+    })
+    GatherActions.then(() => {
+        renderEventHistory(event, actionDeets);
+        let options;
+        var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems, options);
+    })
+}
+
+
+
+
 
 
 
@@ -150,7 +244,10 @@ let getEventDetails = () => {
 
         fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
             .then(response => response.json())
-            .then(result => { renderEventDeets(result); })
+            .then(result => {
+                /* renderEventDeets(result); */
+                getActions(result);
+            })
             .catch(error => console.log('error', error));
     })
 }
@@ -870,7 +967,7 @@ let resetActionVariables = () => {
 }
 
 
-let updateStats = (type,id) => {
+let updateStats = (type, id) => {
     let url;
     if (type == "quiz") {
         url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + id;
@@ -911,7 +1008,7 @@ let closeAction = (type) => {
     if (type == "poll") {
         closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("poll_action_id");
     }
-    if(type == "feedback"){
+    if (type == "feedback") {
         closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("feedback_action_id");
     }
     var requestOptions = {
@@ -926,11 +1023,9 @@ let closeAction = (type) => {
             if (type == "quiz") {
                 socket.emit("close quiz", sessionStorage.getItem("quiz_action_id"));
                 socket.disconnect();
-
                 updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
                 popup("Quiz Closed")
                 goTo(homeSelector);
-                
                 performCheck();
             }
             if (type == "poll") {
@@ -942,7 +1037,7 @@ let closeAction = (type) => {
                 sessionStorage.removeItem("poll_action_id");
                 performCheck();
             }
-            if(type == "feedback"){
+            if (type == "feedback") {
                 popup("Feedback Closed")
                 goTo(homeSelector);
                 sessionStorage.removeItem("feedback_action_id");
@@ -951,8 +1046,6 @@ let closeAction = (type) => {
             resetActionVariables();
         })
         .catch(error => console.log('error', error));
-
-
 }
 
 const closeQuizBtn = document.querySelector("#close_quiz");
@@ -1026,12 +1119,12 @@ let renderFeedbackDeets = (question, answers) => {
     feedbackQuestionDiv.innerHTML = question;
     answers.forEach(answer => {
         let div = document.createElement("div");
-        if(window.innerWidth > 600){
-            div.style.maxWidth = (0.5*window.innerWidth) + "px";
+        if (window.innerWidth > 600) {
+            div.style.maxWidth = (0.5 * window.innerWidth) + "px";
         }
-        else{
+        else {
 
-            div.style.maxWidth = (0.8*window.innerWidth) + "px";
+            div.style.maxWidth = (0.8 * window.innerWidth) + "px";
         }
         div.innerHTML = answer["option"];
         div.classList.add("answer")
@@ -1085,7 +1178,7 @@ let getFeedbackDeets = () => {
             method: 'GET',
             redirect: 'follow'
         };
-    
+
         fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
             .then(response => response.json())
             .then(result => {

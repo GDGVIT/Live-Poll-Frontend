@@ -5,6 +5,31 @@
     --main-shadow-hover: inset -6px -6px 10px rgba(39, 132, 251, 1), inset 6px 6px 20px rgba(0, 0, 0, 0.2);
     --neon-button-hover: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4;
 }
+.collapsible-body {
+    display: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    outline: none;
+    
+}
+.collapsible-header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.5;
+    padding: 0;
+    background-color: #fff;
+    list-style-type: none;
+    outline: none;
+}
+ul{
+    list-style-type: none;
+    outline: none;
+}
 
 
 * {
@@ -275,8 +300,10 @@ main {
     height: -moz-max-content;
     border-collapse:collapse;
     border-spacing: 0 0;
+    box-shadow: none;
+    border: none;
 }
-.this-event{
+.event{
     position: relative;
     display: grid;
     grid-template-columns: repeat(4, 25%);
@@ -284,12 +311,11 @@ main {
     border-bottom: solid 1px rgb(202, 202, 202);
     border-collapse:collapse;
     border-spacing: 0 0;
-    justify-items: center;
+    justify-items: left;
     align-items: center;
 }
-.this-event > button{
-    font-size: 0.9rem;
-    padding: 12px 30px;
+.event >p:nth-child(4){
+    justify-self: right;
 }
 /* Home page History: End */
 
@@ -563,7 +589,21 @@ label[for = "theme_feedback"] {
 
 
 
-
+.action-deets{
+    margin: auto;
+    padding: 10px 0;
+    width: 95%;
+}
+.action-type{
+    margin-bottom: 7px;
+    width: fit-content;
+    width: -moz-fit-content;
+}
+.actions{
+    margin: 10px 0;
+    width: fit-content;
+    width: -moz-fit-content;
+}
 
 
 
@@ -658,8 +698,10 @@ button {
     box-shadow: var(--main-shadow);
 }
 .main-button:hover {
+    background-color: var(--main-color);
     box-shadow: var(--main-shadow-hover);
 }
+
 .main-input {
     padding: 10px 0 10px 10px;
     border: solid var(--main-color) 1.5px;
@@ -913,3 +955,5 @@ button {
         display: grid;
     }
 }
+
+
