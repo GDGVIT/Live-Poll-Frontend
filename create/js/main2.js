@@ -27,7 +27,6 @@ start(); */
 
 
 
-
 /* Handling Movement between tabs */
 
 const tabItems = document.querySelectorAll(".tab-item");
@@ -113,11 +112,203 @@ let goTo = (ele) => {
 let event_ids = [];
 let event_deets = [];
 const historyGrid = document.querySelector(".history-grid");
+const iconsDiv = document.querySelector(".icons")
 
 
-document.addEventListener('DOMContentLoaded', function () {
 
-});
+const prevEventsDeetsDiv = document.querySelector(".prev-event-deets");
+
+
+let renderQuiz = {};
+let renderQuestions = [];
+let renderOptions = [];
+let renderCorrect = [];
+let renderQuestionNumber = 0;
+let temp1 = {};
+let actionGraph = document.querySelector('.action-graph').getContext('2d');
+let actionGraphDiv = document.querySelector(".action-graph");
+let displayChart = new Chart(actionGraph, temp1);
+let event_type;
+const feedbackDiv = document.querySelector(".feedback-history")
+let renderChart = () => {
+    displayChart.destroy();
+    displayChart = new Chart(actionGraph, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: "No. of ppl chose",
+                data: [],
+                backgroundColor: [
+                    'rgba(254, 87, 81, 1)',
+                    'rgba(82, 156, 251, 1)',
+                    'rgba(50, 179, 115, 1)',
+                    'rgba(254, 200, 52, 1)'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: ""
+            },
+            maintainAspectRatio: false
+        }
+
+    })
+}
+
+
+let updateChartData = () => {
+    displayChart.options.title.text = renderQuestions[renderQuestionNumber];
+    renderOptions[renderQuestionNumber].forEach((ele, index) => {
+        displayChart.data.labels[index] = ele["option"]
+        displayChart.data.datasets[0].data[index] = ele["stat"];
+    })
+    displayChart.canvas.parentNode.style.width = (0.90 * window.innerWidth) + "px";
+    displayChart.canvas.parentNode.style.height = (0.65 * window.innerHeight) + "px";
+    displayChart.update();
+}
+
+
+
+const renderNext = document.querySelector("#next_ques");
+const renderPrev = document.querySelector('#prev_ques');
+
+renderNext.addEventListener("click", () => {
+    if (renderQuestionNumber > (renderQuestions.length - 2)) {
+        console.log("cant go more")
+    }
+    else {
+        renderQuestionNumber++;
+        if(event_type == "Feedback"){
+            renderFeedback();
+        }
+        else{
+            updateChartData();
+        }
+    }
+})
+renderPrev.addEventListener("click", () => {
+    if (renderQuestionNumber < 1) {
+        console.log("cant go more back")
+    }
+    else {
+        renderQuestionNumber--;
+        if(event_type == "Feedback"){
+            renderFeedback();
+        }
+        else{
+            updateChartData();
+        }
+    }
+})
+
+
+let renderFeedback = () => {
+    feedbackDiv.innerHTML = "";
+    let masterDiv = document.createElement("div");
+    masterDiv.classList.add("feedback-details");
+    let AnswerDiv = document.createElement("div");
+    AnswerDiv.classList.add("feedback-answer");
+    let question_name = document.createElement("h1");
+    question_name.classList.add("feedback-question");
+    question_name.innerHTML = renderQuestions[renderQuestionNumber];
+    renderOptions[renderQuestionNumber].forEach(answer => {
+        let div = document.createElement("div");
+        if (window.innerWidth > 600) {
+            div.style.maxWidth = (0.5 * window.innerWidth) + "px";
+        }
+        else {
+    
+            div.style.maxWidth = (0.8 * window.innerWidth) + "px";
+        }
+        div.innerHTML = answer["option"];
+        div.classList.add("answer")
+        AnswerDiv.appendChild(div)
+    })
+    masterDiv.appendChild(question_name);
+    masterDiv.appendChild(AnswerDiv);
+    feedbackDiv.appendChild(masterDiv);
+}
+
+
+
+
+
+
+let handleEventDeets = (event_id, action_id) => {
+    prevEventsDeetsDiv.classList.add("show-action")
+    historyGrid.classList.remove("show-action");
+    iconsDiv.classList.remove("show-action")
+    console.log(event_id, action_id)
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+
+    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + action_id, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            event_type = result["action_type"];
+            result["Questions"].forEach((ele) => {
+                renderQuestions.push(ele["name"])
+                renderOptions.push(ele["options"]);
+                renderCorrect.push(ele["correct"]);
+            })
+            if (result["action_type"] == "Feedback") {
+                actionGraphDiv.style.display = "none";
+                feedbackDiv.classList.add("show")
+                renderFeedback();
+
+            }
+            else {
+                feedbackDiv.classList.remove("show")
+                actionGraphDiv.classList.add("show")
+                renderChart();
+                updateChartData();
+            }
+        })
+        .catch(error => console.log('error', error));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.querySelector(".cancel-event-deets").addEventListener("click", () => {
+    prevEventsDeetsDiv.classList.remove("show-action");
+    historyGrid.classList.add("show-action");
+    iconsDiv.classList.add("show-action");
+    renderQuiz = {};
+    renderQuestions = [];
+    renderOptions = [];
+    renderCorrect = [];
+    renderQuestionNumber = 0;
+    event_type = undefined;
+    displayChart = new Chart(actionGraph, temp1);
+})
+
+
+
 
 
 
@@ -171,6 +362,9 @@ let renderEventHistory = (event, actions) => {
         p.id = `${ele["_id"]}`
         p.value = `${event["_id"]}`
         p.innerHTML = `${ele["title"]}`
+        p.addEventListener("click", () => {
+            handleEventDeets(p.value, p.id);
+        })
         if (ele["action_type"] == "Quiz") {
             quizzesDiv.appendChild(p)
         }
@@ -187,7 +381,44 @@ let renderEventHistory = (event, actions) => {
     ActionsDiv.appendChild(li1)
     ActionsDiv.appendChild(li2)
     ActionsDiv.appendChild(li3)
+    let PossibleActions = document.createElement("div")
+    PossibleActions.classList.add("possible-actions")
+    let but1 = document.createElement("button");
+    let but2 = document.createElement("button");
+    let but3 = document.createElement("button");
+    but1.innerHTML = "+ Add Quiz";
+    but2.innerHTML = "+ Add Poll";
+    but3.innerHTML = "+ Add Feedback";
+    but1.classList.add("main-button");
+    but2.classList.add("main-button");
+    but3.classList.add("main-button");
+    but1.addEventListener("click", () => {
+        sessionStorage.setItem("event_id", event["_id"]);
+        sessionStorage.removeItem("quiz_action_id");
+        performCheck()
+        quizSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        goTo(quizSelector)
+    })
+    but2.addEventListener("click", () => {
+        sessionStorage.setItem("event_id", event["_id"]);
+        sessionStorage.removeItem("poll_action_id");
+        performCheck()
+
+        pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        goTo(pollSelector)
+    })
+    but3.addEventListener("click", () => {
+        sessionStorage.setItem("event_id", event["_id"]);
+        sessionStorage.removeItem("feedback_action_id");
+        performCheck();
+        feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        goTo(feedbackSelector);
+    })
+    PossibleActions.appendChild(but1);
+    PossibleActions.appendChild(but2);
+    PossibleActions.appendChild(but3)
     EventBody.appendChild(ActionsDiv)
+    EventBody.appendChild(PossibleActions)
     EventDiv.appendChild(EventBody);
     historyGrid.appendChild(EventDiv);
 
@@ -245,7 +476,6 @@ let getEventDetails = () => {
         fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
             .then(response => response.json())
             .then(result => {
-                /* renderEventDeets(result); */
                 getActions(result);
             })
             .catch(error => console.log('error', error));
@@ -906,9 +1136,9 @@ resetStatBtn.addEventListener("click", resetStat)
 let quiz_labels = [];
 let quiz_data = [];
 let temp = {};
-let ctx = document.querySelector('.quiz-details').getContext('2d');
+let ctxa = document.querySelector('.quiz-details').getContext('2d');
 let pollChart = document.querySelector('.poll-details').getContext('2d');
-let MyChart = new Chart(ctx, temp);
+let MyChart = new Chart(ctxa, temp);
 
 let createChart = (chartDiv, ty) => {
     MyChart.destroy();

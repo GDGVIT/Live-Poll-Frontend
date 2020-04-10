@@ -54,18 +54,21 @@
                                 <p id="event_code" class="event-code"></p>
                                 <div class="add-action">
                                     <h1>Add Action</h1>
-                                    <button class="main-button" onclick='goTo(quizSelector); quizSelector.forEach(ele => {ele.style.color = "black"; ele.addEventListener("click", selectItem);})'>Quiz</button>
-                                    <button class="main-button" onclick='goTo(feedbackSelector); feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })'>Feedback</button>
-                                    <button class="main-button" onclick='goTo(pollSelector); pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })'>Poll</button>
+                                    <button class="main-button"
+                                        onclick='goTo(quizSelector); quizSelector.forEach(ele => {ele.style.color = "black"; ele.addEventListener("click", selectItem);})'>Quiz</button>
+                                    <button class="main-button"
+                                        onclick='goTo(feedbackSelector); feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })'>Feedback</button>
+                                    <button class="main-button"
+                                        onclick='goTo(pollSelector); pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })'>Poll</button>
                                 </div>
                             </div>
                         </div>
                         <div class="home-result result show-select">
-                            <div class="icons">
+                            <div class="icons show-action">
                                 <img src="../img/Group 130.svg" alt="" class="history-icon">
                                 <button class="invert-btn home add-event-btn main-button">+ Add Event</button>
                             </div>
-                            <ul class="history-grid collapsible">
+                            <ul class="history-grid collapsible show-action">
                                 <li class="event">
                                     <p><strong>Events</strong></p>
                                     <p><strong>Event Code</strong></p>
@@ -73,6 +76,21 @@
                                     <p><strong></strong></p>
                                 </li>
                             </ul>
+                            <div class="prev-event-deets">
+                                <button class="cancel-event-deets back-btn"><img src="../img/back.png" alt=""></button>
+                                <div class="event-contents">
+                                    <canvas class="action-graph" id="graph">
+
+                                    </canvas>
+                                    <div class="feedback-history">
+
+                                    </div>
+                                    <div class="action-buttons">
+                                        <button class="main-button" id="prev_ques">Prev Question</button>
+                                        <button class="main-button" id="next_ques">Next Question</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -84,7 +102,7 @@
                     <div class="content">
                         <div class="quiz-result result">
                             <button class="invert-btn quiz back-btn"><img src="../img/back.png" alt=""></button>
-                            <canvas class="quiz-details" >
+                            <canvas class="quiz-details">
 
                             </canvas>
                             <div class="quiz-result-buttons">
@@ -92,10 +110,11 @@
                                 <button id="close_quiz" class="main-button">Close Quiz</button>
                                 <button id="reset_stat" class="main-button">Clear Responses</button>
                             </div>
-                            
+
                         </div>
                         <div class="quiz-create create show-select">
-                            <form action="" method="post" class="quiz-create-container Quiz-internal show-action" id="question_form">
+                            <form action="" method="post" class="quiz-create-container Quiz-internal show-action"
+                                id="question_form">
                                 <label for="question_name">Question</label>
                                 <input type="text" id="question_name" class="main-input" placeholder="Enter Question">
                                 <label for="correct_option">Correct Option</label>
@@ -158,18 +177,19 @@
                                 </div>
                                 <div class="quiz-actions">
                                     <button id="add_question_btn" class="main-button quiz">+ Add Question</button>
-                                    <button class="invert-btn quiz main-button publish-btn" id="publish_quiz">Publish Quiz</button>
+                                    <button class="invert-btn quiz main-button publish-btn" id="publish_quiz">Publish
+                                        Quiz</button>
                                 </div>
                             </form>
                             <div class="Quiz-name">
                                 <form action="" method="post" class="name-div">
                                     <label for="Quiz_name">Title</label>
-                                    <input type="text" id = "Quiz_name" class="main-input" placeholder="Enter Quiz Name">
+                                    <input type="text" id="Quiz_name" class="main-input" placeholder="Enter Quiz Name">
                                     <button class="main-button action-btn Quiz">Make quiz</button>
                                 </form>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="not-logged-in show">
                         Please login to use these features
@@ -179,7 +199,7 @@
                     <div class="content">
                         <div class="poll-result result">
                             <button class="invert-btn poll back-btn"><img src="../img/back.png" alt=""></button>
-                            <canvas class="poll-details" >
+                            <canvas class="poll-details">
 
                             </canvas>
                             <div class="poll-result-buttons">
@@ -188,7 +208,8 @@
                             </div>
                         </div>
                         <div class="poll-create create show-select">
-                            <form action="" method="post" class="poll-create-container Poll-internal show-action" id="poll_form">
+                            <form action="" method="post" class="poll-create-container Poll-internal show-action"
+                                id="poll_form">
                                 <label for="poll_name">Question</label>
                                 <input type="text" id="poll_name" class="main-input" placeholder="Enter Question">
                                 <label for="poll_options">Options</label>
@@ -248,14 +269,15 @@
                                 </div>
                                 <div class="poll-actions">
                                     <button id="add_poll_btn" class="main-button poll">+ Add Poll</button>
-                                    <button class="invert-btn poll main-button publish-btn" id="publish_poll">Publish Poll</button>
+                                    <button class="invert-btn poll main-button publish-btn" id="publish_poll">Publish
+                                        Poll</button>
                                 </div>
                             </form>
                             <div class="Poll-name">
                                 <form action="" method="post" class="name-div">
                                     <label for="Poll_name">Title</label>
-                                    <input type="text" id = "Poll_name" class="main-input" placeholder="Enter Poll Name">
-                                    <button class="main-button action-btn Poll">Make quiz</button>
+                                    <input type="text" id="Poll_name" class="main-input" placeholder="Enter Poll Name">
+                                    <button class="main-button action-btn Poll">Make Poll</button>
                                 </form>
                             </div>
                         </div>
@@ -271,20 +293,22 @@
                             <button class="invert-btn feedback back-btn"><img src="../img/back.png" alt=""></button>
                             <button class="refresh-btn"><img src="../img/refresh.png" alt=""></button>
                             <div class="feedback-result-grid">
-                                <div class="feedback-details" >
+                                <div class="feedback-details">
                                     <h1 class="feedback-question"></h1>
                                     <div class="feedback-answer">
                                     </div>
                                 </div>
                                 <div class="feedback-result-buttons">
                                     <button class="main-button" id="prev_feedback_btn">Prev Feedback question</button>
-                                    <button id="close_feedback" class="invert-btn feedback main-button">Close Feedback Action</button>
+                                    <button id="close_feedback" class="invert-btn feedback main-button">Close Feedback
+                                        Action</button>
                                     <button class="main-button" id="next_feedback_btn">Next Feedback Question</button>
                                 </div>
                             </div>
                         </div>
                         <div class="feedback-create create show-select">
-                            <form action="" method="post" class="feedback-create-container Feedback-internal show-action">
+                            <form action="" method="post"
+                                class="feedback-create-container Feedback-internal show-action">
                                 <label for="feedback_name">Question</label>
                                 <textarea rows="3" type="text" id="feedback_name" class="main-input"
                                     placeholder="Enter Feedback Question"></textarea>
@@ -307,15 +331,17 @@
                                 </div>
                                 <div class="feedback-actions">
                                     <button id="add_feedback_btn" class="main-button feedback">+ Add Question</button>
-                                    <button class="invert-btn feedback main-button publish-btn" id="publish_feedback">Publish
+                                    <button class="invert-btn feedback main-button publish-btn"
+                                        id="publish_feedback">Publish
                                         Feedback</button>
                                 </div>
                             </form>
                             <div class="Feedback-name">
                                 <form action="" method="post" class="name-div">
                                     <label for="Feedback_name">Title</label>
-                                    <input type="text" id = "Feedback_name" class="main-input" placeholder="Enter Feedback Name">
-                                    <button class="main-button action-btn Feedback">Make quiz</button>
+                                    <input type="text" id="Feedback_name" class="main-input"
+                                        placeholder="Enter Feedback Name">
+                                    <button class="main-button action-btn Feedback">Make Feedback</button>
                                 </form>
                             </div>
                         </div>
@@ -347,10 +373,10 @@
             <div class="notify"></div>
         </div>
     </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    
+
     <script>
         if (window.innerWidth < 600) {
             const main = document.querySelector("main");

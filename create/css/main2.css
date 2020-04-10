@@ -263,12 +263,15 @@ main {
 
 /* Home page History */
 .icons {
+
     position: relative;
     display: grid;
+    display: none;
     grid-template-columns: 50% 50%;
     width: calc(100% - 40px);
     padding: 20px;
     justify-items: right;
+    align-items: center;
 }
 .history-icon {
     position: relative;
@@ -292,6 +295,7 @@ main {
 .history-grid {
     position: relative;
     display: grid;
+    display: none;
     width: 90%;
     grid-template-columns: 100%;
     padding-top: 20px;
@@ -405,6 +409,7 @@ main {
     padding-top: 17px;
     padding-bottom: 17px;
     border-radius: 7px;
+    box-shadow: none;
 }
 .quiz-create-container > label,
 .poll-create-container > label,
@@ -602,13 +607,31 @@ label[for = "theme_feedback"] {
     width: fit-content;
     width: -moz-fit-content;
 }
+.action-type > strong{
+    margin-right: 10px;
+}
 .actions{
     padding: 10px 0;
     width: fit-content;
     width: -moz-fit-content;
 }
+.actions > p{
+    cursor: pointer;
+}
 
-
+.possible-actions{
+    position: relative;
+    width: 50%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-items: left;
+    align-items: center;
+    padding: 10px 0;
+}
+.possible-actions > button{
+    font-size: 0.8rem;
+    padding: 7px 10px;
+}
 
 
 
@@ -655,15 +678,15 @@ label[for = "theme_feedback"] {
     padding: 50px 50px;
     background: #F5F5F5;
     border-radius: 10px;
-    width: 40%;
+    width: 50%;
     display: grid;
-    grid-template-columns: 10% 90%;
+    grid-template-columns: 20% 80%;
     grid-template-areas: "l1 i1" "b b";
     /* justify-items: center; */
 }
 .name-div > input{
     grid-area: i1;
-    
+    width: 100%;
 }
 .name-div > label{
     grid-area: l1;
@@ -675,9 +698,38 @@ label[for = "theme_feedback"] {
     justify-self: center;
     margin-top: 30px;
 }
+.prev-event-deets{
+    display: none;
+    position: relative;
+    width: 90%;
+    height: 90%;
+    background: white;
+    border-radius: 10px;
+    
+}
+.event-contents{
+    position: relative;
+    display: block;
+    grid-template-rows: 80% 15%;
+    grid-template-areas: "g" "b";
+}
+.action-graph{
+    grid-area: g;
+    display: none;
+}
+.action-buttons{
+    grid-area: b;
+    display: grid;
+    width: 90%;
+    margin: auto;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    align-items: center;
+}
 
-
-
+.feedback-history{
+    display: none;
+}
 
 
 
