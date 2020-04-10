@@ -151,9 +151,9 @@ let renderEventHistory = (event, actions) => {
     li2Header.classList.add("action-type")
     li3Header.classList.add("collapsible-header")
     li3Header.classList.add("action-type")
-    li1Header.innerHTML = 'Quizzes   <i class = "material-icons">arrow_drop_down</i>'
-    li2Header.innerHTML = 'Polls<i class = "material-icons">arrow_drop_down</i>';
-    li3Header.innerHTML = 'Feedbacks<i class = "material-icons">arrow_drop_down</i>';
+    li1Header.innerHTML = '<strong>Quizzes</strong><i class = "material-icons">arrow_drop_down</i>'
+    li2Header.innerHTML = '<strong>Polls</strong><i class = "material-icons">arrow_drop_down</i>';
+    li3Header.innerHTML = '<strong>Feedbacks</strong><i class = "material-icons">arrow_drop_down</i>';
     li1.appendChild(li1Header)
     li2.appendChild(li2Header)
     li3.appendChild(li3Header)

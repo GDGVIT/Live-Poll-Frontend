@@ -595,12 +595,12 @@ label[for = "theme_feedback"] {
     width: 95%;
 }
 .action-type{
-    margin-bottom: 7px;
+    padding-bottom: 7px;
     width: fit-content;
     width: -moz-fit-content;
 }
 .actions{
-    margin: 10px 0;
+    padding: 10px 0;
     width: fit-content;
     width: -moz-fit-content;
 }
