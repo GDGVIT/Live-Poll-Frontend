@@ -397,6 +397,7 @@ main {
     margin: auto;
     row-gap: 40px;
     padding-top: 13vh;
+    display: none;
 }
 .quiz-create-container input,
 .poll-create-container input,
@@ -482,6 +483,7 @@ label[for = "theme_poll"] {
     margin: auto;
     row-gap: 40px;
     padding-top: 15vh;
+    display: none;
 }
 
 
@@ -493,6 +495,7 @@ label[for = "theme_poll"] {
     margin: auto;
     row-gap: 5.4vh;
     padding-top: 13vh;
+    display: none;
 }
 label[for = "theme_feedback"] {
     grid-area: n2;
@@ -637,7 +640,41 @@ label[for = "theme_feedback"] {
     opacity: 1;
 }
 
-
+.Quiz-name, .Poll-name, .Feedback-name{
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    justify-items: center;
+}
+.name-div{
+    position: relative;
+    margin-top: 22vh;
+    padding: 50px 50px;
+    background: #F5F5F5;
+    border-radius: 10px;
+    width: 40%;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    grid-template-areas: "l1 i1" "b b";
+    /* justify-items: center; */
+}
+.name-div > input{
+    grid-area: i1;
+    
+}
+.name-div > label{
+    grid-area: l1;
+    font-weight: 900;
+    font-size: 1.4rem;
+}
+.name-div > button{
+    grid-area: b;
+    justify-self: center;
+    margin-top: 30px;
+}
 
 
 
@@ -648,6 +685,7 @@ label[for = "theme_feedback"] {
 ::-webkit-scrollbar {
     background-color: #fff;
     width: 10px;
+    /* display: none; */
 }
 
 /* background of the scrollbar except button or resizer */
@@ -749,7 +787,9 @@ button {
 .nav-control{
     display: none;
 }
-
+.show-action{
+    display: grid;
+}
 
 @media(max-width: 600px) {
     * {

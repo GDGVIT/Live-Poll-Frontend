@@ -497,9 +497,10 @@ createEventBtn.addEventListener("click", (e) => {
 
 function AddAction(e) {
     e.preventDefault();
+    const name = document.querySelector(`#${this.classList[2]}_name`).value;
     const action_data = {
-        action_type: this.innerHTML,
-        title: this.innerHTML
+        action_type: this.classList[2],
+        title: name
     }
     console.log(JSON.stringify(action_data))
     var requestOptions = {
@@ -515,35 +516,20 @@ function AddAction(e) {
         .then(response => { return response.json(); })
         .then(result => {
             console.log("Action Added", result);
-            if (this.innerHTML == "Quiz") {
+            document.querySelector(`.${this.classList[2]}-name`).classList.remove("show-action")
+            document.querySelector(`.${this.classList[2]}-internal`).classList.add("show-action");
+            if (this.classList[2] == "Quiz") {
                 popup("Quiz Added")
                 sessionStorage.setItem("quiz_action_id", result._id);
                 console.log(sessionStorage.getItem("quiz_action_id"))
-
-                quizSelector.forEach(ele => {
-                    ele.style.color = "black";
-                    ele.addEventListener("click", selectItem);
-                })
-
-                goTo(quizSelector);
             }
-            if (this.innerHTML == "Poll") {
+            if (this.classList[2] == "Poll") {
                 popup("Poll Added")
                 sessionStorage.setItem("poll_action_id", result._id)
-                pollSelector.forEach(ele => {
-                    ele.style.color = "black";
-                    ele.addEventListener("click", selectItem);
-                })
-                goTo(pollSelector);
             }
-            if (this.innerHTML == "Feedback") {
+            if (this.classList[2] == "Feedback") {
                 popup("Feedback Added")
                 sessionStorage.setItem("feedback_action_id", result._id)
-                feedbackSelector.forEach(ele => {
-                    ele.style.color = "black";
-                    ele.addEventListener("click", selectItem);
-                })
-                goTo(feedbackSelector)
             }
         })
         .catch(error => console.log('Action Error', error));
@@ -1043,13 +1029,14 @@ let closeAction = (type) => {
                 quiz_opts.forEach(ele => {
                     ele.forEach(opt => {
                         emitingData.push(opt["_id"]);
-                    })  
+                    })
                 })
                 socket.emit("close quiz", emitingData);
                 socket.disconnect();
                 updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
                 popup("Quiz Closed")
                 goTo(homeSelector);
+                sessionStorage.removeItem("quiz_action_id")
                 performCheck();
             }
             if (type == "poll") {
@@ -1057,7 +1044,7 @@ let closeAction = (type) => {
                 quiz_opts.forEach(ele => {
                     ele.forEach(opt => {
                         emitingData.push(opt["_id"]);
-                    })  
+                    })
                 })
                 socket.emit("close quiz", emitingData);
                 socket.disconnect();
@@ -1454,18 +1441,24 @@ let performCheck = () => {
             ele.style.color = "rgb(189, 189, 189)";
             ele.removeEventListener("click", selectItem);
         })
+        document.querySelector(".Quiz-internal").classList.remove("show-action");
+        document.querySelector(".Quiz-name").classList.add("show-action")
     }
     if (!sessionStorage.getItem("poll_action_id")) {
         pollSelector.forEach(ele => {
             ele.style.color = "rgb(189, 189, 189)";
             ele.removeEventListener("click", selectItem);
         })
+        document.querySelector(".Poll-internal").classList.remove("show-action");
+        document.querySelector(".Poll-name").classList.add("show-action")
     }
     if (!sessionStorage.getItem("feedback_action_id")) {
         feedbackSelector.forEach(ele => {
             ele.style.color = "rgb(189, 189, 189)"
             ele.removeEventListener("click", selectItem);
         })
+        document.querySelector(".Feedback-internal").classList.remove("show-action");
+        document.querySelector(".Feedback-name").classList.add("show-action")
     }
     if (sessionStorage.getItem("event_id")) {
         EventName.value = sessionStorage.getItem("event_name")
