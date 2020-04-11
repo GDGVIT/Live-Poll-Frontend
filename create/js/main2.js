@@ -188,10 +188,10 @@ renderNext.addEventListener("click", () => {
     }
     else {
         renderQuestionNumber++;
-        if(event_type == "Feedback"){
+        if (event_type == "Feedback") {
             renderFeedback();
         }
-        else{
+        else {
             updateChartData();
         }
     }
@@ -202,10 +202,10 @@ renderPrev.addEventListener("click", () => {
     }
     else {
         renderQuestionNumber--;
-        if(event_type == "Feedback"){
+        if (event_type == "Feedback") {
             renderFeedback();
         }
-        else{
+        else {
             updateChartData();
         }
     }
@@ -227,7 +227,7 @@ let renderFeedback = () => {
             div.style.maxWidth = (0.5 * window.innerWidth) + "px";
         }
         else {
-    
+
             div.style.maxWidth = (0.8 * window.innerWidth) + "px";
         }
         div.innerHTML = answer["option"];
@@ -312,8 +312,9 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
 
 
 
-let renderEventHistory = (event, actions) => {
-    console.log(event, actions)
+let renderEventHistory = (event, actions, just) => {
+    console.log("this is :", event)
+    console.log("this is:", actions)
     let EventDiv = document.createElement("li");
     let EventHeader = document.createElement("div");
     EventDiv.classList.add("event-div");
@@ -357,6 +358,7 @@ let renderEventHistory = (event, actions) => {
     pollsDiv.classList.add("actions")
     feedbacksDiv.classList.add("collapsible-body")
     feedbacksDiv.classList.add("actions")
+
     actions.forEach(ele => {
         let p = document.createElement("p");
         p.id = `${ele["_id"]}`
@@ -375,6 +377,7 @@ let renderEventHistory = (event, actions) => {
             feedbacksDiv.appendChild(p)
         }
     })
+
     li1.appendChild(quizzesDiv);
     li2.appendChild(pollsDiv)
     li3.appendChild(feedbacksDiv)
@@ -420,11 +423,16 @@ let renderEventHistory = (event, actions) => {
     EventBody.appendChild(ActionsDiv)
     EventBody.appendChild(PossibleActions)
     EventDiv.appendChild(EventBody);
-    historyGrid.appendChild(EventDiv);
-
-
+    if (just == "just") {
+        historyGrid.insertBefore(EventDiv, historyGrid.childNodes[2])
+    }
+    else {
+        historyGrid.appendChild(EventDiv);
+    }
+    let options;
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
 }
-
 
 
 
@@ -433,6 +441,9 @@ let getActions = async (event) => {
     let actionDeets = [];
     const GatherActions = new Promise((resolve, reject) => {
         let i = 0;
+        if (event["Actions"].length == 0) {
+            resolve();
+        }
         event["Actions"].forEach(action => {
 
             var requestOptions = {
@@ -485,6 +496,7 @@ let getEventDetails = () => {
 
 
 let handleHistory = () => {
+    historyGrid.innerHTML = '<li class="event"><p><strong>Events</strong></p> <p><strong>Event Code</strong></p> <p><strong>No. of participants</strong></p> <p><strong></strong></p> </li>';
     var myHeaders = new Headers();
     myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
 
@@ -669,7 +681,7 @@ const createEventBtn = document.querySelector("#create_event_btn");
 const AddActionDiv = document.querySelector(".add-action");
 const EventCodeDiv = document.querySelector("#event_code");
 const EventName = document.querySelector("#event_name");
-
+let theCurrentEvent;
 createEventBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (sessionStorage.getItem("event_id")) {
@@ -701,13 +713,20 @@ createEventBtn.addEventListener("click", (e) => {
         .then(response => { return response.json() })
         .then(result => {
             console.log("Event Added", result);
+            theCurrentEvent = result;
             sessionStorage.setItem("event_id", result._id);
             sessionStorage.setItem("event_name", result["Name"]);
             AddActionDiv.classList.add("show");
+            document.querySelectorAll(".action-redirect").forEach((ele) => {
+                ele.addEventListener("click", () => {
+                    sessionStorage.setItem("event_id", theCurrentEvent._id);
+                })
+            })
+
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
             sessionStorage.setItem("event_code", result["Code"]);
             EventCodeDiv.classList.add("show");
-            renderEventDeets(result, "just");
+            renderEventHistory(theCurrentEvent, [], "just");
             popup("Event Generated");
         })
         .catch(error => console.log('Event Error', error));
@@ -724,6 +743,12 @@ createEventBtn.addEventListener("click", (e) => {
 
 
 /* Adding Actions */
+
+
+let quizTitle;
+let pollTitle;
+let feedbackTitle;
+
 
 function AddAction(e) {
     e.preventDefault();
@@ -752,15 +777,19 @@ function AddAction(e) {
                 popup("Quiz Added")
                 sessionStorage.setItem("quiz_action_id", result._id);
                 console.log(sessionStorage.getItem("quiz_action_id"))
+                quizTitle = result["title"];
             }
             if (this.classList[2] == "Poll") {
                 popup("Poll Added")
                 sessionStorage.setItem("poll_action_id", result._id)
+                pollTitle = result["title"]
             }
             if (this.classList[2] == "Feedback") {
                 popup("Feedback Added")
                 sessionStorage.setItem("feedback_action_id", result._id)
+                feedbackTitle = result["title"];
             }
+            handleHistory();
         })
         .catch(error => console.log('Action Error', error));
     disableBtn(this);
@@ -798,9 +827,18 @@ function AddPollQuestion(e) {
         }
         question.options.push(opti);
     })
-    pollQuestionsData.push(question);
-    console.log(questionsData)
-    popup("Poll Question Added")
+    if (this.value) {
+        pollQuestionsData.splice(this.value, 1, question);
+        console.log(pollQuestionsData);
+        this.value = null;
+        popup("Question Edited")
+    }
+    else {
+        pollQuestionsData.push(question);
+        console.log(pollQuestionsData)
+        popup("Poll Question Added")
+    }
+
     Form.reset()
 }
 
@@ -827,9 +865,18 @@ function addQuestion(e) {
         }
         question.options.push(opti);
     })
-    questionsData.push(question);
-    console.log(questionsData)
-    popup("Quiz Question Added")
+    if (this.value) {
+        questionsData.splice(this.value, 1, question);
+        console.log(questionsData);
+        this.value = null;
+        popup("Question Edited")
+    }
+    else {
+        questionsData.push(question);
+        console.log(questionsData)
+        popup("Quiz Question Added")
+    }
+
     Form.reset();
 }
 
@@ -959,10 +1006,18 @@ function addFeedbackQuestion(e) {
     const Form = document.querySelector(".feedback-create-container");
     let question = {};
     question.name = feedbackQuestion;
-    feedbackQuestions.push(question);
-    console.log(feedbackQuestions)
-    Form.reset();
-    popup("Feedback Question Added")
+    if (this.value) {
+        feedbackQuestions.splice(this.value, 1, question);
+        console.log(feedbackQuestions);
+        this.value = null;
+        popup("Question Edited")
+    }
+    else {
+        feedbackQuestions.push(question);
+        console.log(feedbackQuestions)
+        Form.reset();
+        popup("Feedback Question Added")
+    }
 
 }
 
@@ -1474,7 +1529,7 @@ let firstQuestionPublish = (id, type) => {
             console.log(result);
             if (type == "quiz") {
                 getQuizDetails();
-                createChart(ctx, sessionStorage.getItem("quizTheme"));
+                createChart(ctxa, sessionStorage.getItem("quizTheme"));
             }
             if (type == "poll") {
                 console.log("Action is poll")
@@ -1613,10 +1668,12 @@ function publishAction(e) {
     }
 }
 
+
 const PublishBtn = document.querySelectorAll(".publish-btn");
 PublishBtn.forEach(ele => {
     ele.addEventListener("click", publishAction);
 })
+
 
 /* Handling turning isOpen on actions to true: End */
 
@@ -1698,5 +1755,193 @@ let performCheck = () => {
     }
 }
 performCheck();
+
+
+
+
+let addFormData = (i, type) => {
+    console.log(i, type);
+}
+
+
+const formBtn = document.querySelectorAll(".form-btn");
+const reviewBtn = document.querySelectorAll(".review-btn");
+
+let renderReviewPage = (type) => {
+    let deetsDisplayDiv = document.querySelector(`.extra-${type}-deets`);
+    console.log(deetsDisplayDiv)
+    deetsDisplayDiv.innerHTML = "";
+    if (type == "quiz") {
+        console.log(questionsData)
+        let questionDeetsDiv;
+        questionsData.forEach((question, i) => {
+            questionDeetsDiv = document.createElement("div");
+            questionDeetsDiv.classList.add("question-deets");
+            let pSlno = document.createElement("p");
+            pSlno.innerHTML = `${(i + 1)}.`;
+            let pTitle = document.createElement("p");
+            pTitle.innerHTML = `${question["name"]}`
+            let Icons = document.createElement("div");
+            let icon1 = document.createElement("i")
+            let icon2 = document.createElement("i")
+            icon1.classList.add("material-icons");
+            icon2.classList.add("material-icons");
+            icon1.innerHTML = "delete";
+            icon2.innerHTML = "mode_edit";
+            icon1.addEventListener("click", () => {
+                console.log(i);
+                questionsData.splice(i, 1);
+                console.log(questionsData)
+                renderReviewPage("quiz");
+            })
+            icon2.addEventListener("click", () => {
+                let form = document.querySelector(`.quiz-create-container`);
+                let reviewControl = document.querySelector(`.quiz-summary`);
+                form.reset();
+                reviewControl.classList.remove("show");
+                form.classList.add("show-action");
+                document.querySelector("#add_question_btn").value = i;
+            })
+            Icons.appendChild(icon1);
+            Icons.appendChild(icon2);
+            questionDeetsDiv.appendChild(pSlno)
+            questionDeetsDiv.appendChild(pTitle);
+            questionDeetsDiv.appendChild(Icons);
+            deetsDisplayDiv.appendChild(questionDeetsDiv)
+        })
+
+    }
+    if (type == "poll") {
+        console.log(pollQuestionsData)
+        pollQuestionsData.forEach((question, i) => {
+            let questionDeetsDiv = document.createElement("div");
+            questionDeetsDiv.classList.add("question-deets");
+            let pSlno = document.createElement("p");
+            pSlno.innerHTML = `${(i + 1)}.`;
+            let pTitle = document.createElement("p");
+            pTitle.innerHTML = `${question["name"]}`
+            let Icons = document.createElement("div");
+            let icon1 = document.createElement("i")
+            let icon2 = document.createElement("i")
+            icon1.classList.add("material-icons");
+            icon2.classList.add("material-icons");
+            icon1.innerHTML = "delete";
+            icon2.innerHTML = "mode_edit";
+            icon1.addEventListener("click", () => {
+                pollQuestionsData.splice(i, 1);
+                console.log(pollQuestionsData)
+                renderReviewPage("poll");
+            })
+            icon2.addEventListener("click", () => {
+                let form = document.querySelector(`.poll-create-container`);
+                let reviewControl = document.querySelector(`.poll-summary`);
+                form.reset();
+                reviewControl.classList.remove("show");
+                form.classList.add("show-action");
+                document.querySelector("#add_poll_btn").value = i;
+            })
+            Icons.appendChild(icon1);
+            Icons.appendChild(icon2);
+            questionDeetsDiv.appendChild(pSlno)
+            questionDeetsDiv.appendChild(pTitle);
+            questionDeetsDiv.appendChild(Icons);
+            deetsDisplayDiv.appendChild(questionDeetsDiv)
+        })
+    }
+    if (type == "feedback") {
+        console.log(feedbackQuestions)
+        feedbackQuestions.forEach((question, i) => {
+            let questionDeetsDiv = document.createElement("div");
+            questionDeetsDiv.classList.add("question-deets");
+            let pSlno = document.createElement("p");
+            pSlno.innerHTML = `${(i + 1)}.`;
+            let pTitle = document.createElement("p");
+            pTitle.innerHTML = `${question["name"]}`
+            let Icons = document.createElement("div");
+            let icon1 = document.createElement("i")
+            let icon2 = document.createElement("i")
+            icon1.classList.add("material-icons");
+            icon2.classList.add("material-icons");
+            icon1.innerHTML = "delete";
+            icon2.innerHTML = "mode_edit";
+            icon1.addEventListener("click", () => {
+                console.log(i);
+                feedbackQuestions.splice(i, 1);
+                console.log(feedbackQuestions)
+                renderReviewPage("feedback");
+            })
+            icon2.addEventListener("click", () => {
+                let form = document.querySelector(`.feedback-create-container`);
+                form.reset();
+                let reviewControl = document.querySelector(`.feedback-summary`);
+                reviewControl.classList.remove("show");
+                form.classList.add("show-action");
+                document.querySelector("#add_feedback_btn").value = i;
+            })
+            Icons.appendChild(icon1);
+            Icons.appendChild(icon2);
+            questionDeetsDiv.appendChild(pSlno)
+            questionDeetsDiv.appendChild(pTitle);
+            questionDeetsDiv.appendChild(Icons);
+            deetsDisplayDiv.appendChild(questionDeetsDiv)
+        })
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ReviewPage(e) {
+    e.preventDefault();
+    console.log(this.classList)
+    let form = document.querySelector(`.${this.classList[2]}-create-container`);
+    let reviewControl = document.querySelector(`.${this.classList[2]}-summary`);
+    form.classList.remove("show-action")
+    reviewControl.classList.add("show");
+    renderReviewPage(this.classList[2]);
+}
+
+
+
+
+function FormPage() {
+    let form = document.querySelector(`.${this.classList[1]}-create-container`);
+    let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
+    reviewControl.classList.remove("show");
+    form.classList.add("show-action");
+}
+
+
+
+
+
+reviewBtn.forEach((ele) => {
+    ele.addEventListener("click", ReviewPage)
+})
+
+formBtn.forEach(ele => {
+    ele.addEventListener("click", FormPage)
+})
+
+
+
+
+
+
+
+
+
+
+
 
 

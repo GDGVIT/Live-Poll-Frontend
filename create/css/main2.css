@@ -732,6 +732,46 @@ label[for = "theme_feedback"] {
 }
 
 
+.quiz-summary, .poll-summary, .feedback-summary{
+    display: none;
+}
+
+.Quiz-internal, .Poll-internal, .Feedback-internal{
+    display: none;
+}
+.current-quiz-deets, .current-poll-deets, .current-feedback-deets{
+    display: block;
+    width: 90%;
+    margin: auto;
+}
+.quiz-title{
+    margin-bottom: 30px;
+}
+.question-deets{
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    justify-items: left;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: solid 2px rgb(204, 204, 204);
+}
+.publish-btn{
+    position: relative;
+    left: 50%;
+    margin: 50px 0;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+}
+.extra-quiz-deets,.extra-poll-deets{
+    position: relative;
+
+}
+
+
+
+
+
 
 
 ::-webkit-scrollbar {

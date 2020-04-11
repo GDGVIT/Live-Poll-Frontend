@@ -54,11 +54,11 @@
                                 <p id="event_code" class="event-code"></p>
                                 <div class="add-action">
                                     <h1>Add Action</h1>
-                                    <button class="main-button"
+                                    <button class="main-button action-redirect"
                                         onclick='goTo(quizSelector); quizSelector.forEach(ele => {ele.style.color = "black"; ele.addEventListener("click", selectItem);})'>Quiz</button>
-                                    <button class="main-button"
+                                    <button class="main-button action-redirect"
                                         onclick='goTo(feedbackSelector); feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })'>Feedback</button>
-                                    <button class="main-button"
+                                    <button class="main-button action-redirect"
                                         onclick='goTo(pollSelector); pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })'>Poll</button>
                                 </div>
                             </div>
@@ -113,74 +113,93 @@
 
                         </div>
                         <div class="quiz-create create show-select">
-                            <form action="" method="post" class="quiz-create-container Quiz-internal show-action"
-                                id="question_form">
-                                <label for="question_name">Question</label>
-                                <input type="text" id="question_name" class="main-input" placeholder="Enter Question">
-                                <label for="correct_option">Correct Option</label>
-                                <input type="text" id="correct_option" class="main-input"
-                                    placeholder="Correct Option(must match an option)">
-                                <label for="quiz_options">Options</label>
-                                <div id="quiz_options_div"><input type="text" class="main-input quiz-option"
-                                        placeholder="Enter Option"></div>
-                                <div class="add-remove-options">
-                                    <button class="add-option-btn quiz_options main-button">+ Add</button>
-                                    <button class="delete-option-btn quiz_options main-button">- Remove</button>
-                                </div>
-                                <label for="theme">Theme</label>
-                                <div id="theme" class="theme">
-                                    <button class="main-button theme-btn quiz pie pie-quiz">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="30.002" height="30.003">
-                                            <rect width="100%" height="100%" x="0" y="0" fill="none" stroke="none" />
-                                            <g class="currentLayer">
-                                                <title>Layer 1</title>
-                                                <g class="pie-quiz-white icon" data-name="Group 29" fill="#2784FB"
-                                                    fill-opacity="1">
-                                                    <path data-name="Path 62"
-                                                        d="M16.283 14.344h13.09a.626.626 0 0 0 .624-.68A14.979 14.979 0 0 0 16.339.004a.632.632 0 0 0-.477.162.626.626 0 0 0-.2.462v13.09a.626.626 0 0 0 .621.626z" />
-                                                    <path data-name="Path 63"
-                                                        d="M29.375 15.597H18.057a.626.626 0 0 0-.443 1.069l8.006 8.006a.625.625 0 0 0 .443.184h.027a.626.626 0 0 0 .453-.223A14.919 14.919 0 0 0 30 16.278a.626.626 0 0 0-.624-.68z" />
-                                                    <path data-name="Path 64"
-                                                        d="M14.591 15.414a.641.641 0 0 1-.184-.443V.628a.626.626 0 0 0-.2-.462.608.608 0 0 0-.481-.165 15.028 15.028 0 1 0 10.965 26.48.626.626 0 0 0 .04-.922z" />
+                            <div class="Quiz-internal show-action">
+                                <form action="" method="post" class="quiz-create-container show-action"
+                                    id="question_form">
+                                    <label for="question_name">Question</label>
+                                    <input type="text" id="question_name" class="main-input"
+                                        placeholder="Enter Question">
+                                    <label for="correct_option">Correct Option</label>
+                                    <input type="text" id="correct_option" class="main-input"
+                                        placeholder="Correct Option(must match an option)">
+                                    <label for="quiz_options">Options</label>
+                                    <div id="quiz_options_div"><input type="text" class="main-input quiz-option"
+                                            placeholder="Enter Option"></div>
+                                    <div class="add-remove-options">
+                                        <button class="add-option-btn quiz_options main-button">+ Add</button>
+                                        <button class="delete-option-btn quiz_options main-button">- Remove</button>
+                                    </div>
+                                    <label for="theme">Theme</label>
+                                    <div id="theme" class="theme">
+                                        <button class="main-button theme-btn quiz pie pie-quiz">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30.002" height="30.003">
+                                                <rect width="100%" height="100%" x="0" y="0" fill="none"
+                                                    stroke="none" />
+                                                <g class="currentLayer">
+                                                    <title>Layer 1</title>
+                                                    <g class="pie-quiz-white icon" data-name="Group 29" fill="#2784FB"
+                                                        fill-opacity="1">
+                                                        <path data-name="Path 62"
+                                                            d="M16.283 14.344h13.09a.626.626 0 0 0 .624-.68A14.979 14.979 0 0 0 16.339.004a.632.632 0 0 0-.477.162.626.626 0 0 0-.2.462v13.09a.626.626 0 0 0 .621.626z" />
+                                                        <path data-name="Path 63"
+                                                            d="M29.375 15.597H18.057a.626.626 0 0 0-.443 1.069l8.006 8.006a.625.625 0 0 0 .443.184h.027a.626.626 0 0 0 .453-.223A14.919 14.919 0 0 0 30 16.278a.626.626 0 0 0-.624-.68z" />
+                                                        <path data-name="Path 64"
+                                                            d="M14.591 15.414a.641.641 0 0 1-.184-.443V.628a.626.626 0 0 0-.2-.462.608.608 0 0 0-.481-.165 15.028 15.028 0 1 0 10.965 26.48.626.626 0 0 0 .04-.922z" />
+                                                    </g>
                                                 </g>
-                                            </g>
-                                        </svg>
-                                        <p class="pie-quiz-text theme-text">pie chart</p>
-                                    </button>
-                                    <button class="main-button theme-btn quiz bar bar-quiz">
-                                        <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
-                                            width="29.139" height="26.71" viewBox="0 0 29.139 26.71">
-                                            <path class="bar-quiz-white icon" id="Path_61" data-name="Path 61"
-                                                d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
-                                                transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
-                                        <p class="bar-quiz-text theme-text">bar chart</p>
-                                    </button>
-                                    <button class="main-button theme-btn quiz scatter scatter-quiz">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="53" height="27"
-                                            viewBox="0 0 53 27">
-                                            <g data-name="Group 115" transform="translate(0 -.44)" fill="#2784FB"
-                                                class="scatter-quiz-white icon">
-                                                <circle data-name="Ellipse 1" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(0 4.44)" />
-                                                <circle data-name="Ellipse 2" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(10 4.44)" />
-                                                <ellipse data-name="Ellipse 3" cx="4.5" cy="5" rx="4.5" ry="5"
-                                                    transform="translate(26 17.44)" />
-                                                <circle data-name="Ellipse 4" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(33 10.44)" />
-                                                <circle data-name="Ellipse 5" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(44 .44)" />
-                                            </g>
-                                        </svg>
-                                        <p class="scatter-quiz-text theme-text">scatter plot</p>
-                                    </button>
-                                </div>
-                                <div class="quiz-actions">
-                                    <button id="add_question_btn" class="main-button quiz">+ Add Question</button>
+                                            </svg>
+                                            <p class="pie-quiz-text theme-text">pie chart</p>
+                                        </button>
+                                        <button class="main-button theme-btn quiz bar bar-quiz">
+                                            <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
+                                                width="29.139" height="26.71" viewBox="0 0 29.139 26.71">
+                                                <path class="bar-quiz-white icon" id="Path_61" data-name="Path 61"
+                                                    d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
+                                                    transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
+                                            <p class="bar-quiz-text theme-text">bar chart</p>
+                                        </button>
+                                        <button class="main-button theme-btn quiz scatter scatter-quiz">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="53" height="27"
+                                                viewBox="0 0 53 27">
+                                                <g data-name="Group 115" transform="translate(0 -.44)" fill="#2784FB"
+                                                    class="scatter-quiz-white icon">
+                                                    <circle data-name="Ellipse 1" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(0 4.44)" />
+                                                    <circle data-name="Ellipse 2" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(10 4.44)" />
+                                                    <ellipse data-name="Ellipse 3" cx="4.5" cy="5" rx="4.5" ry="5"
+                                                        transform="translate(26 17.44)" />
+                                                    <circle data-name="Ellipse 4" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(33 10.44)" />
+                                                    <circle data-name="Ellipse 5" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(44 .44)" />
+                                                </g>
+                                            </svg>
+                                            <p class="scatter-quiz-text theme-text">scatter plot</p>
+                                        </button>
+                                    </div>
+                                    <div class="quiz-actions">
+                                        <button id="add_question_btn" class="main-button quiz">+ Add Question</button>
+                                        <button class="main-button review-btn quiz" id="">Review Quiz</button>
+                                    </div>
+                                </form>
+                                <div class="quiz-summary">
+                                    <button class="back-btn quiz form-btn"><img src="../img/back.png" alt=""></button>
+                                    <div class="current-quiz-deets">
+                                        <h1 class="quiz-title">Quiz title: </h1>
+                                        <div class="question-deets first-deet">
+                                            <p>Serial No.</p>
+                                            <p>Question title</p>
+                                            <p>Alterations</p>
+                                        </div>
+                                        <div class="extra-quiz-deets">
+
+                                        </div>
+                                    </div>
                                     <button class="invert-btn quiz main-button publish-btn" id="publish_quiz">Publish
                                         Quiz</button>
                                 </div>
-                            </form>
+                            </div>
                             <div class="Quiz-name">
                                 <form action="" method="post" class="name-div">
                                     <label for="Quiz_name">Title</label>
@@ -208,71 +227,88 @@
                             </div>
                         </div>
                         <div class="poll-create create show-select">
-                            <form action="" method="post" class="poll-create-container Poll-internal show-action"
-                                id="poll_form">
-                                <label for="poll_name">Question</label>
-                                <input type="text" id="poll_name" class="main-input" placeholder="Enter Question">
-                                <label for="poll_options">Options</label>
-                                <div id="poll_options_div"><input type="text" class="main-input poll-option"
-                                        placeholder="Enter Option"></div>
-                                <div class="add-remove-options">
-                                    <button class="add-option-btn poll_options main-button">+ Add</button>
-                                    <button class="delete-option-btn poll_options main-button">- Remove</button>
-                                </div>
-                                <label for="theme_poll">Theme</label>
-                                <div id="theme_poll" class="theme">
-                                    <button class="main-button theme-btn poll pie pie-poll">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="30.002" height="30.003">
-                                            <rect width="100%" height="100%" x="0" y="0" fill="none" stroke="none" />
-                                            <g class="currentLayer">
-                                                <title>Layer 1</title>
-                                                <g class="pie-poll-white icon" data-name="Group 29" fill="#2784FB"
-                                                    fill-opacity="1">
-                                                    <path data-name="Path 62"
-                                                        d="M16.283 14.344h13.09a.626.626 0 0 0 .624-.68A14.979 14.979 0 0 0 16.339.004a.632.632 0 0 0-.477.162.626.626 0 0 0-.2.462v13.09a.626.626 0 0 0 .621.626z" />
-                                                    <path data-name="Path 63"
-                                                        d="M29.375 15.597H18.057a.626.626 0 0 0-.443 1.069l8.006 8.006a.625.625 0 0 0 .443.184h.027a.626.626 0 0 0 .453-.223A14.919 14.919 0 0 0 30 16.278a.626.626 0 0 0-.624-.68z" />
-                                                    <path data-name="Path 64"
-                                                        d="M14.591 15.414a.641.641 0 0 1-.184-.443V.628a.626.626 0 0 0-.2-.462.608.608 0 0 0-.481-.165 15.028 15.028 0 1 0 10.965 26.48.626.626 0 0 0 .04-.922z" />
+                            <div class="Poll-internal show-action">
+                                <form action="" method="post" class="poll-create-container show-action" id="poll_form">
+                                    <label for="poll_name">Question</label>
+                                    <input type="text" id="poll_name" class="main-input" placeholder="Enter Question">
+                                    <label for="poll_options">Options</label>
+                                    <div id="poll_options_div"><input type="text" class="main-input poll-option"
+                                            placeholder="Enter Option"></div>
+                                    <div class="add-remove-options">
+                                        <button class="add-option-btn poll_options main-button">+ Add</button>
+                                        <button class="delete-option-btn poll_options main-button">- Remove</button>
+                                    </div>
+                                    <label for="theme_poll">Theme</label>
+                                    <div id="theme_poll" class="theme">
+                                        <button class="main-button theme-btn poll pie pie-poll">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30.002" height="30.003">
+                                                <rect width="100%" height="100%" x="0" y="0" fill="none"
+                                                    stroke="none" />
+                                                <g class="currentLayer">
+                                                    <title>Layer 1</title>
+                                                    <g class="pie-poll-white icon" data-name="Group 29" fill="#2784FB"
+                                                        fill-opacity="1">
+                                                        <path data-name="Path 62"
+                                                            d="M16.283 14.344h13.09a.626.626 0 0 0 .624-.68A14.979 14.979 0 0 0 16.339.004a.632.632 0 0 0-.477.162.626.626 0 0 0-.2.462v13.09a.626.626 0 0 0 .621.626z" />
+                                                        <path data-name="Path 63"
+                                                            d="M29.375 15.597H18.057a.626.626 0 0 0-.443 1.069l8.006 8.006a.625.625 0 0 0 .443.184h.027a.626.626 0 0 0 .453-.223A14.919 14.919 0 0 0 30 16.278a.626.626 0 0 0-.624-.68z" />
+                                                        <path data-name="Path 64"
+                                                            d="M14.591 15.414a.641.641 0 0 1-.184-.443V.628a.626.626 0 0 0-.2-.462.608.608 0 0 0-.481-.165 15.028 15.028 0 1 0 10.965 26.48.626.626 0 0 0 .04-.922z" />
+                                                    </g>
                                                 </g>
-                                            </g>
-                                        </svg>
-                                        <p class="pie-poll-text theme-text">pie chart</p>
-                                    </button>
-                                    <button class="main-button theme-btn poll bar bar-poll">
-                                        <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
-                                            width="29.139" height="26.71" viewBox="0 0 29.139 26.71">
-                                            <path class="bar-poll-white icon" id="Path_61" data-name="Path 61"
-                                                d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
-                                                transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
-                                        <p class="bar-poll-text theme-text">bar graph</p>
-                                    </button>
-                                    <button class="main-button theme-btn poll scatter scatter-poll">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="53" height="27"
-                                            viewBox="0 0 53 27">
-                                            <g data-name="Group 115" transform="translate(0 -.44)" fill="#2784FB"
-                                                class="scatter-poll-white icon">
-                                                <circle data-name="Ellipse 1" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(0 4.44)" />
-                                                <circle data-name="Ellipse 2" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(10 4.44)" />
-                                                <ellipse data-name="Ellipse 3" cx="4.5" cy="5" rx="4.5" ry="5"
-                                                    transform="translate(26 17.44)" />
-                                                <circle data-name="Ellipse 4" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(33 10.44)" />
-                                                <circle data-name="Ellipse 5" cx="4.5" cy="4.5" r="4.5"
-                                                    transform="translate(44 .44)" />
-                                            </g>
-                                        </svg>
-                                        <p class="scatter-poll-text theme-text">scatter plot</p>
-                                    </button>
-                                </div>
-                                <div class="poll-actions">
-                                    <button id="add_poll_btn" class="main-button poll">+ Add Poll</button>
+                                            </svg>
+                                            <p class="pie-poll-text theme-text">pie chart</p>
+                                        </button>
+                                        <button class="main-button theme-btn poll bar bar-poll">
+                                            <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
+                                                width="29.139" height="26.71" viewBox="0 0 29.139 26.71">
+                                                <path class="bar-poll-white icon" id="Path_61" data-name="Path 61"
+                                                    d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
+                                                    transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
+                                            <p class="bar-poll-text theme-text">bar graph</p>
+                                        </button>
+                                        <button class="main-button theme-btn poll scatter scatter-poll">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="53" height="27"
+                                                viewBox="0 0 53 27">
+                                                <g data-name="Group 115" transform="translate(0 -.44)" fill="#2784FB"
+                                                    class="scatter-poll-white icon">
+                                                    <circle data-name="Ellipse 1" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(0 4.44)" />
+                                                    <circle data-name="Ellipse 2" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(10 4.44)" />
+                                                    <ellipse data-name="Ellipse 3" cx="4.5" cy="5" rx="4.5" ry="5"
+                                                        transform="translate(26 17.44)" />
+                                                    <circle data-name="Ellipse 4" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(33 10.44)" />
+                                                    <circle data-name="Ellipse 5" cx="4.5" cy="4.5" r="4.5"
+                                                        transform="translate(44 .44)" />
+                                                </g>
+                                            </svg>
+                                            <p class="scatter-poll-text theme-text">scatter plot</p>
+                                        </button>
+                                    </div>
+                                    <div class="poll-actions">
+                                        <button id="add_poll_btn" class="main-button poll">+ Add Poll</button>
+                                        <button class="main-button review-btn poll">Review Poll</button>
+                                    </div>
+                                </form>
+                                <div class="poll-summary">
+                                    <button class="back-btn poll form-btn"><img src="../img/back.png" alt=""></button>
+                                    <div class="current-poll-deets">
+                                        <h1 class="poll-title">Quiz title: </h1>
+                                        <div class="question-deets first-deet">
+                                            <p>Serial No.</p>
+                                            <p>Question title</p>
+                                            <p>Alterations</p>
+                                        </div>
+                                        <div class="extra-poll-deets">
+                                            
+                                        </div>
+                                    </div>
                                     <button class="invert-btn poll main-button publish-btn" id="publish_poll">Publish
                                         Poll</button>
                                 </div>
-                            </form>
+                            </div>
                             <div class="Poll-name">
                                 <form action="" method="post" class="name-div">
                                     <label for="Poll_name">Title</label>
@@ -307,35 +343,51 @@
                             </div>
                         </div>
                         <div class="feedback-create create show-select">
-                            <form action="" method="post"
-                                class="feedback-create-container Feedback-internal show-action">
-                                <label for="feedback_name">Question</label>
-                                <textarea rows="3" type="text" id="feedback_name" class="main-input"
-                                    placeholder="Enter Feedback Question"></textarea>
-                                <label for="theme_feedback">Theme</label>
-                                <div class="theme" id="theme_feedback">
-                                    <button class="main-button theme-btn feedback box box-feedback">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="18"
-                                            viewBox="0 0 42 18">
-                                            <path class="box-feedback-white icon" id="Path_106" data-name="Path 106"
-                                                d="M0,0H42V18H0Z" fill="#2784FB" /> </svg>
-                                        <p class="theme-text">One by one</p>
-                                    </button>
-                                    <button class="main-button theme-btn feedback cont cont-feedback">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="18"
-                                            viewBox="0 0 42 18">
-                                            <path class="cont-feedback-white icon" id="Path_106" data-name="Path 106"
-                                                d="M0,0H42V18H0Z" fill="#2784FB" /> </svg>
-                                        <p class="theme-text">continuous</p>
-                                    </button>
-                                </div>
-                                <div class="feedback-actions">
-                                    <button id="add_feedback_btn" class="main-button feedback">+ Add Question</button>
-                                    <button class="invert-btn feedback main-button publish-btn"
-                                        id="publish_feedback">Publish
+                            <div action="" method="post" class="Feedback-internal show-action">
+                                <form action="" method="post" class="feedback-create-container show-action" id="feedback_form">
+                                    <label for="feedback_name">Question</label>
+                                    <textarea rows="3" type="text" id="feedback_name" class="main-input"
+                                        placeholder="Enter Feedback Question"></textarea>
+                                    <label for="theme_feedback">Theme</label>
+                                    <div class="theme" id="theme_feedback">
+                                        <button class="main-button theme-btn feedback box box-feedback">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="18"
+                                                viewBox="0 0 42 18">
+                                                <path class="box-feedback-white icon" id="Path_106" data-name="Path 106"
+                                                    d="M0,0H42V18H0Z" fill="#2784FB" /> </svg>
+                                            <p class="theme-text">One by one</p>
+                                        </button>
+                                        <button class="main-button theme-btn feedback cont cont-feedback">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="18"
+                                                viewBox="0 0 42 18">
+                                                <path class="cont-feedback-white icon" id="Path_106"
+                                                    data-name="Path 106" d="M0,0H42V18H0Z" fill="#2784FB" /> </svg>
+                                            <p class="theme-text">continuous</p>
+                                        </button>
+                                    </div>
+                                    <div class="feedback-actions">
+                                        <button id="add_feedback_btn" class="main-button feedback">+ Add
+                                            Question</button>
+                                        <button class="main-button review-btn feedback">Review Feedback</button>
+                                    </div>
+                                </form>
+                                <div class="feedback-summary">
+                                    <button class="back-btn feedback form-btn"><img src="../img/back.png" alt=""></button>
+                                    <div class="current-feedback-deets">
+                                        <h1 class="feedback-title">Quiz title: </h1>
+                                        <div class="question-deets first-deet">
+                                            <p>Serial No.</p>
+                                            <p>Question title</p>
+                                            <p>Alterations</p>
+                                        </div>
+                                        <div class="extra-feedback-deets">
+
+                                        </div>
+                                    </div>
+                                    <button class="invert-btn feedback main-button publish-btn" id="publish_feedback">Publish
                                         Feedback</button>
                                 </div>
-                            </form>
+                            </div>
                             <div class="Feedback-name">
                                 <form action="" method="post" class="name-div">
                                     <label for="Feedback_name">Title</label>

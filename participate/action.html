@@ -179,9 +179,11 @@
             font-size: 1rem;
             margin-top: 30px;
         }
-        .feedback_info{
+
+        .feedback_info {
             width: 100%;
         }
+
         @media only screen and (max-width: 600px) {
             .main-container {
                 width: 90%;
@@ -219,10 +221,12 @@
                 min-width: 0;
                 font-size: 1rem;
             }
-            .feedback_info{
+
+            .feedback_info {
                 width: 80%;
             }
-            .submit{
+
+            .submit {
                 width: 70%;
                 margin-top: 30px;
             }
@@ -308,7 +312,14 @@
                             }
                         }
                         else {
-                            console.log("action is not open")
+                            renderQuiz({
+                                name: "The quiz has ended",
+                                options: []
+                            })
+                            document.querySelector(".text").innerHTML = "";
+                            setTimeout(() => {
+                                window.location.href = "event2.html";
+                            }, 2000)
                         }
                     }
                 })
@@ -318,7 +329,7 @@
 
 
         let renderFeedback = (question) => {
-            if (feedbackNo > (feedbackQuestions.length-1)) {
+            if (feedbackNo > (feedbackQuestions.length - 1)) {
                 questionDiv.innerHTML = "Thank you for your feedback";
                 document.querySelector(".text").innerHTML = "";
                 feedbackInfo.classList.add("not-show");
@@ -409,14 +420,7 @@
                 console.log(socket.connected)
                 socket.on("quiz ended", (data) => {
                     if (data == actionId) {
-                        renderQuiz({
-                            name: "The quiz has ended",
-                            options: []
-                        })
-                        document.querySelector(".text").innerHTML = "";
-                        setTimeout(()=>{
-                            window.location.href = "event2.html";
-                        },2000)
+
                     }
                 })
             })
