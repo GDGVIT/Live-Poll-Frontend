@@ -613,6 +613,7 @@ label[for = "theme_feedback"] {
     padding: 10px 0;
     width: fit-content;
     width: -moz-fit-content;
+    list-style-type: disc;
 }
 .actions > p{
     cursor: pointer;

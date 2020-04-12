@@ -420,9 +420,9 @@ let renderEventHistory = (event, actions, just) => {
     li1.appendChild(li1Header)
     li2.appendChild(li2Header)
     li3.appendChild(li3Header)
-    let quizzesDiv = document.createElement("div");
-    let pollsDiv = document.createElement("div");
-    let feedbacksDiv = document.createElement("div");
+    let quizzesDiv = document.createElement("ul");
+    let pollsDiv = document.createElement("ul");
+    let feedbacksDiv = document.createElement("ul");
     quizzesDiv.classList.add("collapsible-body")
     quizzesDiv.classList.add("actions")
     pollsDiv.classList.add("collapsible-body")
@@ -431,7 +431,7 @@ let renderEventHistory = (event, actions, just) => {
     feedbacksDiv.classList.add("actions")
 
     actions.forEach((ele, i) => {
-        let p = document.createElement("p");
+        let p = document.createElement("li");
         p.id = `${ele["_id"]}`
         p.value = `${event["_id"]}`
         p.addEventListener("click", () => {
@@ -439,17 +439,17 @@ let renderEventHistory = (event, actions, just) => {
         })
         if (ele["action_type"] == "Quiz") {
             quizno++;
-            p.innerHTML = `${quizno}.${ele["title"]}`
+            p.innerHTML = `${ele["title"]}`
             quizzesDiv.appendChild(p)
         }
         if (ele["action_type"] == "Poll") {
             pollno++;
-            p.innerHTML = `${pollno}.${ele["title"]}`
+            p.innerHTML = `${ele["title"]}`
             pollsDiv.appendChild(p)
         }
         if (ele["action_type"] == "Feedback") {
             feedbackno++;
-            p.innerHTML = `${feedbackno}.${ele["title"]}`
+            p.innerHTML = `${ele["title"]}`
             feedbacksDiv.appendChild(p)
         }
     })
