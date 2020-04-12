@@ -733,6 +733,7 @@ let loggedIn = () => {
 loggedIn();
 let handleLogin = (e) => {
     e.preventDefault();
+    addLoader(loginButton);
     const userEmail = document.querySelector("#user_email");
     const userPass = document.querySelector("#user_pass");
     const loginForm = document.querySelector("#login_form");
@@ -754,8 +755,14 @@ let handleLogin = (e) => {
         .then(result => {
             sessionStorage.setItem("auth_key", result["Auth Token"])
             loggedIn();
+            popup("Logged In")
+            removeLoader(loginButton, "Login")
         })
-        .catch(error => console.log('error', error));
+        .catch(error => {
+            console.log('error', error)
+            removeLoader(loginButton, "Login")
+            popup("Invalid Credentials", "Error")
+        });
 
     disableBtn(loginButton);
 
@@ -825,6 +832,7 @@ function createEvent(e) {
             return;
         }
     }
+    addLoader(createEventBtn)
     const data = {
         Name: EventName.value,
     }
@@ -844,6 +852,7 @@ function createEvent(e) {
         .then(response => { return response.json() })
         .then(result => {
             console.log("Event Added", result);
+            removeLoader(createEventBtn, "Generate Event Code")
             sessionStorage.setItem("event_id", result._id);
             sessionStorage.setItem("the_current_event", result)
             AddActionDiv.classList.add("show");
@@ -855,6 +864,7 @@ function createEvent(e) {
         })
         .catch(error => {
             console.log('Event Error', error);
+            removeLoader(createEventBtn, "Generate Event Code")
             popup("Event Generation Error", "Error")
         });
 
@@ -906,6 +916,7 @@ createEventBtn.addEventListener("click", createEvent)
 
 function AddAction(e) {
     e.preventDefault();
+    addLoader(this);
     const name = document.querySelector(`#${this.classList[2]}_name`);
     const action_data = {
         action_type: this.classList[2],
@@ -928,21 +939,25 @@ function AddAction(e) {
             document.querySelector(`.${this.classList[2]}-name`).classList.remove("show-action")
             document.querySelector(`.${this.classList[2]}-internal`).classList.add("show-action");
             name.value = "";
+
             if (this.classList[2] == "Quiz") {
                 popup("Quiz Added")
                 sessionStorage.setItem("quiz_action_id", result._id);
                 console.log(sessionStorage.getItem("quiz_action_id"))
                 sessionStorage.setItem("quiz-Title", result["title"]);
+                removeLoader(this, "Make Quiz")
             }
             if (this.classList[2] == "Poll") {
                 popup("Poll Added")
                 sessionStorage.setItem("poll_action_id", result._id)
                 sessionStorage.setItem("poll-Title", result["title"])
+                removeLoader(this, "Make Poll")
             }
             if (this.classList[2] == "Feedback") {
                 popup("Feedback Added")
                 sessionStorage.setItem("feedback_action_id", result._id)
                 sessionStorage.setItem("feedback-Title", result["title"]);
+                removeLoader(this, "Make Feedback")
             }
             handleHistory();
         })
@@ -1750,7 +1765,7 @@ function publishAction(e) {
     if (this.id == "publish_quiz") {
         if (sessionStorage.getItem("quiz_action_id")) {
             actid = sessionStorage.getItem("quiz_action_id");
-
+            addLoader(this)
             var myHeaders = new Headers();
             myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
             myHeaders.append("Content-Type", "application/json")
@@ -1776,7 +1791,7 @@ function publishAction(e) {
 
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
                         .then(response => response.text())
-                        .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); })
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); removeLoader(this, "Publish Quiz") })
                         .catch(error => console.log('error', error));
                 })
                 .catch(error => console.log('error', error));
@@ -1788,7 +1803,7 @@ function publishAction(e) {
     if (this.id == "publish_poll") {
         if (sessionStorage.getItem("poll_action_id")) {
             actid = sessionStorage.getItem("poll_action_id");
-
+            addLoader(this)
             var myHeaders = new Headers();
             myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
             myHeaders.append("Content-Type", "application/json")
@@ -1813,7 +1828,7 @@ function publishAction(e) {
 
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
                         .then(response => response.text())
-                        .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); })
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); removeLoader(this, "Publish Poll") })
                         .catch(error => console.log('error', error));
                 })
                 .catch(error => console.log('error', error));
@@ -1826,7 +1841,7 @@ function publishAction(e) {
     if (this.id == "publish_feedback") {
         if (sessionStorage.getItem("feedback_action_id")) {
             actid = sessionStorage.getItem("feedback_action_id");
-
+            addLoader(this)
             var myHeaders = new Headers();
             myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
             myHeaders.append("Content-Type", "application/json")
@@ -1850,7 +1865,7 @@ function publishAction(e) {
 
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
                         .then(response => response.text())
-                        .then(result => { console.log(result); firstQuestionPublish(actid, "feedback") })
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "feedback"); removeLoader(this, "Publish Feedback") })
                         .catch(error => console.log('error', error));
                 })
                 .catch(error => console.log('error', error));
