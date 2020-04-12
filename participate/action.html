@@ -278,6 +278,7 @@
         const submitBtn = document.querySelector(".submit");
         const feedbackInfo = document.querySelector(".feedback_info");
         let feedbackNo = 0;
+        let eventType;
         let fetchQuestions = () => {
             var requestOptions = {
                 method: 'GET',
@@ -297,6 +298,7 @@
                         console.log("Error")
                     }
                     else {
+                        eventType = result["action_type"];
                         console.log(result)
                         if (result["isOpen"] == true) {
                             if (result["action_type"] == "Feedback") {
@@ -316,7 +318,7 @@
                         }
                         else {
                             renderQuiz({
-                                name: "The quiz has ended",
+                                name: `The ${eventType} has ended`,
                                 options: []
                             })
                             document.querySelector(".text").innerHTML = "";
@@ -424,7 +426,7 @@
                 socket.on("quiz ended", (data) => {
                     if (data == actionId) {
                         renderQuiz({  
-                            name: "The quiz has ended",
+                            name: `The ${eventType} has ended`,
                             options: []
                         })
                         document.querySelector(".text").innerHTML = "";
