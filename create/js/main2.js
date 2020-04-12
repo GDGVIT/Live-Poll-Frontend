@@ -777,13 +777,13 @@ function ActionRedirect(e){
     if (this.innerHTML == "Poll") {
         sessionStorage.removeItem("poll_action_id");
         performCheck();
-        feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
         goTo(pollSelector)
     }
     if (this.innerHTML == "Feedback") {
         sessionStorage.removeItem("feedback_action_id");
         performCheck();
-        pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
         goTo(feedbackSelector)
     }
 }
@@ -809,17 +809,13 @@ createEventBtn.addEventListener("click", createEvent)
 /* Adding Actions */
 
 
-let quizTitle;
-let pollTitle;
-let feedbackTitle;
-
 
 function AddAction(e) {
     e.preventDefault();
-    const name = document.querySelector(`#${this.classList[2]}_name`).value;
+    const name = document.querySelector(`#${this.classList[2]}_name`);
     const action_data = {
         action_type: this.classList[2],
-        title: name
+        title: name.value
     }
     console.log(JSON.stringify(action_data))
     var requestOptions = {
@@ -837,21 +833,22 @@ function AddAction(e) {
             console.log("Action Added", result);
             document.querySelector(`.${this.classList[2]}-name`).classList.remove("show-action")
             document.querySelector(`.${this.classList[2]}-internal`).classList.add("show-action");
+            name.value = "";
             if (this.classList[2] == "Quiz") {
                 popup("Quiz Added")
                 sessionStorage.setItem("quiz_action_id", result._id);
                 console.log(sessionStorage.getItem("quiz_action_id"))
-                quizTitle = result["title"];
+                sessionStorage.setItem("quiz-Title",result["title"]);
             }
             if (this.classList[2] == "Poll") {
                 popup("Poll Added")
                 sessionStorage.setItem("poll_action_id", result._id)
-                pollTitle = result["title"]
+                sessionStorage.setItem("poll-Title",result["title"])
             }
             if (this.classList[2] == "Feedback") {
                 popup("Feedback Added")
                 sessionStorage.setItem("feedback_action_id", result._id)
-                feedbackTitle = result["title"];
+                sessionStorage.setItem("feedback-Title",result["title"]);
             }
             handleHistory();
         })
@@ -897,7 +894,8 @@ function AddPollQuestion(e) {
     if (this.value) {
         pollQuestionsData.splice(this.value, 1, question);
         console.log(pollQuestionsData);
-        this.value = null;
+        this.removeAttribute("value")
+        this.innerHTML = "+ Add Poll Question";
         popup("Question Edited")
     }
     else {
@@ -935,7 +933,8 @@ function addQuestion(e) {
     if (this.value) {
         questionsData.splice(this.value, 1, question);
         console.log(questionsData);
-        this.value = null;
+        this.removeAttribute("value")
+        this.innerHTML = "+ Add Question";
         popup("Question Edited")
     }
     else {
@@ -1076,7 +1075,8 @@ function addFeedbackQuestion(e) {
     if (this.value) {
         feedbackQuestions.splice(this.value, 1, question);
         console.log(feedbackQuestions);
-        this.value = null;
+        this.removeAttribute("value")
+        this.innerHTML = "+ Add Question";
         popup("Question Edited")
     }
     else {
@@ -1863,6 +1863,8 @@ const reviewBtn = document.querySelectorAll(".review-btn");
 
 let renderReviewPage = (type) => {
     let deetsDisplayDiv = document.querySelector(`.extra-${type}-deets`);
+    let title = document.querySelector(`.${type}-title`);
+    title.innerHTML =  "Action Title: " + sessionStorage.getItem(`${type}-Title`);
     console.log(deetsDisplayDiv)
     deetsDisplayDiv.innerHTML = "";
     if (type == "quiz") {
@@ -1876,6 +1878,7 @@ let renderReviewPage = (type) => {
             let pTitle = document.createElement("p");
             pTitle.innerHTML = `${question["name"]}`
             let Icons = document.createElement("div");
+            Icons.classList.add("alt-icons")
             let icon1 = document.createElement("i")
             let icon2 = document.createElement("i")
             icon1.classList.add("material-icons");
@@ -1894,6 +1897,7 @@ let renderReviewPage = (type) => {
                 form.reset();
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
+                document.querySelector("#add_question_btn").innerHTML = "Insert Edited Question";
                 document.querySelector("#add_question_btn").value = i;
             })
             Icons.appendChild(icon1);
@@ -1915,6 +1919,7 @@ let renderReviewPage = (type) => {
             let pTitle = document.createElement("p");
             pTitle.innerHTML = `${question["name"]}`
             let Icons = document.createElement("div");
+            Icons.classList.add("alt-icons")
             let icon1 = document.createElement("i")
             let icon2 = document.createElement("i")
             icon1.classList.add("material-icons");
@@ -1932,6 +1937,7 @@ let renderReviewPage = (type) => {
                 form.reset();
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
+                document.querySelector("#add_poll_btn").innerHTML = "Insert Edited Question"
                 document.querySelector("#add_poll_btn").value = i;
             })
             Icons.appendChild(icon1);
@@ -1952,6 +1958,7 @@ let renderReviewPage = (type) => {
             let pTitle = document.createElement("p");
             pTitle.innerHTML = `${question["name"]}`
             let Icons = document.createElement("div");
+            Icons.classList.add("alt-icons")
             let icon1 = document.createElement("i")
             let icon2 = document.createElement("i")
             icon1.classList.add("material-icons");
@@ -1970,6 +1977,7 @@ let renderReviewPage = (type) => {
                 let reviewControl = document.querySelector(`.feedback-summary`);
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
+                document.querySelector("#add_feedback_btn").innerHTML = "Insert Edited Question";
                 document.querySelector("#add_feedback_btn").value = i;
             })
             Icons.appendChild(icon1);
