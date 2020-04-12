@@ -35,6 +35,10 @@ let removeLoader = (button, text) => {
     button.removeAttribute("style");
 }
 let checkEventExistance = (event_id) => {
+    /* console.log("Sent Event id = ", event_id, "session Event Id", sessionStorage.getItem("event_id")); */
+    if(!sessionStorage.getItem("event_id")){
+        return false;
+    }
     if (event_id == sessionStorage.getItem("event_id")) {
         return false;
     }
@@ -499,7 +503,6 @@ let renderEventHistory = (event, actions, just) => {
     but3.classList.add("main-button");
     but1.addEventListener("click", () => {
         if (checkEventExistance(event["_id"])) {
-            /* dialog("An Event already exists, you will lose that data?"); */
             if (window.confirm("An Event already exists, you will lose that data?")) {
                 sessionStorage.setItem("event_id", event["_id"]);
                 resetActionIds();
