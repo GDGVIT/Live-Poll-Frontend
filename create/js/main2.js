@@ -491,8 +491,8 @@ let renderEventHistory = (event, actions, just) => {
     but3.classList.add("main-button");
     but1.addEventListener("click", () => {
         if (checkEventExistance(event["_id"])) {
-            /* dialog("An Event already exists, you will loose that data?"); */
-            if (window.confirm("An Event already exists, you will loose that data?")) {
+            /* dialog("An Event already exists, you will lose that data?"); */
+            if (window.confirm("An Event already exists, you will lose that data?")) {
                 sessionStorage.setItem("event_id", event["_id"]);
                 resetActionIds();
                 performCheck();
@@ -510,8 +510,8 @@ let renderEventHistory = (event, actions, just) => {
     })
     but2.addEventListener("click", () => {
         if (checkEventExistance(event["_id"])) {
-            /* dialog("An Event already exists, you will loose that data?"); */
-            if (window.confirm("An Event already exists, you will loose that data?")) {
+            /* dialog("An Event already exists, you will lose that data?"); */
+            if (window.confirm("An Event already exists, you will lose that data?")) {
                 sessionStorage.setItem("event_id", event["_id"]);
                 resetActionIds();
                 performCheck();
@@ -529,8 +529,8 @@ let renderEventHistory = (event, actions, just) => {
     })
     but3.addEventListener("click", () => {
         if (checkEventExistance(event["_id"])) {
-            /* dialog("An Event already exists, you will loose that data?"); */
-            if (window.confirm("An Event already exists, you will loose that data?")) {
+            /* dialog("An Event already exists, you will lose that data?"); */
+            if (window.confirm("An Event already exists, you will lose that data?")) {
                 sessionStorage.setItem("event_id", event["_id"]);
                 resetActionIds();
                 performCheck();
@@ -822,7 +822,7 @@ const EventName = document.querySelector("#event_name");
 function createEvent(e) {
     e.preventDefault();
     if (sessionStorage.getItem("event_id")) {
-        if (window.confirm("An Event already exists, you will loose that data?")) {
+        if (window.confirm("An Event already exists, you will lose that data?")) {
             sessionStorage.removeItem("event_id")
             resetActionIds();
             performCheck();
