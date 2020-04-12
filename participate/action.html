@@ -420,7 +420,7 @@
                 console.log(socket.connected)
                 socket.on("quiz ended", (data) => {
                     if (data == actionId) {
-                        renderQuiz({
+                        renderQuiz({  
                             name: "The quiz has ended",
                             options: []
                         })

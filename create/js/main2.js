@@ -10,12 +10,29 @@ let disableBtn = (btn) => {
     }, 10000)
 }
 const notify = document.querySelector(".notify");
-let popup = (text) => {
+let popup = (text, error) => {
+    if (error) {
+        notify.classList.add("button-hover")
+    }
+    else {
+        notify.classList.remove("button-hover")
+    }
     notify.innerHTML = text;
     notify.classList.add("enter");
     setTimeout(() => {
         notify.classList.remove("enter");
     }, 4000);
+}
+let addLoader = (button) => {
+
+    button.style.width = button.offsetWidth + "px";
+    /* button.style.height = button.offsetHeight + "px"; */
+    button.style.overflow = "hidden";
+    button.innerHTML = '<img src="../img/loading.gif" alt="" class = "loading-gif">'
+}
+let removeLoader = (button, text) => {
+    button.innerHTML = text;
+    button.removeAttribute("style");
 }
 /* const start = async () => {
     await asyncForEach([1, 2, 3], async (num) => {
@@ -129,6 +146,8 @@ let actionGraph = document.querySelector('.action-graph').getContext('2d');
 let actionGraphDiv = document.querySelector(".action-graph");
 let displayChart = new Chart(actionGraph, temp1);
 let event_type;
+displayChart.canvas.parentNode.style.width = (0.87 * window.innerWidth) + "px";
+displayChart.canvas.parentNode.style.height = (0.60 * window.innerHeight) + "px";
 const feedbackDiv = document.querySelector(".feedback-history")
 let renderChart = () => {
     displayChart.destroy();
@@ -163,6 +182,7 @@ let renderChart = () => {
         }
 
     })
+
 }
 
 
@@ -172,8 +192,7 @@ let updateChartData = () => {
         displayChart.data.labels[index] = ele["option"]
         displayChart.data.datasets[0].data[index] = ele["stat"];
     })
-    displayChart.canvas.parentNode.style.width = (0.90 * window.innerWidth) + "px";
-    displayChart.canvas.parentNode.style.height = (0.65 * window.innerHeight) + "px";
+
     displayChart.update();
 }
 
@@ -185,6 +204,7 @@ const renderPrev = document.querySelector('#prev_ques');
 renderNext.addEventListener("click", () => {
     if (renderQuestionNumber > (renderQuestions.length - 2)) {
         console.log("cant go more")
+        popup("End of Action Questions")
     }
     else {
         renderQuestionNumber++;
@@ -199,6 +219,7 @@ renderNext.addEventListener("click", () => {
 renderPrev.addEventListener("click", () => {
     if (renderQuestionNumber < 1) {
         console.log("cant go more back")
+        popup("This is the first question")
     }
     else {
         renderQuestionNumber--;
@@ -259,22 +280,30 @@ let handleEventDeets = (event_id, action_id) => {
         .then(result => {
             console.log(result);
             event_type = result["action_type"];
-            result["Questions"].forEach((ele) => {
-                renderQuestions.push(ele["name"])
-                renderOptions.push(ele["options"]);
-                renderCorrect.push(ele["correct"]);
-            })
-            if (result["action_type"] == "Feedback") {
-                actionGraphDiv.style.display = "none";
-                feedbackDiv.classList.add("show")
-                renderFeedback();
-
+            if (result["Questions"].length == 0) {
+                document.querySelector(".action-buttons").style.display = "none";
+                document.querySelector(".feedback-history").innerHTML = '<h1>There are no questions in this action</h1>'
             }
             else {
-                feedbackDiv.classList.remove("show")
-                actionGraphDiv.classList.add("show")
-                renderChart();
-                updateChartData();
+                document.querySelector(".action-buttons").removeAttribute("style");
+                document.querySelector(".feedback-history").innerHTML = "";
+                result["Questions"].forEach((ele) => {
+                    renderQuestions.push(ele["name"])
+                    renderOptions.push(ele["options"]);
+                    renderCorrect.push(ele["correct"]);
+                })
+                if (result["action_type"] == "Feedback") {
+                    actionGraphDiv.style.display = "none";
+                    feedbackDiv.classList.add("show")
+                    renderFeedback();
+
+                }
+                else {
+                    feedbackDiv.classList.remove("show")
+                    actionGraphDiv.classList.add("show")
+                    renderChart();
+                    updateChartData();
+                }
             }
         })
         .catch(error => console.log('error', error));
@@ -682,7 +711,9 @@ const AddActionDiv = document.querySelector(".add-action");
 const EventCodeDiv = document.querySelector("#event_code");
 const EventName = document.querySelector("#event_name");
 let theCurrentEvent;
-createEventBtn.addEventListener("click", (e) => {
+
+
+function createEvent(e) {
     e.preventDefault();
     if (sessionStorage.getItem("event_id")) {
         sessionStorage.removeItem("event_name")
@@ -717,22 +748,55 @@ createEventBtn.addEventListener("click", (e) => {
             sessionStorage.setItem("event_id", result._id);
             sessionStorage.setItem("event_name", result["Name"]);
             AddActionDiv.classList.add("show");
-            document.querySelectorAll(".action-redirect").forEach((ele) => {
-                ele.addEventListener("click", () => {
-                    sessionStorage.setItem("event_id", theCurrentEvent._id);
-                })
-            })
-
+            
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
             sessionStorage.setItem("event_code", result["Code"]);
+            sessionStorage.setItem("the_current_id", result["_id"])
             EventCodeDiv.classList.add("show");
             renderEventHistory(theCurrentEvent, [], "just");
             popup("Event Generated");
         })
-        .catch(error => console.log('Event Error', error));
+        .catch(error => {
+            console.log('Event Error', error);
+            popup("Event Generation Error", "Error")
+        });
 
     disableBtn(createEventBtn);
-});
+}
+
+
+function ActionRedirect(e){
+    sessionStorage.setItem("event_id", sessionStorage.getItem("the_current_id"));
+    console.log("nice")
+    if (this.innerHTML == "Quiz") {
+        sessionStorage.removeItem("quiz_action_id");
+        performCheck()
+        quizSelector.forEach(ele => {ele.style.color = "black"; ele.addEventListener("click", selectItem);})
+        goTo(quizSelector);
+    }
+    if (this.innerHTML == "Poll") {
+        sessionStorage.removeItem("poll_action_id");
+        performCheck();
+        feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        goTo(pollSelector)
+    }
+    if (this.innerHTML == "Feedback") {
+        sessionStorage.removeItem("feedback_action_id");
+        performCheck();
+        pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        goTo(feedbackSelector)
+    }
+}
+
+
+
+const actionRedirectBtn = document.querySelectorAll(".action-redirect");
+actionRedirectBtn.forEach(ele => {
+    console.log("nice")
+    ele.addEventListener("click", ActionRedirect)
+})
+
+createEventBtn.addEventListener("click", createEvent)
 
 
 /* Adding Events: End */
@@ -791,7 +855,10 @@ function AddAction(e) {
             }
             handleHistory();
         })
-        .catch(error => console.log('Action Error', error));
+        .catch(error => {
+            console.log('Action Error', error);
+            popup("Error Adding Action", "Error")
+        });
     disableBtn(this);
 }
 
@@ -1083,16 +1150,30 @@ let nextQuestionTrue = (type) => {
                 socket.emit("next question", sessionStorage.getItem("poll_action_id"));
             }
             renderQuizDetails();
+            popup("Next Question Live")
         })
-        .catch(error => console.log('error', error));
+        .catch(error => {
+            console.log('error', error);
+            popup("Next Question Error", "Error");
+        });
 }
 
 nextQuestionBtn.addEventListener("click", () => {
-    nextQuestionTrue("quiz");
+    if (questionNumber > (questions.length - 2)) {
+        popup("End of Quiz Questions", "Error")
+    }
+    else {
+        nextQuestionTrue("quiz");
+    }
 });
 
 nextPollBtn.addEventListener("click", () => {
-    nextQuestionTrue("poll");
+    if (questionNumber > (questions.length - 2)) {
+        popup("End of Poll Questions", "Error")
+    }
+    else {
+        nextQuestionTrue("poll");
+    }
 });
 
 
@@ -1180,6 +1261,7 @@ let resetStat = () => {
     })
     socket.emit("reset options", optionids);
     renderQuizDetails();
+    popup("Question Stats Reset");
 }
 
 
@@ -1194,7 +1276,8 @@ let temp = {};
 let ctxa = document.querySelector('.quiz-details').getContext('2d');
 let pollChart = document.querySelector('.poll-details').getContext('2d');
 let MyChart = new Chart(ctxa, temp);
-
+MyChart.canvas.parentNode.style.width = (0.87 * window.innerWidth) + "px";
+MyChart.canvas.parentNode.style.height = (0.57 * window.innerHeight) + "px";
 let createChart = (chartDiv, ty) => {
     MyChart.destroy();
     MyChart = new Chart(chartDiv, {
@@ -1223,10 +1306,12 @@ let createChart = (chartDiv, ty) => {
             title: {
                 display: true,
                 text: ""
-            }
+            },
+            maintainAspectRatio: false
         }
 
     })
+
 }
 
 
@@ -1238,6 +1323,7 @@ let renderQuizDetails = () => {
         quiz_data.push(ele["stat"]);
         MyChart.data.datasets[0].data[index] = ele["stat"];
     })
+
     MyChart.update();
 
 }
@@ -1347,7 +1433,10 @@ let closeAction = (type) => {
             }
             resetActionVariables();
         })
-        .catch(error => console.log('error', error));
+        .catch(error => {
+            console.log('error', error);
+            popup("Error in closing Action", "Error");
+        });
 }
 
 const closeQuizBtn = document.querySelector("#close_quiz");
@@ -1439,6 +1528,7 @@ let renderFeedbackDeets = (question, answers) => {
 nextFeedbackBtn.addEventListener("click", () => {
     if (feedbackNo > (feedbackResultQuestions.length - 2)) {
         console.log("no more questions")
+        popup("Last Feedback Question", "Error")
     }
     else {
         feedbackNo++;
@@ -1449,6 +1539,7 @@ prevFeedbackBtn.addEventListener("click", () => {
 
     if (feedbackNo < 1) {
         console.log("can't go more back");
+        popup("First Feedback Question", "Error")
     }
     else {
         feedbackNo--;
@@ -1488,7 +1579,10 @@ let getFeedbackDeets = () => {
                 getFeedbackAnswers(result);
                 resolve();
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                console.log('error', error);
+                popup("Error in getting Feedback Answers", "Error");
+            });
     })
 }
 
