@@ -795,7 +795,42 @@ label[for = "theme_feedback"] {
     color: var(--main-color);
     margin-right: 15px;
 }
+.dialog{
+    position: absolute;
+    /* width: 50%;
+    height: 50%; */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    background: white;
+    z-index: 100;
+    width: 60vw;
+    border-radius: 10px;
+    box-shadow: var(--main-shadow);
+    display: none;
+}
+.dialog-contents{
+    padding: 7vh 10vw;
+}
+.dialog-question{
+    margin-bottom: 50px;
+    width: 90%;
+    overflow-x: hidden;
+    text-align: center;
+}
+.dialog-buttons{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    align-items: center;
 
+}
+.dialog-buttons > button{
+    width: 90%;
+    max-width: 12vw;
+}
 
 
 

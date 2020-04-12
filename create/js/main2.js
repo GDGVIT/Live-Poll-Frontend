@@ -34,6 +34,25 @@ let removeLoader = (button, text) => {
     button.innerHTML = text;
     button.removeAttribute("style");
 }
+let checkEventExistance = (event_id) => {
+    if (event_id == sessionStorage.getItem("event_id")) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+let resetActionIds = (type) => {
+    if (type) {
+        sessionStorage.removeItem(`${type}_action_id`);
+    }
+    else {
+        console.log("here")
+        sessionStorage.removeItem("quiz_action_id");
+        sessionStorage.removeItem("poll_action_id");
+        sessionStorage.removeItem("feedback_action_id");
+    }
+}
 /* const start = async () => {
     await asyncForEach([1, 2, 3], async (num) => {
         console.log(num);
@@ -120,7 +139,25 @@ let goTo = (ele) => {
 
 /* GoTo function: End */
 
+/* Activate Tabs */
 
+function ActivateAction(ty) {
+    let type = ty.toLowerCase();
+    if (type == "quiz") {
+        quizSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+    }
+    if (type == "poll") {
+        pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+    }
+    if (type == "feedback") {
+        feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+    }
+}
+
+
+
+
+/* Activate Tabs: End */
 
 
 /* Handling History */
@@ -346,6 +383,9 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
 let renderEventHistory = (event, actions, just) => {
     console.log("this is :", event)
     console.log("this is:", actions)
+    let quizno = 0;
+    let pollno = 0;
+    let feedbackno = 0;
     let EventDiv = document.createElement("li");
     let EventHeader = document.createElement("div");
     EventDiv.classList.add("event-div");
@@ -390,24 +430,47 @@ let renderEventHistory = (event, actions, just) => {
     feedbacksDiv.classList.add("collapsible-body")
     feedbacksDiv.classList.add("actions")
 
-    actions.forEach(ele => {
+    actions.forEach((ele, i) => {
         let p = document.createElement("p");
         p.id = `${ele["_id"]}`
         p.value = `${event["_id"]}`
-        p.innerHTML = `${ele["title"]}`
         p.addEventListener("click", () => {
             handleEventDeets(p.value, p.id);
         })
         if (ele["action_type"] == "Quiz") {
+            quizno++;
+            p.innerHTML = `${quizno}.${ele["title"]}`
             quizzesDiv.appendChild(p)
         }
         if (ele["action_type"] == "Poll") {
+            pollno++;
+            p.innerHTML = `${pollno}.${ele["title"]}`
             pollsDiv.appendChild(p)
         }
         if (ele["action_type"] == "Feedback") {
+            feedbackno++;
+            p.innerHTML = `${feedbackno}.${ele["title"]}`
             feedbacksDiv.appendChild(p)
         }
     })
+    if (quizno == 0) {
+        let pEmpty = document.createElement("p");
+        pEmpty.innerHTML = "There are no quizzes in this Event";
+        pEmpty.style.color = "red";
+        quizzesDiv.appendChild(pEmpty)
+    }
+    if (pollno == 0) {
+        let pEmpty = document.createElement("p");
+        pEmpty.innerHTML = "There are no polls in this Event";
+        pEmpty.style.color = "red";
+        pollsDiv.appendChild(pEmpty)
+    }
+    if (feedbackno == 0) {
+        let pEmpty = document.createElement("p");
+        pEmpty.innerHTML = "There are no feedbacks in this Event";
+        pEmpty.style.color = "red";
+        feedbacksDiv.appendChild(pEmpty)
+    }
 
     li1.appendChild(quizzesDiv);
     li2.appendChild(pollsDiv)
@@ -427,26 +490,61 @@ let renderEventHistory = (event, actions, just) => {
     but2.classList.add("main-button");
     but3.classList.add("main-button");
     but1.addEventListener("click", () => {
-        sessionStorage.setItem("event_id", event["_id"]);
-        sessionStorage.removeItem("quiz_action_id");
-        performCheck()
-        quizSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
-        goTo(quizSelector)
+        if (checkEventExistance(event["_id"])) {
+            /* dialog("An Event already exists, you will loose that data?"); */
+            if (window.confirm("An Event already exists, you will loose that data?")) {
+                sessionStorage.setItem("event_id", event["_id"]);
+                resetActionIds();
+                performCheck();
+                ActivateAction("quiz");
+                goTo(quizSelector);
+            }
+        }
+        else {
+            sessionStorage.setItem("event_id", event["_id"]);
+            resetActionIds("quiz");
+            performCheck();
+            ActivateAction("quiz");
+            goTo(quizSelector);
+        }
     })
     but2.addEventListener("click", () => {
-        sessionStorage.setItem("event_id", event["_id"]);
-        sessionStorage.removeItem("poll_action_id");
-        performCheck()
-
-        pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
-        goTo(pollSelector)
+        if (checkEventExistance(event["_id"])) {
+            /* dialog("An Event already exists, you will loose that data?"); */
+            if (window.confirm("An Event already exists, you will loose that data?")) {
+                sessionStorage.setItem("event_id", event["_id"]);
+                resetActionIds();
+                performCheck();
+                ActivateAction("poll");
+                goTo(pollSelector);
+            }
+        }
+        else {
+            sessionStorage.setItem("event_id", event["_id"]);
+            resetActionIds("poll");
+            performCheck();
+            ActivateAction("poll");
+            goTo(pollSelector);
+        }
     })
     but3.addEventListener("click", () => {
-        sessionStorage.setItem("event_id", event["_id"]);
-        sessionStorage.removeItem("feedback_action_id");
-        performCheck();
-        feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
-        goTo(feedbackSelector);
+        if (checkEventExistance(event["_id"])) {
+            /* dialog("An Event already exists, you will loose that data?"); */
+            if (window.confirm("An Event already exists, you will loose that data?")) {
+                sessionStorage.setItem("event_id", event["_id"]);
+                resetActionIds();
+                performCheck();
+                ActivateAction("feedback");
+                goTo(feedbackSelector);
+            }
+        }
+        else {
+            sessionStorage.setItem("event_id", event["_id"]);
+            resetActionIds("feedback");
+            performCheck();
+            ActivateAction("feedback");
+            goTo(feedbackSelector);
+        }
     })
     PossibleActions.appendChild(but1);
     PossibleActions.appendChild(but2);
@@ -712,20 +810,20 @@ const createEventBtn = document.querySelector("#create_event_btn");
 const AddActionDiv = document.querySelector(".add-action");
 const EventCodeDiv = document.querySelector("#event_code");
 const EventName = document.querySelector("#event_name");
-let theCurrentEvent;
 
 
 function createEvent(e) {
     e.preventDefault();
     if (sessionStorage.getItem("event_id")) {
-        sessionStorage.removeItem("event_name")
-        sessionStorage.removeItem("event_code")
-        sessionStorage.removeItem("event_id")
-        sessionStorage.removeItem("quiz_action_id");
-        sessionStorage.removeItem("poll_action_id");
-        sessionStorage.removeItem("feedback_action_id");
-        performCheck();
-        resetActionVariables();
+        if (window.confirm("An Event already exists, you will loose that data?")) {
+            sessionStorage.removeItem("event_id")
+            resetActionIds();
+            performCheck();
+            resetActionVariables();
+        }
+        else{
+            return;
+        }
     }
     const data = {
         Name: EventName.value,
@@ -746,16 +844,13 @@ function createEvent(e) {
         .then(response => { return response.json() })
         .then(result => {
             console.log("Event Added", result);
-            theCurrentEvent = result;
             sessionStorage.setItem("event_id", result._id);
-            sessionStorage.setItem("event_name", result["Name"]);
+            sessionStorage.setItem("the_current_event", result)
             AddActionDiv.classList.add("show");
-            
+
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
-            sessionStorage.setItem("event_code", result["Code"]);
-            sessionStorage.setItem("the_current_id", result["_id"])
             EventCodeDiv.classList.add("show");
-            renderEventHistory(theCurrentEvent, [], "just");
+            renderEventHistory(result, [], "just");
             popup("Event Generated");
         })
         .catch(error => {
@@ -767,25 +862,23 @@ function createEvent(e) {
 }
 
 
-function ActionRedirect(e){
-    sessionStorage.setItem("event_id", sessionStorage.getItem("the_current_id"));
-    console.log("nice")
+function ActionRedirect(e) {
     if (this.innerHTML == "Quiz") {
         sessionStorage.removeItem("quiz_action_id");
         performCheck()
-        quizSelector.forEach(ele => {ele.style.color = "black"; ele.addEventListener("click", selectItem);})
+        ActivateAction("quiz")
         goTo(quizSelector);
     }
     if (this.innerHTML == "Poll") {
         sessionStorage.removeItem("poll_action_id");
         performCheck();
-        pollSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        ActivateAction("poll")
         goTo(pollSelector)
     }
     if (this.innerHTML == "Feedback") {
         sessionStorage.removeItem("feedback_action_id");
         performCheck();
-        feedbackSelector.forEach(ele => { ele.style.color = "black"; ele.addEventListener("click", selectItem); })
+        ActivateAction("feedback")
         goTo(feedbackSelector)
     }
 }
@@ -794,7 +887,6 @@ function ActionRedirect(e){
 
 const actionRedirectBtn = document.querySelectorAll(".action-redirect");
 actionRedirectBtn.forEach(ele => {
-    console.log("nice")
     ele.addEventListener("click", ActionRedirect)
 })
 
@@ -840,17 +932,17 @@ function AddAction(e) {
                 popup("Quiz Added")
                 sessionStorage.setItem("quiz_action_id", result._id);
                 console.log(sessionStorage.getItem("quiz_action_id"))
-                sessionStorage.setItem("quiz-Title",result["title"]);
+                sessionStorage.setItem("quiz-Title", result["title"]);
             }
             if (this.classList[2] == "Poll") {
                 popup("Poll Added")
                 sessionStorage.setItem("poll_action_id", result._id)
-                sessionStorage.setItem("poll-Title",result["title"])
+                sessionStorage.setItem("poll-Title", result["title"])
             }
             if (this.classList[2] == "Feedback") {
                 popup("Feedback Added")
                 sessionStorage.setItem("feedback_action_id", result._id)
-                sessionStorage.setItem("feedback-Title",result["title"]);
+                sessionStorage.setItem("feedback-Title", result["title"]);
             }
             handleHistory();
         })
@@ -1314,7 +1406,7 @@ let createChart = (chartDiv, ty) => {
 
     })
     MyChart.canvas.parentNode.style.width = (0.87 * window.innerWidth) + "px";
-MyChart.canvas.parentNode.style.height = (0.57 * window.innerHeight) + "px";
+    MyChart.canvas.parentNode.style.height = (0.57 * window.innerHeight) + "px";
 
 }
 
@@ -1411,7 +1503,8 @@ let closeAction = (type) => {
                 updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
                 popup("Quiz Closed")
                 goTo(homeSelector);
-                sessionStorage.removeItem("quiz_action_id")
+                resetActionIds("quiz");
+                resetActionVariables();
                 performCheck();
             }
             if (type == "poll") {
@@ -1426,16 +1519,18 @@ let closeAction = (type) => {
                 updateStats("poll", sessionStorage.getItem("poll_action_id"));
                 popup("Poll Closed")
                 goTo(homeSelector);
-                sessionStorage.removeItem("poll_action_id");
+                resetActionIds("poll");
+                resetActionVariables();
                 performCheck();
             }
             if (type == "feedback") {
                 popup("Feedback Closed")
                 goTo(homeSelector);
-                sessionStorage.removeItem("feedback_action_id");
+                resetActionIds("feedback")
+                resetFeedbackVariables();
                 performCheck();
             }
-            resetActionVariables();
+            
         })
         .catch(error => {
             console.log('error', error);
@@ -1590,13 +1685,15 @@ let getFeedbackDeets = () => {
     })
 }
 
-
-
-const refreshBtn = document.querySelector(".refresh-btn");
-refreshBtn.addEventListener("click", async () => {
+let resetFeedbackVariables = () => {
     feedbackResultQuestions = [];
     feedbackAnswers = [];
     feedbackNo = 0;
+}
+
+const refreshBtn = document.querySelector(".refresh-btn");
+refreshBtn.addEventListener("click", async () => {
+    resetFeedbackVariables()
     await getFeedbackDeets();
     popup("Refreshed")
 });
@@ -1823,20 +1920,32 @@ navButtons.forEach(ele => {
 
 let performCheck = () => {
     if (!sessionStorage.getItem("quiz_action_id")) {
+        console.log("now here")
         quizSelector.forEach(ele => {
             ele.style.color = "rgb(189, 189, 189)";
             ele.removeEventListener("click", selectItem);
         })
         document.querySelector(".Quiz-internal").classList.remove("show-action");
-        document.querySelector(".Quiz-name").classList.add("show-action")
+        document.querySelector(".quiz-result").classList.remove("show-select");
+        document.querySelector(".quiz-summary").classList.remove("show");
+        document.querySelector(".quiz-create-container").classList.add("show-action");
+        document.querySelector(".quiz-create").classList.add("show-select");
+        document.querySelector(".Quiz-name").classList.add("show-action");
+        resetActionVariables();
     }
     if (!sessionStorage.getItem("poll_action_id")) {
         pollSelector.forEach(ele => {
             ele.style.color = "rgb(189, 189, 189)";
             ele.removeEventListener("click", selectItem);
         })
+        
         document.querySelector(".Poll-internal").classList.remove("show-action");
-        document.querySelector(".Poll-name").classList.add("show-action")
+        document.querySelector(".poll-result").classList.remove("show-select")
+        document.querySelector(".poll-summary").classList.remove("show");
+        document.querySelector(".poll-create-container").classList.add("show-action");
+        document.querySelector(".poll-create").classList.add("show-select");
+        document.querySelector(".Poll-name").classList.add("show-action");
+        resetActionVariables()
     }
     if (!sessionStorage.getItem("feedback_action_id")) {
         feedbackSelector.forEach(ele => {
@@ -1844,13 +1953,12 @@ let performCheck = () => {
             ele.removeEventListener("click", selectItem);
         })
         document.querySelector(".Feedback-internal").classList.remove("show-action");
-        document.querySelector(".Feedback-name").classList.add("show-action")
-    }
-    if (sessionStorage.getItem("event_id")) {
-        EventName.value = sessionStorage.getItem("event_name")
-        AddActionDiv.classList.add("show");
-        EventCodeDiv.innerHTML = `Event Code: ${sessionStorage.getItem("event_code")}`;
-        EventCodeDiv.classList.add("show")
+        document.querySelector(".feedback-result").classList.remove("show-select")
+        document.querySelector(".feedback-summary").classList.remove("show");
+        document.querySelector(".feedback-create-container").classList.add("show-action");
+        document.querySelector(".feedback-create").classList.add("show-select");
+        document.querySelector(".Feedback-name").classList.add("show-action");
+        
     }
 }
 performCheck();
@@ -1869,7 +1977,7 @@ const reviewBtn = document.querySelectorAll(".review-btn");
 let renderReviewPage = (type) => {
     let deetsDisplayDiv = document.querySelector(`.extra-${type}-deets`);
     let title = document.querySelector(`.${type}-title`);
-    title.innerHTML =  "Action Title: " + sessionStorage.getItem(`${type}-Title`);
+    title.innerHTML = "Action Title: " + sessionStorage.getItem(`${type}-Title`);
     console.log(deetsDisplayDiv)
     deetsDisplayDiv.innerHTML = "";
     if (type == "quiz") {
