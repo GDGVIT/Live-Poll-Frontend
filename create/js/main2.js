@@ -293,7 +293,6 @@ let handleEventDeets = (event_id, action_id) => {
                     renderCorrect.push(ele["correct"]);
                 })
                 if (result["action_type"] == "Feedback") {
-                    actionGraphDiv.style.display = "none";
                     feedbackDiv.classList.add("show")
                     renderFeedback();
 
@@ -325,6 +324,8 @@ let handleEventDeets = (event_id, action_id) => {
 
 document.querySelector(".cancel-event-deets").addEventListener("click", () => {
     prevEventsDeetsDiv.classList.remove("show-action");
+    actionGraphDiv.classList.remove("show")
+    feedbackDiv.classList.remove("show")
     historyGrid.classList.add("show-action");
     iconsDiv.classList.add("show-action");
     renderQuiz = {};
@@ -333,7 +334,8 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
     renderCorrect = [];
     renderQuestionNumber = 0;
     event_type = undefined;
-    displayChart = new Chart(actionGraph, temp1);
+    displayChart.destroy();
+    /* displayChart = new Chart(actionGraph, temp1); */
 })
 
 
