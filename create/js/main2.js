@@ -391,10 +391,17 @@ let renderEventHistory = (event, actions, just) => {
     EventDiv.classList.add("event-div");
     EventHeader.classList.add("collapsible-header")
     EventHeader.classList.add("event");
-    EventHeader.innerHTML = `<p>${event["Name"]}</p>
-    <p>${event["Code"]}</p>
-    <p>${event["Participants"]}</p>
-    <p><i class="material-icons drop">arrow_drop_down</i></p>`;
+    if (window.innerWidth > 600) {
+        EventHeader.innerHTML = `<p>${event["Name"]}</p>
+        <p>${event["Code"]}</p>
+        <p>${event["Participants"]}</p>
+        <p><i class="material-icons drop">arrow_drop_down</i></p>`;
+    }
+    else {
+        EventHeader.innerHTML = `<p>${event["Name"]}</p>
+        <p>${event["Code"]}</p>
+        <p>${event["Participants"]}</p>`;
+    }
     EventDiv.appendChild(EventHeader)
 
     let EventBody = document.createElement("div");
@@ -414,6 +421,7 @@ let renderEventHistory = (event, actions, just) => {
     li2Header.classList.add("action-type")
     li3Header.classList.add("collapsible-header")
     li3Header.classList.add("action-type")
+
     li1Header.innerHTML = '<strong>Quizzes</strong><i class = "material-icons">arrow_drop_down</i>'
     li2Header.innerHTML = '<strong>Polls</strong><i class = "material-icons">arrow_drop_down</i>';
     li3Header.innerHTML = '<strong>Feedbacks</strong><i class = "material-icons">arrow_drop_down</i>';
@@ -828,7 +836,7 @@ function createEvent(e) {
             performCheck();
             resetActionVariables();
         }
-        else{
+        else {
             return;
         }
     }
@@ -1545,7 +1553,7 @@ let closeAction = (type) => {
                 resetFeedbackVariables();
                 performCheck();
             }
-            
+
         })
         .catch(error => {
             console.log('error', error);
@@ -1953,7 +1961,7 @@ let performCheck = () => {
             ele.style.color = "rgb(189, 189, 189)";
             ele.removeEventListener("click", selectItem);
         })
-        
+
         document.querySelector(".Poll-internal").classList.remove("show-action");
         document.querySelector(".poll-result").classList.remove("show-select")
         document.querySelector(".poll-summary").classList.remove("show");
@@ -1973,7 +1981,7 @@ let performCheck = () => {
         document.querySelector(".feedback-create-container").classList.add("show-action");
         document.querySelector(".feedback-create").classList.add("show-select");
         document.querySelector(".Feedback-name").classList.add("show-action");
-        
+
     }
 }
 performCheck();
