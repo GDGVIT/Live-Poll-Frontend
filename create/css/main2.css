@@ -578,7 +578,7 @@ label[for = "theme_feedback"] {
     width: 80%;
     margin: auto;
     padding: 50px 0;
-    background: lightgreen;
+    background: rgb(203, 236, 219);
     margin-bottom: 10px;
     overflow-wrap: break-word;
     height: auto;
