@@ -1311,6 +1311,8 @@ let createChart = (chartDiv, ty) => {
         }
 
     })
+    MyChart.canvas.parentNode.style.width = (0.87 * window.innerWidth) + "px";
+MyChart.canvas.parentNode.style.height = (0.57 * window.innerHeight) + "px";
 
 }
 
@@ -1592,6 +1594,7 @@ const refreshBtn = document.querySelector(".refresh-btn");
 refreshBtn.addEventListener("click", async () => {
     feedbackResultQuestions = [];
     feedbackAnswers = [];
+    feedbackNo = 0;
     await getFeedbackDeets();
     popup("Refreshed")
 });

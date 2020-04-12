@@ -757,6 +757,14 @@ label[for = "theme_feedback"] {
     border-bottom: solid 1px rgb(150, 150, 150);
     font-weight: 700;
 }
+.question-deets > p{
+    height: auto;
+    /* white-space:normal !important; */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 90%;
+    overflow-x: hidden;
+}
 .publish-btn{
     position: relative;
     left: 50%;
@@ -1106,10 +1114,40 @@ button {
     .this-event > p:nth-child(1){
         color: red;
     }
-
-
-
-
+    .possible-actions{
+        width: 100%;
+    }
+    .possible-actions > button{
+        width: 90%;
+        margin: auto;
+    }
+    .name-div{
+        width: 90%;
+        grid-template-areas: "l1 l1" "i1 i1" "b b";
+        justify-items: center;
+    }
+    .name-div > input{
+        margin-top: 30px;
+    }
+    .quiz-result-buttons, .poll-result-buttons{
+        width: 90%;
+        margin: auto;
+    }
+    .quiz-result-buttons > button, .poll-result-buttons > button{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    /* .feedback-question{
+        font-size: 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 20%;
+        overflow-x: hidden;
+    }
+    .feedback-result-grid{
+        width: 80vw;
+        margin: 10px auto;
+    } */
     .mobile {
         display: block;
     }

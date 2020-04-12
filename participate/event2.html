@@ -78,6 +78,7 @@
             box-shadow: var(--main-shadow);
             margin-bottom: 30px;
             min-width: 100px;
+            outline: none;
         }
 
         .main-button:hover {
@@ -101,8 +102,9 @@
             margin-bottom: 8vh;
         }
 
-        .active-actions>h1 {
-            margin-bottom: 4vh;
+        .active-actions {
+            color: red;
+            font-weight: 700;
         }
 
         @media only screen and (max-width: 600px) {
@@ -157,6 +159,11 @@
 
 
         eventbtn.addEventListener("click", async (e) => {
+            activeActionsDiv.innerHTML = "";
+            if(eventCode.value == ""){
+                activeActionsDiv.innerHTML = "Please enter an Event Code";
+                return;
+            }
             e.preventDefault();
             console.log("clicked")
             activeActionsDiv.innerHTML = "";
@@ -174,7 +181,10 @@
                     console.log(result);
                     showActions(result);
                 })
-                .catch(error => console.log('error', error));
+                .catch(error => {
+                    console.log('error', error);
+                    activeActionsDiv.innerHTML = "Invalid Event Code";
+                });
         })
 
         function addParticipant() {
@@ -197,6 +207,9 @@
 
         function showActions(res) {
             actions = res["Actions"];
+            if(actions.length == 0){
+                activeActionsDiv.innerHTML = "No Active Actions";
+            }
             let i = 0;
             var requestOptions = {
                 method: 'GET',
@@ -216,15 +229,14 @@
                                 console.log("done")
                             }
 
-
-
                             window.location.href = "action.html?id=" + result["_id"];
                         }
                         else {
                             i++;
                         }
                         console.log(i)
-                        if (i == (actions.length )) {
+                        console.log(actions.length)
+                        if (i == (actions.length-1)) {
                             activeActionsDiv.innerHTML = "No Active Actions"
                         }
                     })
