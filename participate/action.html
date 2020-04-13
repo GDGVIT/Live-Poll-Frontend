@@ -143,6 +143,7 @@
         }
 
         .grey:hover {
+            background-color: rgb(150, 150, 150);
             box-shadow: inset -6px -6px 10px rgb(150, 150, 150), inset 6px 6px 20px rgba(0, 0, 0, .2);
             ;
         }
@@ -440,44 +441,48 @@
                             options: []
                         })
                         document.querySelector(".text").innerHTML = "";
-                        sessionStorage.setItem("Answered", false);
+                        sessionStorage.setItem("Answered", "false");
+                        setTimeout(() => {
+                            window.location.href = "event2.html";
+                        }, 2000)
                     }
                 })
             })
             socket.on("next", data => {
                 if (data == actionId) {
                     fetchNextQuestion();
-                    sessionStorage.setItem("Answered", false);
+                    sessionStorage.setItem("Answered", "false");
                 }
             })
         }
 
-        let selectOption = (id) => {
-            let mainButton = document.querySelectorAll(".main-button");
-            console.log(id)
-            mainButton.forEach(ele => {
-                console.log(ele.id)
-                if (ele.value == id) {
-                    ele.classList.add("select");
-                }
-                else {
-                    ele.classList.add("grey")
-                }
-            })
+        let selectOption = (id, just) => {
+            if (sessionStorage.getItem("Answered") == "false" || sessionStorage.getItem("Answered") === null || just == "just") {
+                let mainButton = document.querySelectorAll(".main-button");
+                console.log(id)
+                mainButton.forEach(ele => {
+                    console.log(ele.id)
+                    if (ele.value == id) {
+                        ele.classList.add("select");
+                    }
+                    else {
+                        ele.classList.add("grey")
+                    }
+                })
+            }
         }
-        if(sessionStorage.getItem("Answered") == true){
-            selectOption(sessionStorage.getItem("opt_id"))
-        }
+        console.log(sessionStorage.getItem("Answered"))
+
 
 
 
 
         //Handling the answers
         let handleAnswers = (option_id) => {
-            if (sessionStorage.getItem("Answered") == false || sessionStorage.getItem("Answered") == null) {
+            if (sessionStorage.getItem("Answered") == "false" || sessionStorage.getItem("Answered") == null) {
                 console.log(option_id)
                 socket.emit("option", option_id);
-                sessionStorage.setItem("Answered", true);
+                sessionStorage.setItem("Answered", "true");
                 sessionStorage.setItem("opt_id", option_id);
             }
         }
@@ -495,8 +500,9 @@
                 button.classList.add("main-button");
                 button.addEventListener("click", () => {
                     if (i == 0) {
+                        selectOption(opt["_id"], "nice");
                         handleAnswers(opt["_id"]);
-                        selectOption(opt["_id"]);
+
                         i++
                     }
                 })
@@ -522,6 +528,10 @@
             theQuestionId = theQuestion["_id"];
             socketConnection();
             renderQuiz(theQuestion);
+            if (sessionStorage.getItem("Answered") == "true") {
+                /* console.log(sessionStorage.getItem("opt_id")) */
+                selectOption(sessionStorage.getItem("opt_id"), "just")
+            }
         }
 
 
