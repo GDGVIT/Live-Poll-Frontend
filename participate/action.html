@@ -138,6 +138,15 @@
             color: #707070;
         }
 
+        .grey {
+            background-color: rgb(150, 150, 150);
+        }
+
+        .grey:hover {
+            box-shadow: inset -6px -6px 10px rgb(150, 150, 150), inset 6px 6px 20px rgba(0, 0, 0, .2);
+            ;
+        }
+
         .not-show {
             display: none;
         }
@@ -230,7 +239,8 @@
                 width: 70%;
                 margin-top: 30px;
             }
-            .not-show{
+
+            .not-show {
                 display: none;
             }
         }
@@ -425,17 +435,19 @@
                 console.log(socket.connected)
                 socket.on("quiz ended", (data) => {
                     if (data == actionId) {
-                        renderQuiz({  
+                        renderQuiz({
                             name: `The ${eventType} has ended`,
                             options: []
                         })
                         document.querySelector(".text").innerHTML = "";
+                        sessionStorage.setItem("Answered", false);
                     }
                 })
             })
             socket.on("next", data => {
                 if (data == actionId) {
                     fetchNextQuestion();
+                    sessionStorage.setItem("Answered", false);
                 }
             })
         }
@@ -448,17 +460,26 @@
                 if (ele.value == id) {
                     ele.classList.add("select");
                 }
+                else {
+                    ele.classList.add("grey")
+                }
             })
         }
-
+        if(sessionStorage.getItem("Answered") == true){
+            selectOption(sessionStorage.getItem("opt_id"))
+        }
 
 
 
 
         //Handling the answers
         let handleAnswers = (option_id) => {
-            console.log(option_id)
-            socket.emit("option", option_id);
+            if (sessionStorage.getItem("Answered") == false || sessionStorage.getItem("Answered") == null) {
+                console.log(option_id)
+                socket.emit("option", option_id);
+                sessionStorage.setItem("Answered", true);
+                sessionStorage.setItem("opt_id", option_id);
+            }
         }
         //Rendering the quiz
         let renderQuiz = (question) => {

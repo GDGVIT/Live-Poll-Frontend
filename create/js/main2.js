@@ -976,6 +976,7 @@ function AddAction(e) {
             console.log("Action Added", result);
             document.querySelector(`.${this.classList[2]}-name`).classList.remove("show-action")
             document.querySelector(`.${this.classList[2]}-internal`).classList.add("show-action");
+            
             name.value = "";
 
             if (this.classList[2] == "Quiz") {

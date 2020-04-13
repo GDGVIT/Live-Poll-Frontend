@@ -398,7 +398,7 @@ main {
 .quiz-create-container {
     position: relative;
     display: grid;
-    grid-template-areas: "l1 i1" "l2 i2" "l3 i3" ". i4" "l5 i5" ". i6";
+    grid-template-areas: "abs abs" "l1 i1" "l2 i2" "l3 i3" ". i4" "l5 i5" ". i6";
     width: 90%;
     margin: auto;
     row-gap: 40px;
@@ -485,7 +485,7 @@ label[for = "theme_poll"] {
 .poll-create-container {
     position: relative;
     display: grid;
-    grid-template-areas: "l1 i1" "l3 i3" ". i4" "l5 i5" ". i6";
+    grid-template-areas: "abs abs" "l1 i1" "l3 i3" ". i4" "l5 i5" ". i6";
     width: 90%;
     margin: auto;
     row-gap: 40px;
@@ -497,7 +497,7 @@ label[for = "theme_poll"] {
 .feedback-create-container {
     position: relative;
     display: grid;
-    grid-template-areas: "l1 i1" ". ." "n2 i5" ". ." ". ." ". ." ". x";
+    grid-template-areas: "abs abs" "l1 i1" ". ." "n2 i5" ". ." ". ." ". ." ". x";
     width: 90%;
     margin: auto;
     row-gap: 5.4vh;
@@ -852,12 +852,15 @@ label[for = "theme_feedback"] {
     margin: auto;
     margin-bottom: 40px;
     font-weight: 700;
-    grid-area: abs;
+    
 }
 .create-section{
-    padding-top: 12vh;
+    margin-top: 7vh;
+    margin-bottom: 10vh;
 }
-
+.grid-area-apply{
+    grid-area: abs;
+}
 
 ::-webkit-scrollbar {
     background-color: #fff;
@@ -987,7 +990,9 @@ button {
     background-color: rgb(150, 150, 150);
     box-shadow: inset -6px -6px 10px rgba(150, 150, 150, 1), inset 6px 6px 20px rgba(0, 0, 0, 0.2);;
 }
-
+/* .remove-review{
+    display: none;
+} */
 @media(max-width: 600px) {
     * {
         box-sizing: border-box;
@@ -1119,7 +1124,7 @@ button {
         margin-top: 20px;
     }
     .quiz-create-container{
-        grid-template-areas: 
+        grid-template-areas: "abs abs"
         "l1 l1" "i1 i1" "l2 l2" "i2 i2" "l3 l3" "i3 i3" "i4 i4" "l5 l5" "i5 i5" "i6 i6";
         justify-items: center;
         /* padding-top: 6vh; */
@@ -1148,13 +1153,13 @@ button {
     }
     .poll-create-container{
         /* padding-top: 6vh; */
-        grid-template-areas: 
+        grid-template-areas: "abs abs"
         "l1 l1" "i1 i1" "l3 l3" "i3 i3" "i4 i4" "l5 l5" "i5 i5" "i6 i6";
         justify-items: center;
     }
     .feedback-create-container{
         /* padding-top: 6vh; */
-        grid-template-areas: 
+        grid-template-areas: "abs abs"
         "l1 l1" "i1 i1" "n2 n2" "i5 i5" ". ." "x x";
         justify-items: center;
     }
@@ -1203,6 +1208,9 @@ button {
         width: 100%;
         text-align: center;
         font-size: 0.9rem;
+        grid-template-columns: none;
+        grid-template-rows: 50% 50%;
+        row-gap: 10px;
     }
     .quiz-result-buttons, .poll-result-buttons{
         width: 90%;
@@ -1220,7 +1228,8 @@ button {
         font-size: 0.9rem;
     }
     .create-section{
-        padding-top: 5.5vh;
+        margin-top: 5.5vh;
+        margin-bottom: 5vh;
     }
     /* .feedback-question{
         font-size: 1rem;
