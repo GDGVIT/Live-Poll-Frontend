@@ -402,7 +402,7 @@ main {
     width: 90%;
     margin: auto;
     row-gap: 40px;
-    padding-top: 13vh;
+    /* padding-top: 13vh; */
     display: none;
 }
 .quiz-create-container input,
@@ -489,7 +489,7 @@ label[for = "theme_poll"] {
     width: 90%;
     margin: auto;
     row-gap: 40px;
-    padding-top: 15vh;
+    /* padding-top: 15vh; */
     display: none;
 }
 
@@ -501,7 +501,7 @@ label[for = "theme_poll"] {
     width: 90%;
     margin: auto;
     row-gap: 5.4vh;
-    padding-top: 13vh;
+    /* padding-top: 13vh; */
     display: none;
 }
 label[for = "theme_feedback"] {
@@ -624,7 +624,8 @@ label[for = "theme_feedback"] {
 
 .possible-actions{
     position: relative;
-    width: 30%;
+    width: 50%;
+    min-width: 300px;
     display: grid;
     grid-template-columns: auto auto auto;
     justify-items: left;
@@ -677,14 +678,18 @@ label[for = "theme_feedback"] {
 }
 .name-div{
     position: relative;
-    margin-top: 22vh;
+    margin-top: 19vh;
+    /* top: 50vh;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%); */
     padding: 50px 50px;
     background: #F5F5F5;
     border-radius: 10px;
     width: 50%;
     display: grid;
     grid-template-columns: 20% 80%;
-    grid-template-areas: "l1 i1" "b b";
+    grid-template-areas:"abs abs" "l1 i1" "b b";
     /* justify-items: center; */
 }
 .name-div > input{
@@ -836,7 +841,22 @@ label[for = "theme_feedback"] {
     width: 90%;
     max-width: 12vw;
 }
-
+.event-name-and-code{
+    position: relative;
+    display: grid;
+    width: 90%;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    color: rgb(150,150,150);
+    align-items: center;
+    margin: auto;
+    margin-bottom: 40px;
+    font-weight: 700;
+    grid-area: abs;
+}
+.create-section{
+    padding-top: 12vh;
+}
 
 
 ::-webkit-scrollbar {
@@ -1102,7 +1122,7 @@ button {
         grid-template-areas: 
         "l1 l1" "i1 i1" "l2 l2" "i2 i2" "l3 l3" "i3 i3" "i4 i4" "l5 l5" "i5 i5" "i6 i6";
         justify-items: center;
-        padding-top: 6vh;
+        /* padding-top: 6vh; */
     }
     #quiz_options_div, #poll_options_div{
         grid-template-columns: auto;
@@ -1127,13 +1147,13 @@ button {
         margin: auto;
     }
     .poll-create-container{
-        padding-top: 6vh;
+        /* padding-top: 6vh; */
         grid-template-areas: 
         "l1 l1" "i1 i1" "l3 l3" "i3 i3" "i4 i4" "l5 l5" "i5 i5" "i6 i6";
         justify-items: center;
     }
     .feedback-create-container{
-        padding-top: 6vh;
+        /* padding-top: 6vh; */
         grid-template-areas: 
         "l1 l1" "i1 i1" "n2 n2" "i5 i5" ". ." "x x";
         justify-items: center;
@@ -1163,6 +1183,7 @@ button {
     }
     .possible-actions{
         width: 100%;
+        min-width: 0px;
     }
     .possible-actions > button{
         width: 90%;
@@ -1170,11 +1191,18 @@ button {
     }
     .name-div{
         width: 90%;
-        grid-template-areas: "l1 l1" "i1 i1" "b b";
+        grid-template-areas: "abs abs" "l1 l1" "i1 i1" "b b";
         justify-items: center;
+        margin-top: 10vh;
+        padding: 40px 10px;
     }
     .name-div > input{
         margin-top: 30px;
+    }
+    .event-name-and-code{
+        width: 100%;
+        text-align: center;
+        font-size: 0.9rem;
     }
     .quiz-result-buttons, .poll-result-buttons{
         width: 90%;
@@ -1190,6 +1218,9 @@ button {
         justify-items: center;
         text-align: center;
         font-size: 0.9rem;
+    }
+    .create-section{
+        padding-top: 5.5vh;
     }
     /* .feedback-question{
         font-size: 1rem;

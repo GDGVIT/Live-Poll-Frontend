@@ -36,7 +36,7 @@ let removeLoader = (button, text) => {
 }
 let checkEventExistance = (event_id) => {
     /* console.log("Sent Event id = ", event_id, "session Event Id", sessionStorage.getItem("event_id")); */
-    if(!sessionStorage.getItem("event_id")){
+    if (!sessionStorage.getItem("event_id")) {
         return false;
     }
     if (event_id == sessionStorage.getItem("event_id")) {
@@ -247,11 +247,11 @@ renderNext.addEventListener("click", () => {
     if (renderQuestionNumber > (renderQuestions.length - 2)) {
         console.log("cant go more")
         /* popup("End of Action Questions") */
-        
+
     }
     else {
         renderQuestionNumber++;
-        if(renderQuestionNumber == (renderQuestions.length-1)){
+        if (renderQuestionNumber == (renderQuestions.length - 1)) {
             renderNext.classList.add("disable-btn")
         }
         if (event_type == "Feedback") {
@@ -262,7 +262,7 @@ renderNext.addEventListener("click", () => {
         }
     }
 })
-if(renderQuestionNumber == 0){
+if (renderQuestionNumber == 0) {
     renderPrev.classList.add("disable-btn")
 }
 renderPrev.addEventListener("click", () => {
@@ -270,11 +270,11 @@ renderPrev.addEventListener("click", () => {
     if (renderQuestionNumber < 1) {
         console.log("cant go more back")
         /* popup("This is the first question") */
-        
+
     }
     else {
         renderQuestionNumber--;
-        if(renderQuestionNumber == 0){
+        if (renderQuestionNumber == 0) {
             renderPrev.classList.add("disable-btn");
         }
         if (event_type == "Feedback") {
@@ -393,9 +393,9 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
     displayChart.destroy();
     renderPrev.classList.remove("disable-btn");
     renderNext.classList.remove("disable-btn")
-    
-        renderPrev.classList.add("disable-btn");
-    
+
+    renderPrev.classList.add("disable-btn");
+
     /* displayChart = new Chart(actionGraph, temp1); */
 })
 
@@ -538,6 +538,8 @@ let renderEventHistory = (event, actions, just) => {
             ActivateAction("quiz");
             goTo(quizSelector);
         }
+        sessionStorage.setItem("the_current_event", JSON.stringify(event));
+        renderCurrentEventDeets();
     })
     but2.addEventListener("click", () => {
         if (checkEventExistance(event["_id"])) {
@@ -557,6 +559,8 @@ let renderEventHistory = (event, actions, just) => {
             ActivateAction("poll");
             goTo(pollSelector);
         }
+        sessionStorage.setItem("the_current_event", JSON.stringify(event));
+        renderCurrentEventDeets();
     })
     but3.addEventListener("click", () => {
         if (checkEventExistance(event["_id"])) {
@@ -576,6 +580,8 @@ let renderEventHistory = (event, actions, just) => {
             ActivateAction("feedback");
             goTo(feedbackSelector);
         }
+        sessionStorage.setItem("the_current_event", JSON.stringify(event));
+        renderCurrentEventDeets();
     })
     PossibleActions.appendChild(but1);
     PossibleActions.appendChild(but2);
@@ -885,7 +891,8 @@ function createEvent(e) {
             console.log("Event Added", result);
             removeLoader(createEventBtn, "Generate Event Code")
             sessionStorage.setItem("event_id", result._id);
-            sessionStorage.setItem("the_current_event", result)
+            sessionStorage.setItem("the_current_event", JSON.stringify(result))
+            renderCurrentEventDeets();
             AddActionDiv.classList.add("show");
 
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
@@ -1285,13 +1292,13 @@ let nextQuestionTrue = (type) => {
             currentQuestionId = result["_id"];
             if (type == "quiz") {
                 socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
-                if(questionNumber == (questions.length-1)){
+                if (questionNumber == (questions.length - 1)) {
                     nextQuestionBtn.classList.add("disable-btn");
                 }
             }
             if (type == "poll") {
                 socket.emit("next question", sessionStorage.getItem("poll_action_id"));
-                if(questionNumber == (questions.length-1)){
+                if (questionNumber == (questions.length - 1)) {
                     nextPollBtn.classList.add("disable-btn");
                 }
             }
@@ -1309,7 +1316,7 @@ nextQuestionBtn.addEventListener("click", () => {
         popup("End of Quiz Questions", "Error");
     }
     else {
-        
+
         nextQuestionTrue("quiz");
     }
 });
@@ -1678,7 +1685,7 @@ let renderFeedbackDeets = (question, answers) => {
 
 }
 
-if(feedbackNo == 0){
+if (feedbackNo == 0) {
     prevFeedbackBtn.classList.add("disable-btn")
 }
 
@@ -1689,7 +1696,7 @@ nextFeedbackBtn.addEventListener("click", () => {
     }
     else {
         feedbackNo++;
-        if(feedbackNo == (feedbackResultQuestions.length-1)){
+        if (feedbackNo == (feedbackResultQuestions.length - 1)) {
             nextFeedbackBtn.classList.add("disable-btn");
         }
         renderFeedbackDeets(feedbackResultQuestions[feedbackNo], feedbackAnswers[feedbackNo]);
@@ -1702,7 +1709,7 @@ prevFeedbackBtn.addEventListener("click", () => {
     }
     else {
         feedbackNo--;
-        if(feedbackNo == 0){
+        if (feedbackNo == 0) {
             prevFeedbackBtn.classList.add("disable-btn")
         }
         renderFeedbackDeets(feedbackResultQuestions[feedbackNo], feedbackAnswers[feedbackNo]);
@@ -2213,6 +2220,25 @@ reviewBtn.forEach((ele) => {
 formBtn.forEach(ele => {
     ele.addEventListener("click", FormPage)
 })
+
+
+
+const eventNameDivs = document.querySelectorAll(".current-event-name")
+
+const eventCodeDivs = document.querySelectorAll(".current-event-code")
+let renderCurrentEventDeets = () => {
+    let event = JSON.parse(sessionStorage.getItem("the_current_event"));
+    eventNameDivs.forEach(ele => {
+        ele.innerHTML = `Event Name: ${event["Name"]}`
+
+    })
+    eventCodeDivs.forEach(ele => {
+        ele.innerHTML = `Event Code: ${event["Code"]}`;
+    })
+}
+if(sessionStorage.getItem("the_current_event")){
+    renderCurrentEventDeets();
+}
 
 
 
