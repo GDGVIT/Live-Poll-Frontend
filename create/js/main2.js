@@ -2263,7 +2263,7 @@ function chooseTheme(){
     }
     if(this.id == "dark_theme"){
         document.documentElement.style.setProperty('--main-color', '#83D39D');
-                document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #2784FB, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+                document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #83D39D, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
 
     }
 }
