@@ -2253,8 +2253,8 @@ function chooseTheme(){
         document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #DE5246 , inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
     }
     if(this.id == "orange_theme"){
-        document.documentElement.style.setProperty('--main-color', '#FFCE44');
-        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #FFCE44, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+        document.documentElement.style.setProperty('--main-color', '#FDD835');
+        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #FDD835, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
     }
     if(this.id == "blue_theme"){
         document.documentElement.style.setProperty('--main-color', '#2784FB');

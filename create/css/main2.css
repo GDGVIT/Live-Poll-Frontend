@@ -250,10 +250,10 @@ main {
     box-shadow: inset -6px -6px 10px rgb(39, 132, 251), inset 6px 6px 20px rgba(0, 0, 0, 0.15);
 }
 #orange_theme{
-    background-color: #FFCE44;
+    background-color: #FDD835;
 }
 #orange_theme:hover {
-    box-shadow: inset -6px -6px 10px #FFCE44, inset 6px 6px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: inset -6px -6px 10px #FDD835, inset 6px 6px 20px rgba(0, 0, 0, 0.15);
 }
 #dark_theme {
     background-color: black;
