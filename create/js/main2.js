@@ -243,12 +243,17 @@ const renderNext = document.querySelector("#next_ques");
 const renderPrev = document.querySelector('#prev_ques');
 
 renderNext.addEventListener("click", () => {
+    renderPrev.classList.remove("disable-btn")
     if (renderQuestionNumber > (renderQuestions.length - 2)) {
         console.log("cant go more")
-        popup("End of Action Questions")
+        /* popup("End of Action Questions") */
+        
     }
     else {
         renderQuestionNumber++;
+        if(renderQuestionNumber == (renderQuestions.length-1)){
+            renderNext.classList.add("disable-btn")
+        }
         if (event_type == "Feedback") {
             renderFeedback();
         }
@@ -257,13 +262,21 @@ renderNext.addEventListener("click", () => {
         }
     }
 })
+if(renderQuestionNumber == 0){
+    renderPrev.classList.add("disable-btn")
+}
 renderPrev.addEventListener("click", () => {
+    renderNext.classList.remove("disable-btn")
     if (renderQuestionNumber < 1) {
         console.log("cant go more back")
-        popup("This is the first question")
+        /* popup("This is the first question") */
+        
     }
     else {
         renderQuestionNumber--;
+        if(renderQuestionNumber == 0){
+            renderPrev.classList.add("disable-btn");
+        }
         if (event_type == "Feedback") {
             renderFeedback();
         }
@@ -334,6 +347,8 @@ let handleEventDeets = (event_id, action_id) => {
                     renderCorrect.push(ele["correct"]);
                 })
                 if (result["action_type"] == "Feedback") {
+                    actionGraphDiv.classList.remove("show")
+                    displayChart.destroy();
                     feedbackDiv.classList.add("show")
                     renderFeedback();
 
@@ -376,6 +391,11 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
     renderQuestionNumber = 0;
     event_type = undefined;
     displayChart.destroy();
+    renderPrev.classList.remove("disable-btn");
+    renderNext.classList.remove("disable-btn")
+    
+        renderPrev.classList.add("disable-btn");
+    
     /* displayChart = new Chart(actionGraph, temp1); */
 })
 
@@ -564,7 +584,7 @@ let renderEventHistory = (event, actions, just) => {
     EventBody.appendChild(PossibleActions)
     EventDiv.appendChild(EventBody);
     if (just == "just") {
-        historyGrid.insertBefore(EventDiv, historyGrid.childNodes[2])
+        historyGrid.insertBefore(EventDiv, historyGrid.childNodes[1])
     }
     else {
         historyGrid.appendChild(EventDiv);
@@ -1265,9 +1285,15 @@ let nextQuestionTrue = (type) => {
             currentQuestionId = result["_id"];
             if (type == "quiz") {
                 socket.emit("next question", sessionStorage.getItem("quiz_action_id"));
+                if(questionNumber == (questions.length-1)){
+                    nextQuestionBtn.classList.add("disable-btn");
+                }
             }
             if (type == "poll") {
                 socket.emit("next question", sessionStorage.getItem("poll_action_id"));
+                if(questionNumber == (questions.length-1)){
+                    nextPollBtn.classList.add("disable-btn");
+                }
             }
             renderQuizDetails();
             popup("Next Question Live")
@@ -1280,16 +1306,17 @@ let nextQuestionTrue = (type) => {
 
 nextQuestionBtn.addEventListener("click", () => {
     if (questionNumber > (questions.length - 2)) {
-        popup("End of Quiz Questions", "Error")
+        popup("End of Quiz Questions", "Error");
     }
     else {
+        
         nextQuestionTrue("quiz");
     }
 });
 
 nextPollBtn.addEventListener("click", () => {
     if (questionNumber > (questions.length - 2)) {
-        popup("End of Poll Questions", "Error")
+        popup("End of poll Questions", "Error")
     }
     else {
         nextQuestionTrue("poll");
@@ -1460,6 +1487,8 @@ let resetActionVariables = () => {
     questionsData = [];
     pollQuestionsData = [];
     socket = undefined;
+    nextQuestionBtn.classList.remove("disable-btn")
+    nextPollBtn.classList.remove("disable-btn")
 }
 
 
@@ -1649,25 +1678,33 @@ let renderFeedbackDeets = (question, answers) => {
 
 }
 
+if(feedbackNo == 0){
+    prevFeedbackBtn.classList.add("disable-btn")
+}
 
 nextFeedbackBtn.addEventListener("click", () => {
+    prevFeedbackBtn.classList.remove("disable-btn")
     if (feedbackNo > (feedbackResultQuestions.length - 2)) {
-        console.log("no more questions")
-        popup("Last Feedback Question", "Error")
+        popup("End of Feedback Questions", "Error")
     }
     else {
         feedbackNo++;
+        if(feedbackNo == (feedbackResultQuestions.length-1)){
+            nextFeedbackBtn.classList.add("disable-btn");
+        }
         renderFeedbackDeets(feedbackResultQuestions[feedbackNo], feedbackAnswers[feedbackNo]);
     }
 })
 prevFeedbackBtn.addEventListener("click", () => {
-
+    nextFeedbackBtn.classList.remove("disable-btn");
     if (feedbackNo < 1) {
-        console.log("can't go more back");
-        popup("First Feedback Question", "Error")
+        popup("First Feedback Question")
     }
     else {
         feedbackNo--;
+        if(feedbackNo == 0){
+            prevFeedbackBtn.classList.add("disable-btn")
+        }
         renderFeedbackDeets(feedbackResultQuestions[feedbackNo], feedbackAnswers[feedbackNo]);
     }
 })
@@ -1715,6 +1752,9 @@ let resetFeedbackVariables = () => {
     feedbackResultQuestions = [];
     feedbackAnswers = [];
     feedbackNo = 0;
+    prevFeedbackBtn.classList.remove("disable-btn")
+    nextFeedbackBtn.classList.remove("disable-btn");
+    prevFeedbackBtn.classList.add("disable-btn");
 }
 
 const refreshBtn = document.querySelector(".refresh-btn");
