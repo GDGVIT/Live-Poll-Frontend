@@ -662,6 +662,13 @@ label[for = "theme_feedback"] {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     box-shadow: var(--main-shadow);
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: center;
+    align-items: center;
+}
+.notify > p{
+    padding-left: 10px;
 }
 .enter{
     opacity: 1;
@@ -852,11 +859,12 @@ label[for = "theme_feedback"] {
     margin: auto;
     margin-bottom: 40px;
     font-weight: 700;
-    
+    font-size: 1.3rem;
 }
 .create-section{
     margin-top: 7vh;
-    margin-bottom: 10vh;
+    margin-bottom: 50px;
+    
 }
 .grid-area-apply{
     grid-area: abs;
@@ -1211,6 +1219,7 @@ button {
         grid-template-columns: none;
         grid-template-rows: 50% 50%;
         row-gap: 10px;
+        font-size: 1rem;
     }
     .quiz-result-buttons, .poll-result-buttons{
         width: 90%;

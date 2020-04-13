@@ -12,12 +12,13 @@ let disableBtn = (btn) => {
 const notify = document.querySelector(".notify");
 let popup = (text, error) => {
     if (error) {
-        notify.classList.add("button-hover")
+        notify.classList.add("button-hover");
+        notify.innerHTML = `<i class = "material-icons">close</i>  <p>  ${text}</p>`;
     }
     else {
         notify.classList.remove("button-hover")
+        notify.innerHTML = `<i class = "material-icons">check</i>  <p>  ${text}</p>`;
     }
-    notify.innerHTML = text;
     notify.classList.add("enter");
     setTimeout(() => {
         notify.classList.remove("enter");
@@ -976,7 +977,7 @@ function AddAction(e) {
             console.log("Action Added", result);
             document.querySelector(`.${this.classList[2]}-name`).classList.remove("show-action")
             document.querySelector(`.${this.classList[2]}-internal`).classList.add("show-action");
-            
+
             name.value = "";
 
             if (this.classList[2] == "Quiz") {
