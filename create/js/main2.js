@@ -2249,12 +2249,12 @@ function chooseTheme(){
     console.log(this.id)
     if(this.id == "red_theme"){
         console.log("now hfdsafsadfere")
-        document.documentElement.style.setProperty('--main-color', '#DE5246 ');
-        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #DE5246 , inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+        document.documentElement.style.setProperty('--main-color', '#EA4C89');
+        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #EA4C89, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
     }
     if(this.id == "orange_theme"){
-        document.documentElement.style.setProperty('--main-color', '#FDD835');
-        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #FDD835, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+        document.documentElement.style.setProperty('--main-color', '#F89224');
+        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #F89224, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
     }
     if(this.id == "blue_theme"){
         document.documentElement.style.setProperty('--main-color', '#2784FB');
@@ -2263,7 +2263,7 @@ function chooseTheme(){
     }
     if(this.id == "dark_theme"){
         document.documentElement.style.setProperty('--main-color', '#83D39D');
-        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #83D39D, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+                document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #2784FB, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
 
     }
 }

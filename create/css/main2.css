@@ -232,10 +232,10 @@ main {
     outline: none;
 }
 #red_theme {
-    background-color: #DE5246;
+    background-color: #EA4C89;
 }
 #red_theme:hover {
-    box-shadow: inset -6px -6px 10px #DE5246, inset 6px 6px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: inset -6px -6px 10px rgba(234, 76, 137, 1), inset 6px 6px 20px rgba(0, 0, 0, 0.15);
 }
 #green_theme {
     background-color: rgb(131, 211, 157);
@@ -250,10 +250,10 @@ main {
     box-shadow: inset -6px -6px 10px rgb(39, 132, 251), inset 6px 6px 20px rgba(0, 0, 0, 0.15);
 }
 #orange_theme{
-    background-color: #FDD835;
+    background-color: #F89224;
 }
 #orange_theme:hover {
-    box-shadow: inset -6px -6px 10px #FDD835, inset 6px 6px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: inset -6px -6px 10px #F89224, inset 6px 6px 20px rgba(0, 0, 0, 0.15);
 }
 #dark_theme {
     background-color: black;
