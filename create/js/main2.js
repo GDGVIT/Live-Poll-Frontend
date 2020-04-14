@@ -244,13 +244,14 @@ const renderNext = document.querySelector("#next_ques");
 const renderPrev = document.querySelector('#prev_ques');
 
 renderNext.addEventListener("click", () => {
-    renderPrev.classList.remove("disable-btn")
+    
     if (renderQuestionNumber > (renderQuestions.length - 2)) {
         console.log("cant go more")
         /* popup("End of Action Questions") */
 
     }
     else {
+        renderPrev.classList.remove("disable-btn")
         renderQuestionNumber++;
         if (renderQuestionNumber == (renderQuestions.length - 1)) {
             renderNext.classList.add("disable-btn")
@@ -267,13 +268,14 @@ if (renderQuestionNumber == 0) {
     renderPrev.classList.add("disable-btn")
 }
 renderPrev.addEventListener("click", () => {
-    renderNext.classList.remove("disable-btn")
+    
     if (renderQuestionNumber < 1) {
         console.log("cant go more back")
         /* popup("This is the first question") */
 
     }
     else {
+        renderNext.classList.remove("disable-btn")
         renderQuestionNumber--;
         if (renderQuestionNumber == 0) {
             renderPrev.classList.add("disable-btn");
@@ -347,6 +349,9 @@ let handleEventDeets = (event_id, action_id) => {
                     renderOptions.push(ele["options"]);
                     renderCorrect.push(ele["correct"]);
                 })
+                if(renderQuestions.length == 1){
+                    renderNext.classList.add("disable-btn")
+                }
                 if (result["action_type"] == "Feedback") {
                     actionGraphDiv.classList.remove("show")
                     displayChart.destroy();
