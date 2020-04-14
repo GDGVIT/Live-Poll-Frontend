@@ -78,6 +78,7 @@ main {
     justify-self: left;
     padding-left: 20px;
     align-self: center;
+    height: 7vh;
 }
 .header > button {
     align-self: center;
@@ -1028,6 +1029,9 @@ button {
         grid-template-columns: 50% 50%;
         justify-items: left;
         align-items: center;
+    }
+    .header > img{
+        height: 5.6vh;
     }
     .header > button {
         justify-self: right;

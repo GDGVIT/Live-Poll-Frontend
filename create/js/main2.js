@@ -855,7 +855,7 @@ const createEventBtn = document.querySelector("#create_event_btn");
 const AddActionDiv = document.querySelector(".add-action");
 const EventCodeDiv = document.querySelector("#event_code");
 const EventName = document.querySelector("#event_name");
-
+let eventCreated = {};
 
 function createEvent(e) {
     e.preventDefault();
@@ -895,7 +895,7 @@ function createEvent(e) {
             sessionStorage.setItem("the_current_event", JSON.stringify(result))
             renderCurrentEventDeets();
             AddActionDiv.classList.add("show");
-
+            eventCreated = result;
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
             EventCodeDiv.classList.add("show");
             renderEventHistory(result, [], "just");
@@ -913,18 +913,51 @@ function createEvent(e) {
 
 function ActionRedirect(e) {
     if (this.innerHTML == "Quiz") {
+        console.log("here man")
+        if (checkEventExistance(eventCreated["_id"])) {
+            console.log("asdlkfjasdlkfjdsalkfj")
+            if (window.confirm("An Event already exists, you will lose that data?")) {
+                sessionStorage.setItem("event_id", eventCreated["_id"]);
+                sessionStorage.setItem("the_current_event", JSON.stringify(eventCreated));
+                renderCurrentEventDeets();
+                console.log("here")
+            }
+            else{
+                return;
+            }
+        }
         sessionStorage.removeItem("quiz_action_id");
         performCheck()
         ActivateAction("quiz")
         goTo(quizSelector);
     }
     if (this.innerHTML == "Poll") {
+        if (checkEventExistance(eventCreated["_id"])) {
+            if (window.confirm("An Event already exists, you will lose that data?")) {
+                sessionStorage.setItem("event_id", eventCreated["_id"]);
+                sessionStorage.setItem("the_current_event", eventCreated);
+                renderCurrentEventDeets();
+            }
+            else{
+                return;
+            }
+        }
         sessionStorage.removeItem("poll_action_id");
         performCheck();
         ActivateAction("poll")
         goTo(pollSelector)
     }
     if (this.innerHTML == "Feedback") {
+        if (checkEventExistance(eventCreated["_id"])) {
+            if (window.confirm("An Event already exists, you will lose that data?")) {
+                sessionStorage.setItem("event_id", eventCreated["_id"]);
+                sessionStorage.setItem("the_current_event", eventCreated);
+                renderCurrentEventDeets();
+            }
+            else{
+                return;
+            }
+        }
         sessionStorage.removeItem("feedback_action_id");
         performCheck();
         ActivateAction("feedback")
@@ -2238,39 +2271,47 @@ let renderCurrentEventDeets = () => {
         ele.innerHTML = `Event Code: ${event["Code"]}`;
     })
 }
-if(sessionStorage.getItem("the_current_event")){
+if (sessionStorage.getItem("the_current_event")) {
     renderCurrentEventDeets();
 }
 
+
+
+
+let addTheme = () => {
+    if (sessionStorage.getItem("color")) {
+        document.documentElement.style.setProperty('--main-color', sessionStorage.getItem("color"));
+        document.documentElement.style.setProperty('--main-shadow-hover', `inset -6px -6px 10px ${sessionStorage.getItem("color")}, inset 6px 6px 20px rgba(0, 0, 0, 0.2)`)
+    }
+}
+addTheme();
+
+
+
+
+
 const overallThemeBtns = document.querySelectorAll(".overall-theme")
 
-function chooseTheme(){
-    console.log("here")
-    console.log(this.id)
-    if(this.id == "red_theme"){
-        console.log("now hfdsafsadfere")
-        document.documentElement.style.setProperty('--main-color', '#EA4C89');
-        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #EA4C89, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+function chooseTheme() {
+    if (this.id == "red_theme") {
+        sessionStorage.setItem("color", "#EA4C89")
     }
-    if(this.id == "orange_theme"){
-        document.documentElement.style.setProperty('--main-color', '#F89224');
-        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #F89224, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+    if (this.id == "orange_theme") {
+        sessionStorage.setItem("color", "#F89224")
     }
-    if(this.id == "blue_theme"){
-        document.documentElement.style.setProperty('--main-color', '#2784FB');
-        document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #2784FB, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
+    if (this.id == "blue_theme") {
+        sessionStorage.setItem("color", "#2784FB")
 
     }
-    if(this.id == "dark_theme"){
-        document.documentElement.style.setProperty('--main-color', '#83D39D');
-                document.documentElement.style.setProperty('--main-shadow-hover', 'inset -6px -6px 10px #83D39D, inset 6px 6px 20px rgba(0, 0, 0, 0.2)')
-
+    if (this.id == "dark_theme") {
+        sessionStorage.setItem("color", "#83D39D")
     }
+    addTheme();
 }
 
 overallThemeBtns.forEach(ele => {
     ele.addEventListener("click", chooseTheme)
-}) 
+})
 
 
 

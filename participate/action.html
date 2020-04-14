@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -66,7 +67,10 @@
             overflow: auto;
             text-align: center;
         }
-
+        .container{
+            position: relative;
+            display: none;
+        }
         .main-button {
             padding: 16px 40px;
             border-radius: 5px;
@@ -128,6 +132,29 @@
 
         }
 
+        .next-question-wait {
+            position: relative;
+            height: fit-content;
+            height: -moz-max-content;
+            width: 80%;
+            top: 45%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            /* display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto auto;
+            justify-items: center;
+            align-items: center; */
+            margin: 0 auto;
+            display: none;
+        }
+
+        .material-icons {
+            font-size: 6rem;
+            color: var(--main-color);
+        }
+
         .text {
             position: relative;
             text-align: left;
@@ -152,7 +179,9 @@
             display: none;
         }
 
-
+        .show{
+            display: block;
+        }
         ::-webkit-scrollbar {
             background-color: #fff;
             width: 10px;
@@ -256,14 +285,20 @@
         </div>
         <div class="main">
             <div class="main-container">
-                <h1 class="question" id="question"></h1>
-                <p class="text">Select the most appropriate option</p>
-                <div class="options-div">
-                    <textarea class="feedback_info not-show" name="" id="" cols="" rows="15"
-                        placeholder="Enter your feedback"
-                        style=" background: white; border-radius: 5px; padding: 10px; outline: none;"></textarea>
+                <div class="container show">
+                    <h1 class="question" id="question"></h1>
+                    <p class="text">Select the most appropriate option</p>
+                    <div class="options-div">
+                        <textarea class="feedback_info not-show" name="" id="" cols="" rows="15"
+                            placeholder="Enter your feedback"
+                            style=" background: white; border-radius: 5px; padding: 10px; outline: none;"></textarea>
+                    </div>
+                    <button class="main-button submit not-show">Submit Feedback</button>
                 </div>
-                <button class="main-button submit not-show">Submit Feedback</button>
+                <div class="next-question-wait">
+                    <i class="material-icons large">near_me</i>
+                    <h1>Wait until admin sets up the next question</h1>
+                </div>
             </div>
         </div>
     </main>
@@ -291,6 +326,8 @@
         const feedbackInfo = document.querySelector(".feedback_info");
         let feedbackNo = 0;
         let eventType;
+        const container = document.querySelector(".container");
+        const waitDiv = document.querySelector(".next-question-wait")
         let fetchQuestions = () => {
             var requestOptions = {
                 method: 'GET',
@@ -437,6 +474,8 @@
                 console.log(socket.connected)
                 socket.on("quiz ended", (data) => {
                     if (data == actionId) {
+                        waitDiv.classList.remove("show")
+                        container.classList.add("show")
                         renderQuiz({
                             name: `The ${eventType} has ended`,
                             options: []
@@ -453,6 +492,8 @@
                 if (data == actionId) {
                     fetchNextQuestion();
                     sessionStorage.setItem("Answered", "false");
+                    waitDiv.classList.remove("show");
+                    container.classList.add("show")
                 }
             })
         }
@@ -465,9 +506,6 @@
                     console.log(ele.id)
                     if (ele.value == id) {
                         ele.classList.add("select");
-                    }
-                    else {
-                        ele.classList.add("grey")
                     }
                 })
             }
@@ -485,6 +523,8 @@
                 socket.emit("option", option_id);
                 sessionStorage.setItem("Answered", "true");
                 sessionStorage.setItem("opt_id", option_id);
+                container.classList.remove("show");
+                waitDiv.classList.add("show")
             }
         }
         //Rendering the quiz
@@ -530,8 +570,8 @@
             socketConnection();
             renderQuiz(theQuestion);
             if (sessionStorage.getItem("Answered") == "true") {
-                /* console.log(sessionStorage.getItem("opt_id")) */
-                selectOption(sessionStorage.getItem("opt_id"), "just")
+                container.classList.remove("show")
+                waitDiv.classList.add("show");
             }
         }
 
