@@ -1454,8 +1454,10 @@ let resetStat = () => {
 }
 
 
-const resetStatBtn = document.querySelector("#reset_stat");
-resetStatBtn.addEventListener("click", resetStat)
+const resetStatBtn = document.querySelectorAll(".reset-stat");
+resetStatBtn.forEach(ele => {
+    ele.addEventListener("click", resetStat);
+})
 
 
 
