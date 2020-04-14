@@ -922,7 +922,7 @@ function ActionRedirect(e) {
                 renderCurrentEventDeets();
                 console.log("here")
             }
-            else{
+            else {
                 return;
             }
         }
@@ -938,7 +938,7 @@ function ActionRedirect(e) {
                 sessionStorage.setItem("the_current_event", eventCreated);
                 renderCurrentEventDeets();
             }
-            else{
+            else {
                 return;
             }
         }
@@ -954,7 +954,7 @@ function ActionRedirect(e) {
                 sessionStorage.setItem("the_current_event", eventCreated);
                 renderCurrentEventDeets();
             }
-            else{
+            else {
                 return;
             }
         }
@@ -1409,22 +1409,8 @@ let socketConnection = () => {
     socket = io('https://mighty-sea-62531.herokuapp.com/');
     socket.on("connect", () => {
         console.log(socket.connected)
-        socket.on("New Connection", (updated_data) => {
-            console.log(updated_data)
-            if (updated_data.length != 0) {
-                for (let i of updated_data) {
-                    quiz_opts.forEach(ele => {
-                        ele.forEach(elem => {
-                            if (i._id == elem._id) {
-                                elem.stat = i.stat;
-                            }
-                        })
-                    })
-                }
-            }
-            renderQuizDetails();
-            continueSocketConnection();
-        })
+        renderQuizDetails();
+        continueSocketConnection();
     })
 
 }
