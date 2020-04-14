@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -67,10 +66,12 @@
             overflow: auto;
             text-align: center;
         }
-        .container{
+
+        .container {
             position: relative;
             display: none;
         }
+
         .main-button {
             padding: 16px 40px;
             border-radius: 5px;
@@ -141,18 +142,8 @@
             transform: translateY(-50%);
             -webkit-transform: translateY(-50%);
             -moz-transform: translateY(-50%);
-            /* display: grid;
-            grid-template-columns: auto;
-            grid-template-rows: auto auto;
-            justify-items: center;
-            align-items: center; */
             margin: 0 auto;
             display: none;
-        }
-
-        .material-icons {
-            font-size: 6rem;
-            color: var(--main-color);
         }
 
         .text {
@@ -179,9 +170,10 @@
             display: none;
         }
 
-        .show{
+        .show {
             display: block;
         }
+
         ::-webkit-scrollbar {
             background-color: #fff;
             width: 10px;
@@ -296,7 +288,7 @@
                     <button class="main-button submit not-show">Submit Feedback</button>
                 </div>
                 <div class="next-question-wait">
-                    <i class="material-icons large">near_me</i>
+                    <img src="../img/check.svg" alt="">
                     <h1>Wait until admin sets up the next question</h1>
                 </div>
             </div>
@@ -523,8 +515,10 @@
                 socket.emit("option", option_id);
                 sessionStorage.setItem("Answered", "true");
                 sessionStorage.setItem("opt_id", option_id);
-                container.classList.remove("show");
-                waitDiv.classList.add("show")
+                setTimeout(() => {
+                    container.classList.remove("show");
+                    waitDiv.classList.add("show")
+                }, 2000)
             }
         }
         //Rendering the quiz
