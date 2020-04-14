@@ -257,12 +257,10 @@ main {
     box-shadow: inset -6px -6px 10px #F89224, inset 6px 6px 20px rgba(0, 0, 0, 0.15);
 }
 #dark_theme {
-    background-color: black;
-    transition: 0.3s;
+    background-color: rgb(131, 211, 157);
 }
 #dark_theme:hover {
-    background-color: #03e9f4;
-    box-shadow: var(--neon-button-hover);
+    box-shadow: inset -6px -6px 10px rgb(131, 211, 157), inset 6px 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 
