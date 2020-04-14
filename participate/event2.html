@@ -33,6 +33,14 @@
             grid-template-rows: 10% 90%;
         }
 
+        .loading-gif {
+            height: 1.0rem;
+            width: auto;
+            background-color: transparent;
+            object-fit: scale-down;
+            overflow: hidden;
+        }
+
         .header {
             position: relative;
             width: 100%;
@@ -158,14 +166,24 @@
         const eventbtn = document.querySelector("#join_event_btn");
         const eventCode = document.querySelector("#event_code");
         const activeActionsDiv = document.querySelector(".active-actions");
+        let addLoader = (button) => {
 
+            button.style.width = button.offsetWidth + "px";
+            button.style.overflow = "hidden";
+            button.innerHTML = '<img src="../img/loading.gif" alt="" class = "loading-gif">'
+        }
+        let removeLoader = (button, text) => {
+            button.innerHTML = text;
+            button.removeAttribute("style");
+        }
 
         eventbtn.addEventListener("click", async (e) => {
             activeActionsDiv.innerHTML = "";
-            if(eventCode.value == ""){
+            if (eventCode.value == "") {
                 activeActionsDiv.innerHTML = "Please enter an Event Code";
                 return;
             }
+            addLoader(eventbtn);
             e.preventDefault();
             console.log("clicked")
             activeActionsDiv.innerHTML = "";
@@ -181,10 +199,12 @@
                 })
                 .then(async (result) => {
                     console.log(result);
+                    removeLoader(eventbtn, "Join")
                     showActions(result);
                 })
                 .catch(error => {
                     console.log('error', error);
+                    removeLoader(eventbtn, "Join");
                     activeActionsDiv.innerHTML = "Invalid Event Code";
                 });
         })
@@ -209,7 +229,7 @@
 
         function showActions(res) {
             actions = res["Actions"];
-            if(actions.length == 0){
+            if (actions.length == 0) {
                 activeActionsDiv.innerHTML = "No Active Actions";
             }
             let i = 0;
