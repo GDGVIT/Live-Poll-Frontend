@@ -1091,6 +1091,7 @@ button {
         column-gap: 10px;
         display: none;
         margin-bottom: 0;
+        align-items: center;
     }
     .options-container-mobile {
         position: absolute;
@@ -1106,10 +1107,16 @@ button {
     }
     .ham{
         z-index: 100;
+        font-size: 1.8rem;
+        color: var(--main-color)
+    }
+    .nav-text{
+        font-size: 1.1rem;
+        font-weight: 600;
     }
     .open{
-        clip-path: circle(1500px at 90.7% 3.5%);
-        -webkit-clip-path: circle(1500px at 90.7% 3.5%);
+        clip-path: circle(2500px at 100.7% 3.5%);
+        -webkit-clip-path: circle(2500px at 100.7% 3.5%);
     }
     .nav-container {
         position: relative;
@@ -1120,7 +1127,13 @@ button {
         width: fit-content;
         width: -moz-max-content;
         margin: auto;
-
+        
+    }
+    .nav-container > p{
+        margin: 15px 0; 
+        text-align: center;
+        font-weight: 700;
+        font-size: 1.1rem;
     }
     .icons{
         width: 100%;
