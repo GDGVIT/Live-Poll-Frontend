@@ -1102,22 +1102,22 @@ const correctOptionDiv = document.querySelector("#correct_option");
 let checkOptions = (options, correct) => {
     let flag = 0;
     options.forEach(opt => {
-        if (opt.value == correct) {
+        if(opt.value == correct){
             flag++;
         }
     })
-    if (flag == 0) {
+    if(flag == 0){
         correctOptionDiv.value = "";
         correctOptionDiv.classList.add("Opt-match");
         correctOptionDiv.placeholder = "There are no options that match this"
         return false;
     }
-    if (flag == 1) {
+    if(flag == 1){
         correctOptionDiv.classList.remove("Opt-match");
         correctOptionDiv.placeholder = "Correct Option(must match an option)"
         return true;
     }
-    if (flag > 1) {
+    if(flag > 1){
         correctOptionDiv.value = "";
         correctOptionDiv.classList.add("Opt-match");
         correctOptionDiv.placeholder = "There are multiple options that match this"
@@ -1888,42 +1888,37 @@ function publishAction(e) {
     let actid = "0";
     if (this.id == "publish_quiz") {
         if (sessionStorage.getItem("quiz_action_id")) {
-            if (questionsData.length == 0) {
-                popup("There are no questions to publish", "Error");
-            }
-            else {
-                actid = sessionStorage.getItem("quiz_action_id");
-                addLoader(this)
-                var myHeaders = new Headers();
-                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                myHeaders.append("Content-Type", "application/json")
-                var raw = JSON.stringify(questionsData);
-                console.log(raw)
+            actid = sessionStorage.getItem("quiz_action_id");
+            addLoader(this)
+            var myHeaders = new Headers();
+            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+            myHeaders.append("Content-Type", "application/json")
+            var raw = JSON.stringify(questionsData);
+            console.log(raw)
 
-                var requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
 
-                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-                    .then(response => response.json())
-                    .then(result => {
-                        console.log(result);
-                        popup("Quiz Published")
-                        var requestOptions = {
-                            method: 'GET',
-                            redirect: 'follow'
-                        };
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    popup("Quiz Published")
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
 
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                            .then(response => response.text())
-                            .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); removeLoader(this, "Publish Quiz") })
-                            .catch(error => console.log('error', error));
-                    })
-                    .catch(error => console.log('error', error));
-            }
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        .then(response => response.text())
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); removeLoader(this, "Publish Quiz") })
+                        .catch(error => console.log('error', error));
+                })
+                .catch(error => console.log('error', error));
         }
         else {
             console.log("no quiz made");
@@ -1931,42 +1926,37 @@ function publishAction(e) {
     }
     if (this.id == "publish_poll") {
         if (sessionStorage.getItem("poll_action_id")) {
-            if (pollQuestionsData.length == 0) {
-                popup("There are no questions to publish", "Error");
-            }
-            else {
-                actid = sessionStorage.getItem("poll_action_id");
-                addLoader(this)
-                var myHeaders = new Headers();
-                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                myHeaders.append("Content-Type", "application/json")
-                var raw = JSON.stringify(pollQuestionsData);
+            actid = sessionStorage.getItem("poll_action_id");
+            addLoader(this)
+            var myHeaders = new Headers();
+            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+            myHeaders.append("Content-Type", "application/json")
+            var raw = JSON.stringify(pollQuestionsData);
 
-                var requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
 
-                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                    .then(response => response.text())
-                    .then(result => {
-                        console.log(result);
-                        popup("Poll Published")
-                        var requestOptions = {
-                            method: 'GET',
-                            redirect: 'follow'
-                        };
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    console.log(result);
+                    popup("Poll Published")
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
 
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                            .then(response => response.text())
-                            .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); removeLoader(this, "Publish Poll") })
-                            .catch(error => console.log('error', error));
-                    })
-                    .catch(error => console.log('error', error));
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        .then(response => response.text())
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); removeLoader(this, "Publish Poll") })
+                        .catch(error => console.log('error', error));
+                })
+                .catch(error => console.log('error', error));
 
-            }
         }
         else {
             console.log("no poll made");
@@ -1974,40 +1964,35 @@ function publishAction(e) {
     }
     if (this.id == "publish_feedback") {
         if (sessionStorage.getItem("feedback_action_id")) {
-            if (feedbackQuestions.length == 0) {
-                popup("There are no questions to publish", "Error");
-            }
-            else {
-                actid = sessionStorage.getItem("feedback_action_id");
-                addLoader(this)
-                var myHeaders = new Headers();
-                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                myHeaders.append("Content-Type", "application/json")
-                var raw = JSON.stringify(feedbackQuestions);
+            actid = sessionStorage.getItem("feedback_action_id");
+            addLoader(this)
+            var myHeaders = new Headers();
+            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+            myHeaders.append("Content-Type", "application/json")
+            var raw = JSON.stringify(feedbackQuestions);
 
-                var requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
 
-                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                    .then(response => response.text())
-                    .then(result => {
-                        console.log(result);
-                        var requestOptions = {
-                            method: 'GET',
-                            redirect: 'follow'
-                        };
+            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    console.log(result);
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
 
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                            .then(response => response.text())
-                            .then(result => { console.log(result); firstQuestionPublish(actid, "feedback"); removeLoader(this, "Publish Feedback") })
-                            .catch(error => console.log('error', error));
-                    })
-                    .catch(error => console.log('error', error));
-            }
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        .then(response => response.text())
+                        .then(result => { console.log(result); firstQuestionPublish(actid, "feedback"); removeLoader(this, "Publish Feedback") })
+                        .catch(error => console.log('error', error));
+                })
+                .catch(error => console.log('error', error));
         }
         else {
             console.log("no feedback made");
