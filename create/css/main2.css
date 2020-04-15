@@ -391,6 +391,8 @@ main {
     margin-top: 20px;
     margin-left: 20px;
     cursor: pointer;
+    position: absolute;
+    z-index: 100;
 }
 .back-btn > img {
     width: 30px;
@@ -580,6 +582,8 @@ label[for = "theme_feedback"] {
 }
 .feedback-details > h1{
     margin-bottom: 30px;
+    max-width: 70vw;
+    overflow-wrap: break-word;
 }
 .feedback-answer{
     position: relative;
@@ -769,6 +773,16 @@ label[for = "theme_feedback"] {
 
 .quiz-summary, .poll-summary, .feedback-summary{
     display: none;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    background: white;
+    box-shadow: var(--main-shadow);
 }
 
 .Quiz-internal, .Poll-internal, .Feedback-internal{
@@ -777,7 +791,12 @@ label[for = "theme_feedback"] {
 .current-quiz-deets, .current-poll-deets, .current-feedback-deets{
     display: block;
     width: 90%;
-    margin: auto;
+    margin: 0 auto;
+    margin-top: 30px;
+    overflow: scroll;
+}
+.current-quiz-deets::-webkit-scrollbar, .current-poll-deets::-webkit-scrollbar, .current-feedback-deets::-webkit-scrollbar{
+    display: block;
 }
 .quiz-title, .poll-title,.feedback-title{
     margin-top: 20px;
@@ -803,15 +822,10 @@ label[for = "theme_feedback"] {
 }
 .publish-btn{
     position: relative;
-    left: 50%;
-    margin: 70px 0;
-    transform: translate(-50%, 0);
-    -webkit-transform: translate(-50%, 0);
-    -moz-transform: translate(-50%, 0);
 }
 .extra-quiz-deets,.extra-poll-deets{
     position: relative;
-
+    overflow: scroll;
 }
 .loading-gif{
     height: 1.0rem;
@@ -888,7 +902,17 @@ label[for = "theme_feedback"] {
 .grid-area-apply{
     grid-area: abs;
 }
-
+.grid-layer{
+    position: relative;
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto auto;
+    justify-items: center;
+}
+.grid-layer > button{
+    align-self: center;
+    margin-bottom: 10px;
+}
 ::-webkit-scrollbar {
     background-color:#fff;
     width:16px;
@@ -1028,6 +1052,9 @@ button {
 }
 .logo-color{
     fill: var(--main-color)
+}
+.opacity-dec{
+    opacity: 0.5;
 }
 @media(max-width: 600px) {
     * {
@@ -1304,4 +1331,7 @@ button::-moz-focus-inner {
 }
 .Opt-match::placeholder{
     color: red;
+}
+.relative{
+    position: relative;
 }
