@@ -1077,53 +1077,48 @@ function AddPollQuestion(e) {
     let questionOptions = document.querySelectorAll(".poll-option");
     let questionName = document.querySelector("#poll_name");
     let Form = document.querySelector("#poll_form");
-    let f = 0;
-    let quesVal = true;
-    let optVal = true;
-    if (questionName.value == "") {
+    if (questionName == "") {
         questionName.classList.add("Opt-match");
         questionName.placeholder = "Question is required";
-        quesVal = false;
     }
-    questionOptions.forEach(ele => {
-        if (ele.value == "") {
-            ele.classList.add("Opt-match");
-            ele.placeholder = "Option Required"
-            f++;
-        }
-    })
-    if (f > 0) {
-        optVal = false;
-    }
-    if (quesVal && optVal) {
+    else {
         questionName.classList.remove("Opt-match");
         questionName.placeholder = "Enter Question";
-        let question = {};
-        question.name = questionName.value;
-        question.options = [];
+        let f = 0;
         questionOptions.forEach(ele => {
-            ele.classList.remove("Opt-match");
-            ele.placeholder = "Enter Option";
-            let opti = {
-                option: ele.value
+            if (ele.value == "") {
+                ele.classList.add("Opt-match");
+                ele.placeholder = "Option Required"
+                f++;
             }
-            question.options.push(opti);
         })
-        if (this.value) {
-            pollQuestionsData.splice(this.value, 1, question);
-            console.log(pollQuestionsData);
-            this.removeAttribute("value")
-            this.innerHTML = "+ Add Poll Question";
-            popup("Question Edited")
-        }
-        else {
-            pollQuestionsData.push(question);
-            console.log(pollQuestionsData)
-            popup("Poll Question Added")
-        }
-        ReviewPage("poll")
-        Form.reset()
+        if(f == 0){
+            let question = {};
+            question.name = questionName.value;
+            question.options = [];
+            questionOptions.forEach(ele => {
+                ele.classList.remove("Opt-match");
+                ele.placeholder = "Enter Option";
+                let opti = {
+                    option: ele.value
+                }
+                question.options.push(opti);
+            })
+            if (this.value) {
+                pollQuestionsData.splice(this.value, 1, question);
+                console.log(pollQuestionsData);
+                this.removeAttribute("value")
+                this.innerHTML = "+ Add Poll Question";
+                popup("Question Edited")
+            }
+            else {
+                pollQuestionsData.push(question);
+                console.log(pollQuestionsData)
+                popup("Poll Question Added")
+            }
 
+            Form.reset()
+        }
     }
 }
 
@@ -1183,7 +1178,7 @@ function addQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".quiz-option");
     let questionName = document.querySelector("#question_name");
-    let correctOption = document.querySelector("#correct_option");
+    let correctOption = document.querySelector("#correct_option").value;
     let Form = document.querySelector("#question_form");
     let quesVal = true;
     let corrVal = true;
@@ -2344,12 +2339,14 @@ let renderReviewPage = (type) => {
 
 
 
-function ReviewPage(type) {
-    let form = document.querySelector(`.${type}-create-container`);
-    let reviewControl = document.querySelector(`.${type}-summary`);
+function ReviewPage(e) {
+    e.preventDefault();
+    console.log(this.classList)
+    let form = document.querySelector(`.${this.classList[1]}-create-container`);
+    let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
     form.classList.add("opacity-dec");
     reviewControl.classList.add("show");
-    renderReviewPage(type);
+    renderReviewPage(this.classList[1]);
 }
 
 
