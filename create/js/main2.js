@@ -1122,39 +1122,6 @@ function AddPollQuestion(e) {
     }
 }
 
-const correctOptionDiv = document.querySelector("#correct_option");
-
-let checkOptions = (options, correct) => {
-    let flag = 0;
-    options.forEach(opt => {
-        if(opt.value == correct){
-            flag++;
-        }
-    })
-    if(flag == 0){
-        correctOptionDiv.value = "";
-        correctOptionDiv.classList.add("Opt-match");
-        correctOptionDiv.placeholder = "There are no options that match this"
-        return false;
-    }
-    if(flag == 1){
-        correctOptionDiv.classList.remove("Opt-match");
-        correctOptionDiv.placeholder = "Correct Option(must match an option)"
-        return true;
-    }
-    if(flag > 1){
-        correctOptionDiv.value = "";
-        correctOptionDiv.classList.add("Opt-match");
-        correctOptionDiv.placeholder = "There are multiple options that match this"
-        return false;
-    }
-
-}
-
-
-
-
-
 
 
 
@@ -1168,57 +1135,30 @@ function addQuestion(e) {
     let questionName = document.querySelector("#question_name");
     let correctOption = document.querySelector("#correct_option").value;
     let Form = document.querySelector("#question_form");
-    let quesVal = true;
-    let corrVal = true;
-    let optVal = true;
-    if (questionName.value == "") {
-        questionName.classList.add("Opt-match");
-        questionName.placeholder = "Question is required";
-        quesVal = false;
+    let question = {};
+    question.name = questionName;
+    question.correct = correctOption;
+    question.options = [];
+    questionOptions.forEach(ele => {
+        let opti = {
+            option: ele.value
+        }
+        question.options.push(opti);
+    })
+    if (this.value) {
+        questionsData.splice(this.value, 1, question);
+        console.log(questionsData);
+        this.removeAttribute("value")
+        this.innerHTML = "+ Add Question";
+        popup("Question Edited")
     }
-    if (correctOption.value == "") {
-        correctOption.classList.add("Opt-match");
-        correctOption.placeholder = "Correct Option is required";
-        corrVal = false;
+    else {
+        questionsData.push(question);
+        console.log(questionsData)
+        popup("Quiz Question Added")
     }
-    optVal = checkOptions(questionOptions, correctOption.value)
-    if (quesVal) {
-        questionName.classList.remove("Opt-match")
-        questionName.placeholder = "Enter Question";
-    }
-    if (corrVal) {
-        correctOption.classList.remove("Opt-match")
 
-        correctOption.placeholder = "Enter Correct Option";
-    }
-    if (quesVal && corrVal && optVal) {
-        let question = {};
-        question.name = questionName.value;
-        question.correct = correctOption.value;
-        question.options = [];
-        questionOptions.forEach(ele => {
-            ele.classList.remove("Opt-match")
-            ele.placeholder = "Enter Option"
-            let opti = {
-                option: ele.value
-            }
-            question.options.push(opti);
-        })
-        if (this.value) {
-            questionsData.splice(this.value, 1, question);
-            console.log(questionsData);
-            this.removeAttribute("value")
-            this.innerHTML = "+ Add Question";
-            popup("Question Edited")
-        }
-        else {
-            questionsData.push(question);
-            console.log(questionsData)
-            popup("Quiz Question Added")
-        }
-        ReviewPage("quiz")
-        Form.reset();
-    }
+    Form.reset();
 }
 
 
