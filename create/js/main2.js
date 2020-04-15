@@ -845,6 +845,10 @@ function handleInvert(e) {
     e.preventDefault();
     const thiscreate = document.querySelector(`.${this.classList[1]}-create`)
     const thisresult = document.querySelector(`.${this.classList[1]}-result`)
+    if (this.classList[1] != "home") {
+        const thissummary = document.querySelector(`.${this.classList[1]}-summary`);
+        thissummary.classList.toggle("show")
+    }
     thiscreate.classList.toggle("show-select");
     thisresult.classList.toggle("show-select");
 }
@@ -1070,31 +1074,51 @@ let pollQuestionsData = [];
 function AddPollQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".poll-option");
-    let questionName = document.querySelector("#poll_name").value
+    let questionName = document.querySelector("#poll_name");
     let Form = document.querySelector("#poll_form");
-    let question = {};
-    question.name = questionName;
-    question.options = [];
-    questionOptions.forEach(ele => {
-        let opti = {
-            option: ele.value
-        }
-        question.options.push(opti);
-    })
-    if (this.value) {
-        pollQuestionsData.splice(this.value, 1, question);
-        console.log(pollQuestionsData);
-        this.removeAttribute("value")
-        this.innerHTML = "+ Add Poll Question";
-        popup("Question Edited")
+    if (questionName == "") {
+        questionName.classList.add("Opt-match");
+        questionName.placeholder = "Question is required";
     }
     else {
-        pollQuestionsData.push(question);
-        console.log(pollQuestionsData)
-        popup("Poll Question Added")
-    }
+        questionName.classList.remove("Opt-match");
+        questionName.placeholder = "Enter Question";
+        let f = 0;
+        questionOptions.forEach(ele => {
+            if (ele.value == "") {
+                ele.classList.add("Opt-match");
+                ele.placeholder = "Option Required"
+                f++;
+            }
+        })
+        if(f == 0){
+            let question = {};
+            question.name = questionName.value;
+            question.options = [];
+            questionOptions.forEach(ele => {
+                ele.classList.remove("Opt-match");
+                ele.placeholder = "Enter Option";
+                let opti = {
+                    option: ele.value
+                }
+                question.options.push(opti);
+            })
+            if (this.value) {
+                pollQuestionsData.splice(this.value, 1, question);
+                console.log(pollQuestionsData);
+                this.removeAttribute("value")
+                this.innerHTML = "+ Add Poll Question";
+                popup("Question Edited")
+            }
+            else {
+                pollQuestionsData.push(question);
+                console.log(pollQuestionsData)
+                popup("Poll Question Added")
+            }
 
-    Form.reset()
+            Form.reset()
+        }
+    }
 }
 
 const correctOptionDiv = document.querySelector("#correct_option");
@@ -1140,7 +1164,7 @@ let question_no = 0;
 function addQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".quiz-option");
-    let questionName = document.querySelector("#question_name").value
+    let questionName = document.querySelector("#question_name");
     let correctOption = document.querySelector("#correct_option").value;
     let Form = document.querySelector("#question_form");
     if (checkOptions(questionOptions, correctOption)) {
@@ -2083,6 +2107,7 @@ let performCheck = () => {
         document.querySelector(".quiz-result").classList.remove("show-select");
         document.querySelector(".quiz-summary").classList.remove("show");
         document.querySelector(".quiz-create-container").classList.add("show-action");
+        document.querySelector(".quiz-create-container").classList.remove("opacity-dec");
         document.querySelector(".quiz-create").classList.add("show-select");
         document.querySelector(".Quiz-name").classList.add("show-action");
         resetActionVariables();
@@ -2097,6 +2122,7 @@ let performCheck = () => {
         document.querySelector(".poll-result").classList.remove("show-select")
         document.querySelector(".poll-summary").classList.remove("show");
         document.querySelector(".poll-create-container").classList.add("show-action");
+        document.querySelector(".poll-create-container").classList.remove("opacity-dec");
         document.querySelector(".poll-create").classList.add("show-select");
         document.querySelector(".Poll-name").classList.add("show-action");
         resetActionVariables()
@@ -2110,6 +2136,7 @@ let performCheck = () => {
         document.querySelector(".feedback-result").classList.remove("show-select")
         document.querySelector(".feedback-summary").classList.remove("show");
         document.querySelector(".feedback-create-container").classList.add("show-action");
+        document.querySelector(".feedback-create-container").classList.remove("opacity-dec");
         document.querySelector(".feedback-create").classList.add("show-select");
         document.querySelector(".Feedback-name").classList.add("show-action");
 
@@ -2273,11 +2300,11 @@ let renderReviewPage = (type) => {
 function ReviewPage(e) {
     e.preventDefault();
     console.log(this.classList)
-    let form = document.querySelector(`.${this.classList[2]}-create-container`);
-    let reviewControl = document.querySelector(`.${this.classList[2]}-summary`);
-    form.classList.remove("show-action")
+    let form = document.querySelector(`.${this.classList[1]}-create-container`);
+    let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
+    form.classList.add("opacity-dec");
     reviewControl.classList.add("show");
-    renderReviewPage(this.classList[2]);
+    renderReviewPage(this.classList[1]);
 }
 
 
@@ -2287,7 +2314,7 @@ function FormPage() {
     let form = document.querySelector(`.${this.classList[1]}-create-container`);
     let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
     reviewControl.classList.remove("show");
-    form.classList.add("show-action");
+    form.classList.remove("opacity-dec");
 }
 
 
