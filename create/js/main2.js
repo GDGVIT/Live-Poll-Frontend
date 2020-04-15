@@ -1114,9 +1114,31 @@ function AddPollQuestion(e) {
                 popup("Poll Question Added")
             }
 
-            Form.reset()
+let checkOptions = (options, correct) => {
+    let flag = 0;
+    options.forEach(opt => {
+        if(opt.value == correct){
+            flag++;
         }
+    })
+    if(flag == 0){
+        correctOptionDiv.value = "";
+        correctOptionDiv.classList.add("Opt-match");
+        correctOptionDiv.placeholder = "There are no options that match this"
+        return false;
     }
+    if(flag == 1){
+        correctOptionDiv.classList.remove("Opt-match");
+        correctOptionDiv.placeholder = "Correct Option(must match an option)"
+        return true;
+    }
+    if(flag > 1){
+        correctOptionDiv.value = "";
+        correctOptionDiv.classList.add("Opt-match");
+        correctOptionDiv.placeholder = "There are multiple options that match this"
+        return false;
+    }
+
 }
 
 
@@ -2336,11 +2358,6 @@ function chooseTheme() {
 overallThemeBtns.forEach(ele => {
     ele.addEventListener("click", chooseTheme)
 })
-
-
-
-
-
 
 
 
