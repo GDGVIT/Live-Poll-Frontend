@@ -244,7 +244,7 @@ const renderNext = document.querySelector("#next_ques");
 const renderPrev = document.querySelector('#prev_ques');
 
 renderNext.addEventListener("click", () => {
-    
+
     if (renderQuestionNumber > (renderQuestions.length - 2)) {
         console.log("cant go more")
         /* popup("End of Action Questions") */
@@ -268,7 +268,7 @@ if (renderQuestionNumber == 0) {
     renderPrev.classList.add("disable-btn")
 }
 renderPrev.addEventListener("click", () => {
-    
+
     if (renderQuestionNumber < 1) {
         console.log("cant go more back")
         /* popup("This is the first question") */
@@ -349,7 +349,7 @@ let handleEventDeets = (event_id, action_id) => {
                     renderOptions.push(ele["options"]);
                     renderCorrect.push(ele["correct"]);
                 })
-                if(renderQuestions.length == 1){
+                if (renderQuestions.length == 1) {
                     renderNext.classList.add("disable-btn")
                 }
                 if (result["action_type"] == "Feedback") {
@@ -411,8 +411,6 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
 
 
 let renderEventHistory = (event, actions, just) => {
-    console.log("this is :", event)
-    console.log("this is:", actions)
     let quizno = 0;
     let pollno = 0;
     let feedbackno = 0;
@@ -439,6 +437,7 @@ let renderEventHistory = (event, actions, just) => {
     EventBody.classList.add("action-deets");
     let ActionsDiv = document.createElement("ul");
     ActionsDiv.classList.add("collapsible");
+    ActionsDiv.classList.add("expandable")
     let li1 = document.createElement("li");
     let li2 = document.createElement("li");
     let li3 = document.createElement("li");
@@ -458,9 +457,9 @@ let renderEventHistory = (event, actions, just) => {
     li1.appendChild(li1Header)
     li2.appendChild(li2Header)
     li3.appendChild(li3Header)
-    let quizzesDiv = document.createElement("ul");
-    let pollsDiv = document.createElement("ul");
-    let feedbacksDiv = document.createElement("ul");
+    let quizzesDiv = document.createElement("div");
+    let pollsDiv = document.createElement("div");
+    let feedbacksDiv = document.createElement("div");
     quizzesDiv.classList.add("collapsible-body")
     quizzesDiv.classList.add("actions")
     pollsDiv.classList.add("collapsible-body")
@@ -469,7 +468,7 @@ let renderEventHistory = (event, actions, just) => {
     feedbacksDiv.classList.add("actions")
 
     actions.forEach((ele, i) => {
-        let p = document.createElement("li");
+        let p = document.createElement("p");
         p.id = `${ele["_id"]}`
         p.value = `${event["_id"]}`
         p.addEventListener("click", () => {
@@ -601,9 +600,12 @@ let renderEventHistory = (event, actions, just) => {
     else {
         historyGrid.appendChild(EventDiv);
     }
-    let options;
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems, options);
+    var elem = document.querySelectorAll('.collapsible.expandable');
+    elem.forEach(ele => {
+        var instance = M.Collapsible.init(ele, {
+            accordion: false
+        });
+    })
 }
 
 
@@ -637,9 +639,10 @@ let getActions = async (event) => {
     })
     GatherActions.then(() => {
         renderEventHistory(event, actionDeets);
-        let options;
-        var elems = document.querySelectorAll('.collapsible');
-        var instances = M.Collapsible.init(elems, options);
+        var elem = document.querySelector('.collapsible.expandable');
+        var instance = M.Collapsible.init(elem, {
+            accordion: false
+        });
     })
 }
 
@@ -842,10 +845,6 @@ function handleInvert(e) {
     e.preventDefault();
     const thiscreate = document.querySelector(`.${this.classList[1]}-create`)
     const thisresult = document.querySelector(`.${this.classList[1]}-result`)
-    if (this.classList[1] != "home") {
-        const thissummary = document.querySelector(`.${this.classList[1]}-summary`);
-        thissummary.classList.toggle("show")
-    }
     thiscreate.classList.toggle("show-select");
     thisresult.classList.toggle("show-select");
 }
@@ -1068,71 +1067,57 @@ AddActionBtn.forEach(ele => {
 
 let pollQuestionsData = [];
 
-
 function AddPollQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".poll-option");
-    let questionName = document.querySelector("#poll_name");
+    let questionName = document.querySelector("#poll_name").value
     let Form = document.querySelector("#poll_form");
-    if (questionName == "") {
-        questionName.classList.add("Opt-match");
-        questionName.placeholder = "Question is required";
+    let question = {};
+    question.name = questionName;
+    question.options = [];
+    questionOptions.forEach(ele => {
+        let opti = {
+            option: ele.value
+        }
+        question.options.push(opti);
+    })
+    if (this.value) {
+        pollQuestionsData.splice(this.value, 1, question);
+        console.log(pollQuestionsData);
+        this.removeAttribute("value")
+        this.innerHTML = "+ Add Poll Question";
+        popup("Question Edited")
     }
     else {
-        questionName.classList.remove("Opt-match");
-        questionName.placeholder = "Enter Question";
-        let f = 0;
-        questionOptions.forEach(ele => {
-            if (ele.value == "") {
-                ele.classList.add("Opt-match");
-                ele.placeholder = "Option Required"
-                f++;
-            }
-        })
-        if(f == 0){
-            let question = {};
-            question.name = questionName.value;
-            question.options = [];
-            questionOptions.forEach(ele => {
-                ele.classList.remove("Opt-match");
-                ele.placeholder = "Enter Option";
-                let opti = {
-                    option: ele.value
-                }
-                question.options.push(opti);
-            })
-            if (this.value) {
-                pollQuestionsData.splice(this.value, 1, question);
-                console.log(pollQuestionsData);
-                this.removeAttribute("value")
-                this.innerHTML = "+ Add Poll Question";
-                popup("Question Edited")
-            }
-            else {
-                pollQuestionsData.push(question);
-                console.log(pollQuestionsData)
-                popup("Poll Question Added")
-            }
+        pollQuestionsData.push(question);
+        console.log(pollQuestionsData)
+        popup("Poll Question Added")
+    }
+
+    Form.reset()
+}
+
+const correctOptionDiv = document.querySelector("#correct_option");
 
 let checkOptions = (options, correct) => {
     let flag = 0;
     options.forEach(opt => {
-        if(opt.value == correct){
+        if (opt.value == correct) {
             flag++;
         }
     })
-    if(flag == 0){
+    if (flag == 0) {
         correctOptionDiv.value = "";
         correctOptionDiv.classList.add("Opt-match");
         correctOptionDiv.placeholder = "There are no options that match this"
         return false;
     }
-    if(flag == 1){
+    if (flag == 1) {
         correctOptionDiv.classList.remove("Opt-match");
         correctOptionDiv.placeholder = "Correct Option(must match an option)"
         return true;
     }
-    if(flag > 1){
+    if (flag > 1) {
         correctOptionDiv.value = "";
         correctOptionDiv.classList.add("Opt-match");
         correctOptionDiv.placeholder = "There are multiple options that match this"
@@ -1144,6 +1129,10 @@ let checkOptions = (options, correct) => {
 
 
 
+
+
+
+
 const AddQuestionBtn = document.querySelector("#add_question_btn");
 const AddPollBtn = document.querySelector("#add_poll_btn");
 let questionsData = [];
@@ -1151,35 +1140,36 @@ let question_no = 0;
 function addQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".quiz-option");
-    let questionName = document.querySelector("#question_name");
+    let questionName = document.querySelector("#question_name").value
     let correctOption = document.querySelector("#correct_option").value;
     let Form = document.querySelector("#question_form");
-    let question = {};
-    question.name = questionName;
-    question.correct = correctOption;
-    question.options = [];
-    questionOptions.forEach(ele => {
-        let opti = {
-            option: ele.value
+    if (checkOptions(questionOptions, correctOption)) {
+        let question = {};
+        question.name = questionName;
+        question.correct = correctOption;
+        question.options = [];
+        questionOptions.forEach(ele => {
+            let opti = {
+                option: ele.value
+            }
+            question.options.push(opti);
+        })
+        if (this.value) {
+            questionsData.splice(this.value, 1, question);
+            console.log(questionsData);
+            this.removeAttribute("value")
+            this.innerHTML = "+ Add Question";
+            popup("Question Edited")
         }
-        question.options.push(opti);
-    })
-    if (this.value) {
-        questionsData.splice(this.value, 1, question);
-        console.log(questionsData);
-        this.removeAttribute("value")
-        this.innerHTML = "+ Add Question";
-        popup("Question Edited")
-    }
-    else {
-        questionsData.push(question);
-        console.log(questionsData)
-        popup("Quiz Question Added")
-    }
+        else {
+            questionsData.push(question);
+            console.log(questionsData)
+            popup("Quiz Question Added")
+        }
 
-    Form.reset();
+        Form.reset();
+    }
 }
-
 
 
 AddQuestionBtn.addEventListener("click", addQuestion);
@@ -1898,37 +1888,42 @@ function publishAction(e) {
     let actid = "0";
     if (this.id == "publish_quiz") {
         if (sessionStorage.getItem("quiz_action_id")) {
-            actid = sessionStorage.getItem("quiz_action_id");
-            addLoader(this)
-            var myHeaders = new Headers();
-            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-            myHeaders.append("Content-Type", "application/json")
-            var raw = JSON.stringify(questionsData);
-            console.log(raw)
+            if (questionsData.length == 0) {
+                popup("There are no questions to publish", "Error");
+            }
+            else {
+                actid = sessionStorage.getItem("quiz_action_id");
+                addLoader(this)
+                var myHeaders = new Headers();
+                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+                myHeaders.append("Content-Type", "application/json")
+                var raw = JSON.stringify(questionsData);
+                console.log(raw)
 
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result);
-                    popup("Quiz Published")
-                    var requestOptions = {
-                        method: 'GET',
-                        redirect: 'follow'
-                    };
+                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                        popup("Quiz Published")
+                        var requestOptions = {
+                            method: 'GET',
+                            redirect: 'follow'
+                        };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                        .then(response => response.text())
-                        .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); removeLoader(this, "Publish Quiz") })
-                        .catch(error => console.log('error', error));
-                })
-                .catch(error => console.log('error', error));
+                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                            .then(response => response.text())
+                            .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); removeLoader(this, "Publish Quiz") })
+                            .catch(error => console.log('error', error));
+                    })
+                    .catch(error => console.log('error', error));
+            }
         }
         else {
             console.log("no quiz made");
@@ -1936,37 +1931,42 @@ function publishAction(e) {
     }
     if (this.id == "publish_poll") {
         if (sessionStorage.getItem("poll_action_id")) {
-            actid = sessionStorage.getItem("poll_action_id");
-            addLoader(this)
-            var myHeaders = new Headers();
-            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-            myHeaders.append("Content-Type", "application/json")
-            var raw = JSON.stringify(pollQuestionsData);
+            if (pollQuestionsData.length == 0) {
+                popup("There are no questions to publish", "Error");
+            }
+            else {
+                actid = sessionStorage.getItem("poll_action_id");
+                addLoader(this)
+                var myHeaders = new Headers();
+                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+                myHeaders.append("Content-Type", "application/json")
+                var raw = JSON.stringify(pollQuestionsData);
 
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                .then(response => response.text())
-                .then(result => {
-                    console.log(result);
-                    popup("Poll Published")
-                    var requestOptions = {
-                        method: 'GET',
-                        redirect: 'follow'
-                    };
+                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
+                    .then(response => response.text())
+                    .then(result => {
+                        console.log(result);
+                        popup("Poll Published")
+                        var requestOptions = {
+                            method: 'GET',
+                            redirect: 'follow'
+                        };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                        .then(response => response.text())
-                        .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); removeLoader(this, "Publish Poll") })
-                        .catch(error => console.log('error', error));
-                })
-                .catch(error => console.log('error', error));
+                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                            .then(response => response.text())
+                            .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); removeLoader(this, "Publish Poll") })
+                            .catch(error => console.log('error', error));
+                    })
+                    .catch(error => console.log('error', error));
 
+            }
         }
         else {
             console.log("no poll made");
@@ -1974,35 +1974,40 @@ function publishAction(e) {
     }
     if (this.id == "publish_feedback") {
         if (sessionStorage.getItem("feedback_action_id")) {
-            actid = sessionStorage.getItem("feedback_action_id");
-            addLoader(this)
-            var myHeaders = new Headers();
-            myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-            myHeaders.append("Content-Type", "application/json")
-            var raw = JSON.stringify(feedbackQuestions);
+            if (feedbackQuestions.length == 0) {
+                popup("There are no questions to publish", "Error");
+            }
+            else {
+                actid = sessionStorage.getItem("feedback_action_id");
+                addLoader(this)
+                var myHeaders = new Headers();
+                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+                myHeaders.append("Content-Type", "application/json")
+                var raw = JSON.stringify(feedbackQuestions);
 
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                .then(response => response.text())
-                .then(result => {
-                    console.log(result);
-                    var requestOptions = {
-                        method: 'GET',
-                        redirect: 'follow'
-                    };
+                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
+                    .then(response => response.text())
+                    .then(result => {
+                        console.log(result);
+                        var requestOptions = {
+                            method: 'GET',
+                            redirect: 'follow'
+                        };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                        .then(response => response.text())
-                        .then(result => { console.log(result); firstQuestionPublish(actid, "feedback"); removeLoader(this, "Publish Feedback") })
-                        .catch(error => console.log('error', error));
-                })
-                .catch(error => console.log('error', error));
+                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                            .then(response => response.text())
+                            .then(result => { console.log(result); firstQuestionPublish(actid, "feedback"); removeLoader(this, "Publish Feedback") })
+                            .catch(error => console.log('error', error));
+                    })
+                    .catch(error => console.log('error', error));
+            }
         }
         else {
             console.log("no feedback made");
@@ -2078,7 +2083,6 @@ let performCheck = () => {
         document.querySelector(".quiz-result").classList.remove("show-select");
         document.querySelector(".quiz-summary").classList.remove("show");
         document.querySelector(".quiz-create-container").classList.add("show-action");
-        document.querySelector(".quiz-create-container").classList.remove("opacity-dec");
         document.querySelector(".quiz-create").classList.add("show-select");
         document.querySelector(".Quiz-name").classList.add("show-action");
         resetActionVariables();
@@ -2093,7 +2097,6 @@ let performCheck = () => {
         document.querySelector(".poll-result").classList.remove("show-select")
         document.querySelector(".poll-summary").classList.remove("show");
         document.querySelector(".poll-create-container").classList.add("show-action");
-        document.querySelector(".poll-create-container").classList.remove("opacity-dec");
         document.querySelector(".poll-create").classList.add("show-select");
         document.querySelector(".Poll-name").classList.add("show-action");
         resetActionVariables()
@@ -2107,7 +2110,6 @@ let performCheck = () => {
         document.querySelector(".feedback-result").classList.remove("show-select")
         document.querySelector(".feedback-summary").classList.remove("show");
         document.querySelector(".feedback-create-container").classList.add("show-action");
-        document.querySelector(".feedback-create-container").classList.remove("opacity-dec");
         document.querySelector(".feedback-create").classList.add("show-select");
         document.querySelector(".Feedback-name").classList.add("show-action");
 
@@ -2124,7 +2126,7 @@ let addFormData = (i, type) => {
 
 
 const formBtn = document.querySelectorAll(".form-btn");
-const reviewBtn = document.querySelectorAll(".review-btn")
+const reviewBtn = document.querySelectorAll(".review-btn");
 
 let renderReviewPage = (type) => {
     let deetsDisplayDiv = document.querySelector(`.extra-${type}-deets`);
@@ -2162,7 +2164,6 @@ let renderReviewPage = (type) => {
                 form.reset();
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
-                form.classList.remove("opacity-dec")
                 document.querySelector("#add_question_btn").innerHTML = "Insert Edited Question";
                 document.querySelector("#add_question_btn").value = i;
             })
@@ -2203,7 +2204,6 @@ let renderReviewPage = (type) => {
                 form.reset();
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
-                form.classList.remove("opacity-dec")
                 document.querySelector("#add_poll_btn").innerHTML = "Insert Edited Question"
                 document.querySelector("#add_poll_btn").value = i;
             })
@@ -2244,7 +2244,6 @@ let renderReviewPage = (type) => {
                 let reviewControl = document.querySelector(`.feedback-summary`);
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
-                form.classList.remove("opacity-dec")
                 document.querySelector("#add_feedback_btn").innerHTML = "Insert Edited Question";
                 document.querySelector("#add_feedback_btn").value = i;
             })
@@ -2274,11 +2273,11 @@ let renderReviewPage = (type) => {
 function ReviewPage(e) {
     e.preventDefault();
     console.log(this.classList)
-    let form = document.querySelector(`.${this.classList[1]}-create-container`);
-    let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
-    form.classList.add("opacity-dec");
+    let form = document.querySelector(`.${this.classList[2]}-create-container`);
+    let reviewControl = document.querySelector(`.${this.classList[2]}-summary`);
+    form.classList.remove("show-action")
     reviewControl.classList.add("show");
-    renderReviewPage(this.classList[1]);
+    renderReviewPage(this.classList[2]);
 }
 
 
@@ -2288,15 +2287,16 @@ function FormPage() {
     let form = document.querySelector(`.${this.classList[1]}-create-container`);
     let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
     reviewControl.classList.remove("show");
-    form.classList.remove("opacity-dec");
+    form.classList.add("show-action");
 }
 
 
 
-reviewBtn.forEach(ele => {
+
+
+reviewBtn.forEach((ele) => {
     ele.addEventListener("click", ReviewPage)
 })
-
 
 formBtn.forEach(ele => {
     ele.addEventListener("click", FormPage)
@@ -2358,7 +2358,3 @@ function chooseTheme() {
 overallThemeBtns.forEach(ele => {
     ele.addEventListener("click", chooseTheme)
 })
-
-
-
-
