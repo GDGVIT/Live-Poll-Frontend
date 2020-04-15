@@ -1097,6 +1097,39 @@ function AddPollQuestion(e) {
     Form.reset()
 }
 
+const correctOptionDiv = document.querySelector("#correct_option");
+
+let checkOptions = (options, correct) => {
+    let flag = 0;
+    options.forEach(opt => {
+        if(opt.value == correct){
+            flag++;
+        }
+    })
+    if(flag == 0){
+        correctOptionDiv.value = "";
+        correctOptionDiv.classList.add("Opt-match");
+        correctOptionDiv.placeholder = "There are no options that match this"
+        return false;
+    }
+    if(flag == 1){
+        correctOptionDiv.classList.remove("Opt-match");
+        correctOptionDiv.placeholder = "Correct Option(must match an option)"
+        return true;
+    }
+    if(flag > 1){
+        correctOptionDiv.value = "";
+        correctOptionDiv.classList.add("Opt-match");
+        correctOptionDiv.placeholder = "There are multiple options that match this"
+        return false;
+    }
+
+}
+
+
+
+
+
 
 
 
@@ -1110,30 +1143,32 @@ function addQuestion(e) {
     let questionName = document.querySelector("#question_name").value
     let correctOption = document.querySelector("#correct_option").value;
     let Form = document.querySelector("#question_form");
-    let question = {};
-    question.name = questionName;
-    question.correct = correctOption;
-    question.options = [];
-    questionOptions.forEach(ele => {
-        let opti = {
-            option: ele.value
+    if (checkOptions(questionOptions, correctOption)) {
+        let question = {};
+        question.name = questionName;
+        question.correct = correctOption;
+        question.options = [];
+        questionOptions.forEach(ele => {
+            let opti = {
+                option: ele.value
+            }
+            question.options.push(opti);
+        })
+        if (this.value) {
+            questionsData.splice(this.value, 1, question);
+            console.log(questionsData);
+            this.removeAttribute("value")
+            this.innerHTML = "+ Add Question";
+            popup("Question Edited")
         }
-        question.options.push(opti);
-    })
-    if (this.value) {
-        questionsData.splice(this.value, 1, question);
-        console.log(questionsData);
-        this.removeAttribute("value")
-        this.innerHTML = "+ Add Question";
-        popup("Question Edited")
-    }
-    else {
-        questionsData.push(question);
-        console.log(questionsData)
-        popup("Quiz Question Added")
-    }
+        else {
+            questionsData.push(question);
+            console.log(questionsData)
+            popup("Quiz Question Added")
+        }
 
-    Form.reset();
+        Form.reset();
+    }
 }
 
 
