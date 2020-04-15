@@ -843,6 +843,16 @@ loginButton.addEventListener("click", handleLogin);
 
 function handleInvert(e) {
     e.preventDefault();
+    if (this.classList[1] == "quiz") {
+        if (questionsData.length == 0) return;
+    }
+    if (this.classList[1] == "poll") {
+        if (pollQuestionsData.length == 0) return;
+    }
+    if (this.classList[1] == "feedback") {
+        if (feedbackQuestions.length == 0) return;
+    }
+
     const thiscreate = document.querySelector(`.${this.classList[1]}-create`)
     const thisresult = document.querySelector(`.${this.classList[1]}-result`)
     thiscreate.classList.toggle("show-select");
@@ -1064,37 +1074,94 @@ AddActionBtn.forEach(ele => {
 
 
 
+let validate = (question, options, corrOpt) => {
+    let quesVal = true;
+    let optVal = true;
+    let corrVal = true;
+    let match = false;
+    if (question.value == "") {
+        question.classList.add("Opt-match");
+        question.placeholder = "Question is Required"
+        quesVal = false;
+    }
+    options.forEach(opt => {
+        if (opt.value == "") {
+            opt.classList.add("Opt-match");
+            opt.placeholder = "Option is Required"
+            optVal = false;
+        }
+    })
+    if (corrOpt) {
+        if (corrOpt.value == "") {
+            corrOpt.classList.add("Opt-match");
+            corrOpt.placeholder = "Correct Option is Required"
+            corrVal = false;
+        }
+        else {
+            if (checkOptions(options, corrOpt.value)) {
+                match = true;
+            }
+        }
+    }
+    else {
+        match = true;
+    }
+    if (quesVal && optVal && corrVal && match) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 let pollQuestionsData = [];
 
 function AddPollQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".poll-option");
-    let questionName = document.querySelector("#poll_name").value
+    let questionName = document.querySelector("#poll_name");
     let Form = document.querySelector("#poll_form");
-    let question = {};
-    question.name = questionName;
-    question.options = [];
     questionOptions.forEach(ele => {
-        let opti = {
-            option: ele.value
-        }
-        question.options.push(opti);
+        ele.classList.remove("Opt-match");
+        ele.placeholder = "Enter Option"
     })
-    if (this.value) {
-        pollQuestionsData.splice(this.value, 1, question);
-        console.log(pollQuestionsData);
-        this.removeAttribute("value")
-        this.innerHTML = "+ Add Poll Question";
-        popup("Question Edited")
-    }
-    else {
-        pollQuestionsData.push(question);
-        console.log(pollQuestionsData)
-        popup("Poll Question Added")
-    }
+    questionName.classList.remove("Opt-match")
+    questionName.placeholder = "Enter Question"
+    if (validate(questionName, questionOptions)) {
+        let question = {};
+        question.name = questionName.value;
+        question.options = [];
+        questionOptions.forEach(ele => {
+            let opti = {
+                option: ele.value
+            }
+            question.options.push(opti);
+        })
+        if (this.value) {
+            pollQuestionsData.splice(this.value, 1, question);
+            console.log(pollQuestionsData);
+            this.removeAttribute("value")
+            this.innerHTML = "+ Add Poll Question";
+            popup("Question Edited")
+        }
+        else {
+            pollQuestionsData.push(question);
+            console.log(pollQuestionsData)
+            popup("Poll Question Added")
+        }
 
-    Form.reset()
+        Form.reset()
+    }
 }
 
 const correctOptionDiv = document.querySelector("#correct_option");
@@ -1140,13 +1207,22 @@ let question_no = 0;
 function addQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".quiz-option");
-    let questionName = document.querySelector("#question_name").value
-    let correctOption = document.querySelector("#correct_option").value;
+    let questionName = document.querySelector("#question_name");
+    let correctOption = document.querySelector("#correct_option");
     let Form = document.querySelector("#question_form");
-    if (checkOptions(questionOptions, correctOption)) {
+    questionName.classList.remove("Opt-match")
+    questionName.placeholder = "Enter Question"
+    correctOption.placeholder = "Enter Correct Option(must match the options)"
+    correctOption.classList.remove("Opt-match")
+    questionOptions.forEach(ele => {
+        ele.classList.remove("Opt-match");
+        ele.placeholder = "Enter Option"
+    })
+    if (validate(questionName, questionOptions, correctOption)) {
+
         let question = {};
-        question.name = questionName;
-        question.correct = correctOption;
+        question.name = questionName.value;
+        question.correct = correctOption.value;
         question.options = [];
         questionOptions.forEach(ele => {
             let opti = {
@@ -1168,6 +1244,7 @@ function addQuestion(e) {
         }
 
         Form.reset();
+
     }
 }
 
@@ -1191,20 +1268,26 @@ AddPollBtn.addEventListener("click", AddPollQuestion);
 
 const AddOptionsBtn = document.querySelectorAll(".add-option-btn")
 const DeleteOptionsBtn = document.querySelectorAll(".delete-option-btn");
+let quizOptlength = 1;
+let pollOptlength = 1;
 
 function addOption(e) {
     e.preventDefault();
-    const OptionsDiv = document.querySelector(`#${this.classList[1]}_div`)
-    let inputField = document.createElement("input");
-    inputField.placeholder = "Enter Option";
-    if (this.classList[1] == "quiz_options") {
-        inputField.classList.add("quiz-option");
+    if ((this.classList[1] == "quiz_options" && quizOptlength < 4) || (this.classList[1] == "poll_options" && pollOptlength < 4)) {
+        if (this.classList[1] == "quiz_options") quizOptlength++;
+        if (this.classList[1] == "poll_options") pollOptlength++;
+        const OptionsDiv = document.querySelector(`#${this.classList[1]}_div`)
+        let inputField = document.createElement("input");
+        inputField.placeholder = "Enter Option";
+        if (this.classList[1] == "quiz_options") {
+            inputField.classList.add("quiz-option");
+        }
+        if (this.classList[1] == "poll_options") {
+            inputField.classList.add("poll-option");
+        }
+        inputField.classList.add("main-input");
+        OptionsDiv.appendChild(inputField)
     }
-    if (this.classList[1] == "poll_options") {
-        inputField.classList.add("poll-option");
-    }
-    inputField.classList.add("main-input");
-    OptionsDiv.appendChild(inputField)
 }
 function deleteOption(e) {
     e.preventDefault();
@@ -1213,11 +1296,16 @@ function deleteOption(e) {
         return;
     }
     else {
-        OptionsDiv.removeChild(OptionsDiv.lastChild)
+        if (((this.classList[1] == "quiz_options" && quizOptlength > 1) || (this.classList[1] == "poll_options" && pollOptlength > 1))) {
+            if (this.classList[1] == "quiz_options") quizOptlength--;
+            if (this.classList[1] == "poll_options") pollOptlength--;
+            OptionsDiv.removeChild(OptionsDiv.lastChild)
+        }
     }
 }
 
 AddOptionsBtn.forEach(ele => {
+
     ele.addEventListener("click", addOption);
 })
 DeleteOptionsBtn.forEach(ele => {
@@ -1293,24 +1381,31 @@ const addFeedbackBtn = document.querySelector("#add_feedback_btn");
 let feedbackQuestions = [];
 function addFeedbackQuestion(e) {
     e.preventDefault();
-    let feedbackQuestion = document.querySelector("#feedback_name").value;
+    let feedbackQuestion = document.querySelector("#feedback_name");
     const Form = document.querySelector(".feedback-create-container");
     let question = {};
-    question.name = feedbackQuestion;
-    if (this.value) {
-        feedbackQuestions.splice(this.value, 1, question);
-        console.log(feedbackQuestions);
-        this.removeAttribute("value")
-        this.innerHTML = "+ Add Question";
-        popup("Question Edited")
+    feedbackQuestion.classList.remove("Opt-match")
+    feedbackQuestion.placeholder = "Enter Feedback Question";
+    if (feedbackQuestion.value == "") {
+        feedbackQuestion.classList.add("Opt-match")
+        feedbackQuestion.placeholder = "Feedback Question is Required";
     }
     else {
-        feedbackQuestions.push(question);
-        console.log(feedbackQuestions)
-        Form.reset();
-        popup("Feedback Question Added")
+        question.name = feedbackQuestion.value;
+        if (this.value) {
+            feedbackQuestions.splice(this.value, 1, question);
+            console.log(feedbackQuestions);
+            this.removeAttribute("value")
+            this.innerHTML = "+ Add Question";
+            popup("Question Edited")
+        }
+        else {
+            feedbackQuestions.push(question);
+            console.log(feedbackQuestions)
+            Form.reset();
+            popup("Feedback Question Added")
+        }
     }
-
 }
 
 addFeedbackBtn.addEventListener("click", addFeedbackQuestion)
