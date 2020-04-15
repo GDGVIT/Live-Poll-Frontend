@@ -2102,7 +2102,7 @@ let addFormData = (i, type) => {
 
 
 const formBtn = document.querySelectorAll(".form-btn");
-
+const reviewBtn = document.querySelectorAll(".review-btn")
 
 let renderReviewPage = (type) => {
     let deetsDisplayDiv = document.querySelector(`.extra-${type}-deets`);
@@ -2271,7 +2271,9 @@ function FormPage() {
 
 
 
-
+reviewBtn.forEach(ele => {
+    ele.addEventListener("click", ReviewPage)
+})
 
 
 formBtn.forEach(ele => {
