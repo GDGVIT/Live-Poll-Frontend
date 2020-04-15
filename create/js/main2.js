@@ -244,7 +244,7 @@ const renderNext = document.querySelector("#next_ques");
 const renderPrev = document.querySelector('#prev_ques');
 
 renderNext.addEventListener("click", () => {
-    
+
     if (renderQuestionNumber > (renderQuestions.length - 2)) {
         console.log("cant go more")
         /* popup("End of Action Questions") */
@@ -268,7 +268,7 @@ if (renderQuestionNumber == 0) {
     renderPrev.classList.add("disable-btn")
 }
 renderPrev.addEventListener("click", () => {
-    
+
     if (renderQuestionNumber < 1) {
         console.log("cant go more back")
         /* popup("This is the first question") */
@@ -349,7 +349,7 @@ let handleEventDeets = (event_id, action_id) => {
                     renderOptions.push(ele["options"]);
                     renderCorrect.push(ele["correct"]);
                 })
-                if(renderQuestions.length == 1){
+                if (renderQuestions.length == 1) {
                     renderNext.classList.add("disable-btn")
                 }
                 if (result["action_type"] == "Feedback") {
@@ -411,8 +411,6 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
 
 
 let renderEventHistory = (event, actions, just) => {
-    console.log("this is :", event)
-    console.log("this is:", actions)
     let quizno = 0;
     let pollno = 0;
     let feedbackno = 0;
@@ -439,6 +437,7 @@ let renderEventHistory = (event, actions, just) => {
     EventBody.classList.add("action-deets");
     let ActionsDiv = document.createElement("ul");
     ActionsDiv.classList.add("collapsible");
+    ActionsDiv.classList.add("expandable")
     let li1 = document.createElement("li");
     let li2 = document.createElement("li");
     let li3 = document.createElement("li");
@@ -458,9 +457,9 @@ let renderEventHistory = (event, actions, just) => {
     li1.appendChild(li1Header)
     li2.appendChild(li2Header)
     li3.appendChild(li3Header)
-    let quizzesDiv = document.createElement("ul");
-    let pollsDiv = document.createElement("ul");
-    let feedbacksDiv = document.createElement("ul");
+    let quizzesDiv = document.createElement("div");
+    let pollsDiv = document.createElement("div");
+    let feedbacksDiv = document.createElement("div");
     quizzesDiv.classList.add("collapsible-body")
     quizzesDiv.classList.add("actions")
     pollsDiv.classList.add("collapsible-body")
@@ -469,7 +468,7 @@ let renderEventHistory = (event, actions, just) => {
     feedbacksDiv.classList.add("actions")
 
     actions.forEach((ele, i) => {
-        let p = document.createElement("li");
+        let p = document.createElement("p");
         p.id = `${ele["_id"]}`
         p.value = `${event["_id"]}`
         p.addEventListener("click", () => {
@@ -601,9 +600,12 @@ let renderEventHistory = (event, actions, just) => {
     else {
         historyGrid.appendChild(EventDiv);
     }
-    let options;
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems, options);
+    var elem = document.querySelectorAll('.collapsible.expandable');
+    elem.forEach(ele => {
+        var instance = M.Collapsible.init(ele, {
+            accordion: false
+        });
+    })
 }
 
 
@@ -637,9 +639,10 @@ let getActions = async (event) => {
     })
     GatherActions.then(() => {
         renderEventHistory(event, actionDeets);
-        let options;
-        var elems = document.querySelectorAll('.collapsible');
-        var instances = M.Collapsible.init(elems, options);
+        var elem = document.querySelector('.collapsible.expandable');
+        var instance = M.Collapsible.init(elem, {
+            accordion: false
+        });
     })
 }
 
