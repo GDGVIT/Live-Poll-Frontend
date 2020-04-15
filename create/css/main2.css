@@ -273,8 +273,9 @@ main {
     display: grid;
     display: none;
     grid-template-columns: 50% 50%;
-    width: calc(100% - 40px);
+    width: 95%;
     padding: 20px;
+    margin: 0 auto;
     justify-items: right;
     align-items: center;
 }
