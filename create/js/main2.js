@@ -845,6 +845,10 @@ function handleInvert(e) {
     e.preventDefault();
     const thiscreate = document.querySelector(`.${this.classList[1]}-create`)
     const thisresult = document.querySelector(`.${this.classList[1]}-result`)
+    if (this.classList[1] != "home") {
+        const thissummary = document.querySelector(`.${this.classList[1]}-summary`);
+        thissummary.classList.toggle("show")
+    }
     thiscreate.classList.toggle("show-select");
     thisresult.classList.toggle("show-select");
 }
@@ -1067,34 +1071,60 @@ AddActionBtn.forEach(ele => {
 
 let pollQuestionsData = [];
 
+
 function AddPollQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".poll-option");
-    let questionName = document.querySelector("#poll_name").value
+    let questionName = document.querySelector("#poll_name");
     let Form = document.querySelector("#poll_form");
-    let question = {};
-    question.name = questionName;
-    question.options = [];
+    let f = 0;
+    let quesVal = true;
+    let optVal = true;
+    if (questionName.value == "") {
+        questionName.classList.add("Opt-match");
+        questionName.placeholder = "Question is required";
+        quesVal = false;
+    }
     questionOptions.forEach(ele => {
-        let opti = {
-            option: ele.value
+        if (ele.value == "") {
+            ele.classList.add("Opt-match");
+            ele.placeholder = "Option Required"
+            f++;
         }
-        question.options.push(opti);
     })
-    if (this.value) {
-        pollQuestionsData.splice(this.value, 1, question);
-        console.log(pollQuestionsData);
-        this.removeAttribute("value")
-        this.innerHTML = "+ Add Poll Question";
-        popup("Question Edited")
+    if (f > 0) {
+        optVal = false;
     }
-    else {
-        pollQuestionsData.push(question);
-        console.log(pollQuestionsData)
-        popup("Poll Question Added")
-    }
+    if (quesVal && optVal) {
+        questionName.classList.remove("Opt-match");
+        questionName.placeholder = "Enter Question";
+        let question = {};
+        question.name = questionName.value;
+        question.options = [];
+        questionOptions.forEach(ele => {
+            ele.classList.remove("Opt-match");
+            ele.placeholder = "Enter Option";
+            let opti = {
+                option: ele.value
+            }
+            question.options.push(opti);
+        })
+        if (this.value) {
+            pollQuestionsData.splice(this.value, 1, question);
+            console.log(pollQuestionsData);
+            this.removeAttribute("value")
+            this.innerHTML = "+ Add Poll Question";
+            popup("Question Edited")
+        }
+        else {
+            pollQuestionsData.push(question);
+            console.log(pollQuestionsData)
+            popup("Poll Question Added")
+        }
+        ReviewPage("poll")
+        Form.reset()
 
-    Form.reset()
+    }
 }
 
 const correctOptionDiv = document.querySelector("#correct_option");
@@ -1102,10 +1132,22 @@ const correctOptionDiv = document.querySelector("#correct_option");
 let checkOptions = (options, correct) => {
     let flag = 0;
     options.forEach(opt => {
+        if (opt.value == "") {
+            opt.classList.add("Opt-match");
+            opt.placeholder = "Option is Required"
+        }
+        else{
+            opt.classList.remove("Opt-match");
+            opt.placeholder = "Enter Option"
+        }
         if (opt.value == correct) {
             flag++;
         }
     })
+    if (correct == "") {
+        correctOption.classList.add("Opt-match");
+        correctOption.placeholder = "Correct Option is required";
+    }
     if (flag == 0) {
         correctOptionDiv.value = "";
         correctOptionDiv.classList.add("Opt-match");
@@ -1140,15 +1182,40 @@ let question_no = 0;
 function addQuestion(e) {
     e.preventDefault();
     let questionOptions = document.querySelectorAll(".quiz-option");
-    let questionName = document.querySelector("#question_name").value
-    let correctOption = document.querySelector("#correct_option").value;
+    let questionName = document.querySelector("#question_name");
+    let correctOption = document.querySelector("#correct_option");
     let Form = document.querySelector("#question_form");
-    if (checkOptions(questionOptions, correctOption)) {
+    let quesVal = true;
+    let corrVal = true;
+    let optVal = true;
+    if (questionName.value == "") {
+        questionName.classList.add("Opt-match");
+        questionName.placeholder = "Question is required";
+        quesVal = false;
+    }
+    if (correctOption.value == "") {
+        correctOption.classList.add("Opt-match");
+        correctOption.placeholder = "Correct Option is required";
+        corrVal = false;
+    }
+    optVal = checkOptions(questionOptions, correctOption.value)
+    if (quesVal) {
+        questionName.classList.remove("Opt-match")
+        questionName.placeholder = "Enter Question";
+    }
+    if (corrVal) {
+        correctOption.classList.remove("Opt-match")
+
+        correctOption.placeholder = "Enter Correct Option";
+    }
+    if (quesVal && corrVal && optVal) {
         let question = {};
-        question.name = questionName;
-        question.correct = correctOption;
+        question.name = questionName.value;
+        question.correct = correctOption.value;
         question.options = [];
         questionOptions.forEach(ele => {
+            ele.classList.remove("Opt-match")
+            ele.placeholder = "Enter Option"
             let opti = {
                 option: ele.value
             }
@@ -1166,10 +1233,11 @@ function addQuestion(e) {
             console.log(questionsData)
             popup("Quiz Question Added")
         }
-
+        ReviewPage("quiz")
         Form.reset();
     }
 }
+
 
 
 AddQuestionBtn.addEventListener("click", addQuestion);
@@ -2083,6 +2151,7 @@ let performCheck = () => {
         document.querySelector(".quiz-result").classList.remove("show-select");
         document.querySelector(".quiz-summary").classList.remove("show");
         document.querySelector(".quiz-create-container").classList.add("show-action");
+        document.querySelector(".quiz-create-container").classList.remove("opacity-dec");
         document.querySelector(".quiz-create").classList.add("show-select");
         document.querySelector(".Quiz-name").classList.add("show-action");
         resetActionVariables();
@@ -2097,6 +2166,7 @@ let performCheck = () => {
         document.querySelector(".poll-result").classList.remove("show-select")
         document.querySelector(".poll-summary").classList.remove("show");
         document.querySelector(".poll-create-container").classList.add("show-action");
+        document.querySelector(".poll-create-container").classList.remove("opacity-dec");
         document.querySelector(".poll-create").classList.add("show-select");
         document.querySelector(".Poll-name").classList.add("show-action");
         resetActionVariables()
@@ -2110,6 +2180,7 @@ let performCheck = () => {
         document.querySelector(".feedback-result").classList.remove("show-select")
         document.querySelector(".feedback-summary").classList.remove("show");
         document.querySelector(".feedback-create-container").classList.add("show-action");
+        document.querySelector(".feedback-create-container").classList.remove("opacity-dec");
         document.querySelector(".feedback-create").classList.add("show-select");
         document.querySelector(".Feedback-name").classList.add("show-action");
 
@@ -2126,7 +2197,7 @@ let addFormData = (i, type) => {
 
 
 const formBtn = document.querySelectorAll(".form-btn");
-const reviewBtn = document.querySelectorAll(".review-btn");
+
 
 let renderReviewPage = (type) => {
     let deetsDisplayDiv = document.querySelector(`.extra-${type}-deets`);
@@ -2164,6 +2235,7 @@ let renderReviewPage = (type) => {
                 form.reset();
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
+                form.classList.remove("opacity-dec")
                 document.querySelector("#add_question_btn").innerHTML = "Insert Edited Question";
                 document.querySelector("#add_question_btn").value = i;
             })
@@ -2204,6 +2276,7 @@ let renderReviewPage = (type) => {
                 form.reset();
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
+                form.classList.remove("opacity-dec")
                 document.querySelector("#add_poll_btn").innerHTML = "Insert Edited Question"
                 document.querySelector("#add_poll_btn").value = i;
             })
@@ -2244,6 +2317,7 @@ let renderReviewPage = (type) => {
                 let reviewControl = document.querySelector(`.feedback-summary`);
                 reviewControl.classList.remove("show");
                 form.classList.add("show-action");
+                form.classList.remove("opacity-dec")
                 document.querySelector("#add_feedback_btn").innerHTML = "Insert Edited Question";
                 document.querySelector("#add_feedback_btn").value = i;
             })
@@ -2270,14 +2344,12 @@ let renderReviewPage = (type) => {
 
 
 
-function ReviewPage(e) {
-    e.preventDefault();
-    console.log(this.classList)
-    let form = document.querySelector(`.${this.classList[2]}-create-container`);
-    let reviewControl = document.querySelector(`.${this.classList[2]}-summary`);
-    form.classList.remove("show-action")
+function ReviewPage(type) {
+    let form = document.querySelector(`.${type}-create-container`);
+    let reviewControl = document.querySelector(`.${type}-summary`);
+    form.classList.add("opacity-dec");
     reviewControl.classList.add("show");
-    renderReviewPage(this.classList[2]);
+    renderReviewPage(type);
 }
 
 
@@ -2287,16 +2359,13 @@ function FormPage() {
     let form = document.querySelector(`.${this.classList[1]}-create-container`);
     let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
     reviewControl.classList.remove("show");
-    form.classList.add("show-action");
+    form.classList.remove("opacity-dec");
 }
 
 
 
 
 
-reviewBtn.forEach((ele) => {
-    ele.addEventListener("click", ReviewPage)
-})
 
 formBtn.forEach(ele => {
     ele.addEventListener("click", FormPage)

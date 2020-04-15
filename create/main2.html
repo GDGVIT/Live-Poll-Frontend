@@ -73,7 +73,7 @@
                 <div class="tab-content home-control show">
                     <div class="content">
                         <div class="home-create create">
-                            <button class="invert-btn home back-btn">
+                            <button class="invert-btn home back-btn relative">
                                 <img src="../img/back.png" alt="">
                             </button>
                             <div class="event-create-container">
@@ -108,7 +108,7 @@
                                 </li>
                             </ul>
                             <div class="prev-event-deets">
-                                <button class="cancel-event-deets back-btn"><img src="../img/back.png" alt=""></button>
+                                <button class="cancel-event-deets back-btn relative"><img src="../img/back.png" alt=""></button>
                                 <div class="event-contents">
                                     <canvas class="action-graph" id="graph">
 
@@ -132,7 +132,7 @@
                 <div class="tab-content quiz-control">
                     <div class="content">
                         <div class="quiz-result result">
-                            <button class="invert-btn quiz back-btn"><img src="../img/back.png" alt=""></button>
+                            <button class="invert-btn quiz back-btn relative"><img src="../img/back.png" alt=""></button>
                             <canvas class="quiz-details">
 
                             </canvas>
@@ -154,10 +154,10 @@
                                     </div>
                                     <label for="question_name">Question</label>
                                     <input type="text" id="question_name" class="main-input"
-                                        placeholder="Enter Question">
-                                    <label for="correct_option">Correct Option</label>
+                                        placeholder="Enter Question" required>
+                                    <label for="correct_option" >Correct Option</label>
                                     <input type="text" id="correct_option" class="main-input"
-                                        placeholder="Correct Option(must match an option)">
+                                        placeholder="Correct Option(must match an option)" required>
                                     <label for="quiz_options">Options</label>
                                     <div id="quiz_options_div"><input type="text" class="main-input quiz-option"
                                             placeholder="Enter Option"></div>
@@ -215,26 +215,11 @@
                                         </button>
                                     </div>
                                     <div class="quiz-actions">
-                                        <button id="add_question_btn" class="main-button quiz">+ Add Question</button>
-                                        <button class="main-button review-btn quiz" id="">Review Quiz</button>
+                                        <button id="add_question_btn" class="main-button quiz review-btn">+ Add Question</button>
+                                        <!-- <button class="main-button review-btn quiz" id="">Review Quiz</button> -->
                                     </div>
                                 </form>
-                                <div class="quiz-summary">
-                                    <button class="back-btn quiz form-btn"><img src="../img/back.png" alt=""></button>
-                                    <div class="current-quiz-deets">
-                                        <h1 class="quiz-title">Quiz title: </h1>
-                                        <div class="question-deets first-deet">
-                                            <p>Serial No.</p>
-                                            <p>Question title</p>
-                                            <p>Alterations</p>
-                                        </div>
-                                        <div class="extra-quiz-deets">
 
-                                        </div>
-                                    </div>
-                                    <button class="invert-btn quiz main-button publish-btn" id="publish_quiz">Publish
-                                        Quiz</button>
-                                </div>
                             </div>
                             <div class="Quiz-name">
                                 <form action="" method="post" class="name-div">
@@ -257,7 +242,7 @@
                 <div class="tab-content poll-control">
                     <div class="content">
                         <div class="poll-result result">
-                            <button class="invert-btn poll back-btn"><img src="../img/back.png" alt=""></button>
+                            <button class="invert-btn poll back-btn relative"><img src="../img/back.png" alt=""></button>
                             <canvas class="poll-details">
 
                             </canvas>
@@ -333,26 +318,11 @@
                                         </button>
                                     </div>
                                     <div class="poll-actions">
-                                        <button id="add_poll_btn" class="main-button poll">+ Add Poll Question</button>
-                                        <button class="main-button review-btn poll">Review Poll</button>
+                                        <button id="add_poll_btn" class="main-button poll review-btn">+ Add Poll Question</button>
+                                        <!-- <button class="main-button review-btn poll">Review Poll</button> -->
                                     </div>
                                 </form>
-                                <div class="poll-summary">
-                                    <button class="back-btn poll form-btn"><img src="../img/back.png" alt=""></button>
-                                    <div class="current-poll-deets">
-                                        <h1 class="poll-title">Quiz title: </h1>
-                                        <div class="question-deets first-deet">
-                                            <p>Serial No.</p>
-                                            <p>Question title</p>
-                                            <p>Alterations</p>
-                                        </div>
-                                        <div class="extra-poll-deets">
 
-                                        </div>
-                                    </div>
-                                    <button class="invert-btn poll main-button publish-btn" id="publish_poll">Publish
-                                        Poll</button>
-                                </div>
                             </div>
                             <div class="Poll-name">
                                 <form action="" method="post" class="name-div">
@@ -375,7 +345,7 @@
 
                     <div class="content">
                         <div class="feedback-result result">
-                            <button class="invert-btn feedback back-btn"><img src="../img/back.png" alt=""></button>
+                            <button class="invert-btn feedback back-btn relative"><img src="../img/back.png" alt=""></button>
                             <button class="refresh-btn"><img src="../img/refresh.png" alt=""></button>
                             <div class="feedback-result-grid">
                                 <div class="feedback-details">
@@ -420,29 +390,12 @@
                                         </button> -->
                                     </div>
                                     <div class="feedback-actions">
-                                        <button id="add_feedback_btn" class="main-button feedback">+ Add
+                                        <button id="add_feedback_btn" class="main-button feedback review-btn">+ Add
                                             Question</button>
-                                        <button class="main-button review-btn feedback">Review Feedback</button>
+                                        <!-- <button class="main-button review-btn feedback">Review Feedback</button> -->
                                     </div>
                                 </form>
-                                <div class="feedback-summary">
-                                    <button class="back-btn feedback form-btn"><img src="../img/back.png"
-                                            alt=""></button>
-                                    <div class="current-feedback-deets">
-                                        <h1 class="feedback-title">Quiz title: </h1>
-                                        <div class="question-deets first-deet">
-                                            <p>Serial No.</p>
-                                            <p>Question title</p>
-                                            <p>Alterations</p>
-                                        </div>
-                                        <div class="extra-feedback-deets">
 
-                                        </div>
-                                    </div>
-                                    <button class="invert-btn feedback main-button publish-btn"
-                                        id="publish_feedback">Publish
-                                        Feedback</button>
-                                </div>
                             </div>
                             <div class="Feedback-name">
 
@@ -481,6 +434,59 @@
                             <button id="dark_theme" class="overall-theme"></button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="quiz-summary">
+                <button class="back-btn quiz form-btn"><img src="../img/back.png" alt=""></button>
+                <div class="grid-layer">
+                    <div class="current-quiz-deets">
+                        <h1 class="quiz-title">Quiz title: </h1>
+                        <div class="question-deets first-deet">
+                            <p>Serial No.</p>
+                            <p>Question title</p>
+                            <p>Alterations</p>
+                        </div>
+                        <div class="extra-quiz-deets">
+
+                        </div>
+                    </div>
+                    <button class="invert-btn quiz main-button publish-btn" id="publish_quiz">Publish Quiz</button>
+                </div>
+            </div>
+            <div class="poll-summary">
+                <button class="back-btn poll form-btn"><img src="../img/back.png" alt=""></button>
+                <div class="grid-layer">
+                    <div class="current-poll-deets">
+                        <h1 class="poll-title">Quiz title: </h1>
+                        <div class="question-deets first-deet">
+                            <p>Serial No.</p>
+                            <p>Question title</p>
+                            <p>Alterations</p>
+                        </div>
+                        <div class="extra-poll-deets">
+
+                        </div>
+                    </div>
+                    <button class="invert-btn poll main-button publish-btn" id="publish_poll">Publish
+                        Poll</button>
+                </div>
+            </div>
+            <div class="feedback-summary">
+                <button class="back-btn feedback form-btn"><img src="../img/back.png" alt=""></button>
+                <div class="grid-layer">
+                    <div class="current-feedback-deets">
+                        <h1 class="feedback-title">Quiz title: </h1>
+                        <div class="question-deets first-deet">
+                            <p>Serial No.</p>
+                            <p>Question title</p>
+                            <p>Alterations</p>
+                        </div>
+                        <div class="extra-feedback-deets">
+
+                        </div>
+                    </div>
+                    <button class="invert-btn feedback main-button publish-btn" id="publish_feedback">Publish
+                        Feedback</button>
                 </div>
             </div>
             <div class="notify"></div>
