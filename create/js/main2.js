@@ -1,3 +1,4 @@
+
 async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
         await callback(array[index], index, array);
@@ -50,12 +51,14 @@ let checkEventExistance = (event_id) => {
 let resetActionIds = (type) => {
     if (type) {
         sessionStorage.removeItem(`${type}_action_id`);
+        sessionStorage.setItem(`${type}_active`, "false");
     }
     else {
-        console.log("here")
-        sessionStorage.removeItem("quiz_action_id");
-        sessionStorage.removeItem("poll_action_id");
-        sessionStorage.removeItem("feedback_action_id");
+        let types = ["quiz", "poll", "feedback"];
+        types.forEach(ele => {
+            sessionStorage.removeItem(`${ele}_action_id`);
+            sessionStorage.setItem(`${ele}_active`, "false")
+        })
     }
 }
 /* const start = async () => {
@@ -530,67 +533,100 @@ let renderEventHistory = (event, actions, just) => {
     but1.classList.add("main-button");
     but2.classList.add("main-button");
     but3.classList.add("main-button");
-    but1.addEventListener("click", () => {
-        if (checkEventExistance(event["_id"])) {
-            if (window.confirm("An Event already exists, you will lose that data?")) {
-                sessionStorage.setItem("event_id", event["_id"]);
-                resetActionIds();
-                performCheck();
-                ActivateAction("quiz");
-                goTo(quizSelector);
+    but1.addEventListener("click", async () => {
+        await multipleActions().then((res) => {
+            if (res == true) {
+                if (checkEventExistance(event["_id"])) {
+                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                        sessionStorage.setItem("event_id", event["_id"]);
+                        resetActionIds();
+                        performCheck();
+                        ActivateAction("quiz");
+                        goTo(quizSelector);
+                        sessionStorage.setItem("the_current_event", JSON.stringify(event));
+                        renderCurrentEventDeets();
+                    }
+                    else {
+                        return;
+                    }
+                }
+                else {
+                    sessionStorage.setItem("event_id", event["_id"]);
+                    resetActionIds("quiz");
+                    performCheck();
+                    ActivateAction("quiz");
+                    goTo(quizSelector);
+                }
+
             }
-        }
-        else {
-            sessionStorage.setItem("event_id", event["_id"]);
-            resetActionIds("quiz");
-            performCheck();
-            ActivateAction("quiz");
-            goTo(quizSelector);
-        }
-        sessionStorage.setItem("the_current_event", JSON.stringify(event));
-        renderCurrentEventDeets();
+            else {
+                return;
+            }
+        })
+
     })
-    but2.addEventListener("click", () => {
-        if (checkEventExistance(event["_id"])) {
-            /* dialog("An Event already exists, you will lose that data?"); */
-            if (window.confirm("An Event already exists, you will lose that data?")) {
-                sessionStorage.setItem("event_id", event["_id"]);
-                resetActionIds();
-                performCheck();
-                ActivateAction("poll");
-                goTo(pollSelector);
+    but2.addEventListener("click", async () => {
+        await multipleActions().then((res) => {
+            if (res == true) {
+                if (checkEventExistance(event["_id"])) {
+                    /* dialog("An Event already exists, you will lose that data?"); */
+                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                        sessionStorage.setItem("event_id", event["_id"]);
+                        resetActionIds();
+                        performCheck();
+                        ActivateAction("poll");
+                        goTo(pollSelector);
+                        sessionStorage.setItem("the_current_event", JSON.stringify(event));
+                        renderCurrentEventDeets();
+                    }
+                    else {
+                        return;
+                    }
+                }
+                else {
+                    sessionStorage.setItem("event_id", event["_id"]);
+                    resetActionIds("poll");
+                    performCheck();
+                    ActivateAction("poll");
+                    goTo(pollSelector);
+                }
             }
-        }
-        else {
-            sessionStorage.setItem("event_id", event["_id"]);
-            resetActionIds("poll");
-            performCheck();
-            ActivateAction("poll");
-            goTo(pollSelector);
-        }
-        sessionStorage.setItem("the_current_event", JSON.stringify(event));
-        renderCurrentEventDeets();
+            else {
+                return;
+            }
+        })
+
     })
-    but3.addEventListener("click", () => {
-        if (checkEventExistance(event["_id"])) {
-            /* dialog("An Event already exists, you will lose that data?"); */
-            if (window.confirm("An Event already exists, you will lose that data?")) {
-                sessionStorage.setItem("event_id", event["_id"]);
-                resetActionIds();
-                performCheck();
-                ActivateAction("feedback");
-                goTo(feedbackSelector);
+    but3.addEventListener("click", async () => {
+        await multipleActions().then((res) => {
+            if (res == true) {
+                if (checkEventExistance(event["_id"])) {
+                    /* dialog("An Event already exists, you will lose that data?"); */
+                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                        sessionStorage.setItem("event_id", event["_id"]);
+                        resetActionIds();
+                        performCheck();
+                        ActivateAction("feedback");
+                        goTo(feedbackSelector);
+                    }
+                    else {
+                        return;
+                    }
+                }
+                else {
+                    sessionStorage.setItem("event_id", event["_id"]);
+                    resetActionIds("feedback");
+                    performCheck();
+                    ActivateAction("feedback");
+                    goTo(feedbackSelector);
+                }
+                sessionStorage.setItem("the_current_event", JSON.stringify(event));
+                renderCurrentEventDeets();
             }
-        }
-        else {
-            sessionStorage.setItem("event_id", event["_id"]);
-            resetActionIds("feedback");
-            performCheck();
-            ActivateAction("feedback");
-            goTo(feedbackSelector);
-        }
-        sessionStorage.setItem("the_current_event", JSON.stringify(event));
-        renderCurrentEventDeets();
+            else {
+                return;
+            }
+        })
     })
     PossibleActions.appendChild(but1);
     PossibleActions.appendChild(but2);
@@ -847,6 +883,7 @@ loginButton.addEventListener("click", handleLogin);
 
 function handleInvert(e) {
     e.preventDefault();
+    console.log(this.classList)
     if (this.classList[1] == "quiz") {
         if (questionsData.length == 0) return;
     }
@@ -933,58 +970,63 @@ function createEvent(e) {
 }
 
 
-function ActionRedirect(e) {
-    if (this.innerHTML == "Quiz") {
-        console.log("here man")
-        if (checkEventExistance(eventCreated["_id"])) {
-            console.log("asdlkfjasdlkfjdsalkfj")
-            if (window.confirm("An Event already exists, you will lose that data?")) {
-                sessionStorage.setItem("event_id", eventCreated["_id"]);
-                sessionStorage.setItem("the_current_event", JSON.stringify(eventCreated));
-                renderCurrentEventDeets();
-                console.log("here")
+async function ActionRedirect(e) {
+    await multipleActions().then((res) => {
+        if (res == true) {
+            if (this.innerHTML == "Quiz") {
+                if (checkEventExistance(eventCreated["_id"])) {
+                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                        sessionStorage.setItem("event_id", eventCreated["_id"]);
+                        sessionStorage.setItem("the_current_event", JSON.stringify(eventCreated));
+                        renderCurrentEventDeets();
+                        console.log("here")
+                    }
+                    else {
+                        return;
+                    }
+                }
+                sessionStorage.removeItem("quiz_action_id");
+                performCheck()
+                ActivateAction("quiz")
+                goTo(quizSelector);
             }
-            else {
-                return;
+            if (this.innerHTML == "Poll") {
+                if (checkEventExistance(eventCreated["_id"])) {
+                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                        sessionStorage.setItem("event_id", eventCreated["_id"]);
+                        sessionStorage.setItem("the_current_event", eventCreated);
+                        renderCurrentEventDeets();
+                    }
+                    else {
+                        return;
+                    }
+                }
+                sessionStorage.removeItem("poll_action_id");
+                performCheck();
+                ActivateAction("poll")
+                goTo(pollSelector)
+            }
+            if (this.innerHTML == "Feedback") {
+                if (checkEventExistance(eventCreated["_id"])) {
+                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                        sessionStorage.setItem("event_id", eventCreated["_id"]);
+                        sessionStorage.setItem("the_current_event", eventCreated);
+                        renderCurrentEventDeets();
+                    }
+                    else {
+                        return;
+                    }
+                }
+                sessionStorage.removeItem("feedback_action_id");
+                performCheck();
+                ActivateAction("feedback")
+                goTo(feedbackSelector)
             }
         }
-        sessionStorage.removeItem("quiz_action_id");
-        performCheck()
-        ActivateAction("quiz")
-        goTo(quizSelector);
-    }
-    if (this.innerHTML == "Poll") {
-        if (checkEventExistance(eventCreated["_id"])) {
-            if (window.confirm("An Event already exists, you will lose that data?")) {
-                sessionStorage.setItem("event_id", eventCreated["_id"]);
-                sessionStorage.setItem("the_current_event", eventCreated);
-                renderCurrentEventDeets();
-            }
-            else {
-                return;
-            }
+        else {
+            return;
         }
-        sessionStorage.removeItem("poll_action_id");
-        performCheck();
-        ActivateAction("poll")
-        goTo(pollSelector)
-    }
-    if (this.innerHTML == "Feedback") {
-        if (checkEventExistance(eventCreated["_id"])) {
-            if (window.confirm("An Event already exists, you will lose that data?")) {
-                sessionStorage.setItem("event_id", eventCreated["_id"]);
-                sessionStorage.setItem("the_current_event", eventCreated);
-                renderCurrentEventDeets();
-            }
-            else {
-                return;
-            }
-        }
-        sessionStorage.removeItem("feedback_action_id");
-        performCheck();
-        ActivateAction("feedback")
-        goTo(feedbackSelector)
-    }
+    })
 }
 
 
@@ -1650,6 +1692,7 @@ let renderQuizDetails = () => {
 }
 
 let resetActionVariables = (type) => {
+    console.log("resetActionVariables")
     currentQuestionId = "";
     questionNumber = 0;
     quiz_opts = [];
@@ -1705,72 +1748,93 @@ let updateStats = (type, id) => {
 
 
 
-let closeAction = (type) => {
-    let closeUrl;
-    if (type == "quiz") {
-        closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("quiz_action_id");
-    }
-    if (type == "poll") {
-        closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("poll_action_id");
-    }
-    if (type == "feedback") {
-        closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("feedback_action_id");
-    }
-    var requestOptions = {
-        method: 'GET',
-        redirect: 'follow'
-    };
+let closeAction = (type, ref) => {
+    return new Promise((resolve, reject) => {
+        let closeUrl;
+        if (type == "quiz") {
+            closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("quiz_action_id");
+        }
+        if (type == "poll") {
+            closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("poll_action_id");
+        }
+        if (type == "feedback") {
+            closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("feedback_action_id");
+        }
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
 
-    fetch(closeUrl, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            console.log(result);
-            let emitingData = [];
-            if (type == "quiz") {
-                emitingData.push(sessionStorage.getItem("quiz_action_id"));
-                quiz_opts.forEach(ele => {
-                    ele.forEach(opt => {
-                        emitingData.push(opt["_id"]);
+        fetch(closeUrl, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                if (!ref) {
+                    continueResultBtn(type);
+                    let emitingData = [];
+                    if (type == "quiz") {
+                        emitingData.push(sessionStorage.getItem("quiz_action_id"));
+                        quiz_opts.forEach(ele => {
+                            ele.forEach(opt => {
+                                emitingData.push(opt["_id"]);
+                            })
+                        })
+                        console.log(socket)
+                        socket.emit("close quiz", emitingData);
+                        updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
+                        popup("Quiz Closed")
+                        socket.disconnect();
+                        goTo(homeSelector);
+                        resetActionIds("quiz");
+                        resetActionVariables("quiz");
+                        performCheck();
+                        resolve();
+                    }
+                    if (type == "poll") {
+                        emitingData.push(sessionStorage.getItem("poll_action_id"));
+                        quiz_opts.forEach(ele => {
+                            ele.forEach(opt => {
+                                emitingData.push(opt["_id"]);
+                            })
+                        })
+                        socket.emit("close quiz", emitingData);
+                        socket.disconnect();
+                        updateStats("poll", sessionStorage.getItem("poll_action_id"));
+                        popup("Poll Closed")
+                        goTo(homeSelector);
+                        resetActionIds("poll");
+                        resetActionVariables("poll");
+                        performCheck();
+                        resolve();
+                    }
+                    if (type == "feedback") {
+                        popup("Feedback Closed")
+                        goTo(homeSelector);
+                        resetActionIds("feedback")
+                        resetFeedbackVariables();
+                        performCheck();
+                        resolve()
+                    }
+                    sessionStorage.setItem(`${type}_active`, "false")
+                }
+                else {
+                    let emitingData = [];
+                    emitingData.push(sessionStorage.getItem(`${type}_action_id`));
+                    sessionStorage.removeItem(`${type}_action_id`);
+                    socket = io('https://mighty-sea-62531.herokuapp.com/');
+                    socket.on("connect", () => {
+                        socket.emit("close quiz", emitingData);
                     })
-                })
-                socket.emit("close quiz", emitingData);
-                socket.disconnect();
-                updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
-                popup("Quiz Closed")
-                goTo(homeSelector);
-                resetActionIds("quiz");
-                resetActionVariables("quiz");
-                performCheck();
-            }
-            if (type == "poll") {
-                emitingData.push(sessionStorage.getItem("poll_action_id"));
-                quiz_opts.forEach(ele => {
-                    ele.forEach(opt => {
-                        emitingData.push(opt["_id"]);
-                    })
-                })
-                socket.emit("close quiz", emitingData);
-                socket.disconnect();
-                updateStats("poll", sessionStorage.getItem("poll_action_id"));
-                popup("Poll Closed")
-                goTo(homeSelector);
-                resetActionIds("poll");
-                resetActionVariables("poll");
-                performCheck();
-            }
-            if (type == "feedback") {
-                popup("Feedback Closed")
-                goTo(homeSelector);
-                resetActionIds("feedback")
-                resetFeedbackVariables();
-                performCheck();
-            }
-
-        })
-        .catch(error => {
-            console.log('error', error);
-            popup("Error in closing Action", "Error");
-        });
+                    popup("Previous Action ended due to refresh")
+                    sessionStorage.setItem(`${type}_active`, "false")
+                    resolve();
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+                popup("Error in closing Action", "Error");
+            });
+    })
 }
 
 const closeQuizBtn = document.querySelector("#close_quiz");
@@ -1949,7 +2013,22 @@ refreshBtn.addEventListener("click", async () => {
 
 
 
+/* Continue Result Btn */
 
+function continueResultBtn(type) {
+    document.querySelector(`.continue-${type}-btn`).classList.toggle("show");
+    document.querySelector(`#publish_${type}`).classList.toggle("not-show");
+}
+
+
+
+
+
+
+
+
+
+/* Continue Result Btn: End */
 
 /* Handling turning isOpen on actions to true */
 
@@ -2026,7 +2105,13 @@ function publishAction(e) {
 
                         fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
                             .then(response => response.text())
-                            .then(result => { console.log(result); firstQuestionPublish(actid, "quiz"); removeLoader(this, "Publish Quiz") })
+                            .then(result => {
+                                console.log(result);
+                                sessionStorage.setItem("quiz_active", "true");
+                                continueResultBtn("quiz");
+                                firstQuestionPublish(actid, "quiz");
+                                removeLoader(this, "Publish Quiz")
+                            })
                             .catch(error => console.log('error', error));
                     })
                     .catch(error => console.log('error', error));
@@ -2068,7 +2153,13 @@ function publishAction(e) {
 
                         fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
                             .then(response => response.text())
-                            .then(result => { console.log(result); firstQuestionPublish(actid, "poll"); removeLoader(this, "Publish Poll") })
+                            .then(result => {
+                                console.log(result);
+                                sessionStorage.setItem("poll_active", "true");
+                                continueResultBtn("poll");
+                                firstQuestionPublish(actid, "poll");
+                                removeLoader(this, "Publish Poll")
+                            })
                             .catch(error => console.log('error', error));
                     })
                     .catch(error => console.log('error', error));
@@ -2110,7 +2201,13 @@ function publishAction(e) {
 
                         fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
                             .then(response => response.text())
-                            .then(result => { console.log(result); firstQuestionPublish(actid, "feedback"); removeLoader(this, "Publish Feedback") })
+                            .then(result => {
+                                console.log(result);
+                                sessionStorage.setItem("feedback_active", "true");
+                                continueResultBtn("feedback");
+                                firstQuestionPublish(actid, "feedback");
+                                removeLoader(this, "Publish Feedback")
+                            })
                             .catch(error => console.log('error', error));
                     })
                     .catch(error => console.log('error', error));
@@ -2180,6 +2277,7 @@ navButtons.forEach(ele => {
 
 
 let performCheck = () => {
+    console.log("performCheck")
     if (!sessionStorage.getItem("quiz_action_id")) {
         console.log("now here")
         quizSelector.forEach(ele => {
@@ -2465,3 +2563,88 @@ function chooseTheme() {
 overallThemeBtns.forEach(ele => {
     ele.addEventListener("click", chooseTheme)
 })
+
+
+/* closing Actions if any active */
+
+function closeActiveActions() {
+    let types = ["quiz", "poll", "feedback"];
+    types.forEach(ele => {
+        if (sessionStorage.getItem(`${ele}_active`) == "true") {
+            closeAction(ele, "ref");
+        }
+    })
+}
+closeActiveActions();
+
+
+
+
+
+
+/* closing Actions if any active: End */
+
+/* Handling continuing Action */
+
+const continueBtn = document.querySelectorAll(".continue-btn");
+
+continueBtn.forEach(ele => {
+    ele.addEventListener("click", handleInvert);
+})
+
+
+
+/* Handling continuing Action: End */
+
+
+
+/* Handling multiple Actions trying to go live */
+
+
+async function multipleActions() {
+    return new Promise(async (resolve, reject) => {
+        let types = ["quiz", "poll", "feedback"];
+        let closeTypes;
+        let flag = 0;
+        console.log("multipleActions")
+        types.forEach(ele => {
+            if (sessionStorage.getItem(`${ele}_active`) == "true") {
+                flag++;
+                closeTypes = ele;
+            }
+        })
+        if (flag == 1) {
+            if (window.confirm("An Action is still live, you will have to close it to make another")) {
+                await closeAction(closeTypes)
+                resolve(true)
+            }
+            else {
+                resolve(false);
+            }
+        }
+        else {
+            resolve(true)
+        }
+    })
+}
+
+
+
+
+
+
+
+
+
+
+/* Handling multiple Actions trying to go live: End */
+
+
+
+
+
+
+
+
+
+

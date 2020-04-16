@@ -474,6 +474,11 @@ label[for = "theme_poll"] {
     grid-area: i6;
     margin-top: 30px;
     margin-bottom: 30px;
+    display: grid;
+    width: fit-content;
+    width: -moz-max-content;
+    grid-template-columns: auto auto auto;
+    column-gap: 10px;
 }
 .quiz-actions > button,
 .poll-actions > button, .feedback-actions > button {
@@ -516,6 +521,11 @@ label[for = "theme_feedback"] {
 }
 .feedback-actions {
     grid-area: x;
+    display: grid;
+    width: fit-content;
+    width: -moz-max-content;
+    grid-template-columns: auto auto auto;
+    column-gap: 10px;
 }
 
 
@@ -829,6 +839,9 @@ label[for = "theme_feedback"] {
     color: var(--main-color);
     margin-right: 15px;
 }
+.continue-btn{
+    display: none;
+}
 .dialog{
     position: absolute;
     /* width: 50%;
@@ -1035,6 +1048,7 @@ button {
     -webkit-transform: translate(-50%, 0);
     -moz-transform: translate(-50%, 0);
 }
+
 @media(max-width: 600px) {
     * {
         box-sizing: border-box;
@@ -1228,6 +1242,9 @@ button {
         "l1 l1" "i1 i1" "n2 n2" "i5 i5" ". ." "x x";
         justify-items: center;
     }
+    .quiz-actions, .poll-actions, .feedback-actions{
+        display: block;
+    }
     .quiz-actions > button, .poll-actions > button, .feedback-actions > button{
         margin: auto;
         width: 100%;
@@ -1323,4 +1340,7 @@ button::-moz-focus-inner {
 .back-icon:hover{
     color: rgb(126, 126, 126);
     transform: scale(1.1);
+}
+.not-show{
+    display: none;
 }
