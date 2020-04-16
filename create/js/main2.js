@@ -1811,7 +1811,7 @@ let closeAction = (type, ref) => {
                         popup("Feedback Closed")
                         goTo(homeSelector);
                         resetActionIds("feedback")
-                        resetFeedbackVariables();
+                        resetFeedbackVariables("okay");
                         performCheck();
                         resolve()
                     }
@@ -1992,10 +1992,13 @@ let getFeedbackDeets = () => {
     })
 }
 
-let resetFeedbackVariables = () => {
+let resetFeedbackVariables = (action) => {
     feedbackResultQuestions = [];
     feedbackAnswers = [];
     feedbackNo = 0;
+    if(action){
+        feedbackQuestions = [];
+    }
     prevFeedbackBtn.classList.remove("disable-btn")
     nextFeedbackBtn.classList.remove("disable-btn");
     prevFeedbackBtn.classList.add("disable-btn");
