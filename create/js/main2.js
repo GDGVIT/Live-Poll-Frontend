@@ -554,6 +554,8 @@ let renderEventHistory = (event, actions, just) => {
                     sessionStorage.setItem("event_id", event["_id"]);
                     resetActionIds("quiz");
                     performCheck();
+                    sessionStorage.setItem("the_current_event", JSON.stringify(event));
+                    renderCurrentEventDeets();
                     ActivateAction("quiz");
                     goTo(quizSelector);
                 }
@@ -587,6 +589,8 @@ let renderEventHistory = (event, actions, just) => {
                     sessionStorage.setItem("event_id", event["_id"]);
                     resetActionIds("poll");
                     performCheck();
+                    sessionStorage.setItem("the_current_event", JSON.stringify(event));
+                    renderCurrentEventDeets();
                     ActivateAction("poll");
                     goTo(pollSelector);
                 }
@@ -606,6 +610,8 @@ let renderEventHistory = (event, actions, just) => {
                         sessionStorage.setItem("event_id", event["_id"]);
                         resetActionIds();
                         performCheck();
+                        sessionStorage.setItem("the_current_event", JSON.stringify(event));
+                        renderCurrentEventDeets();
                         ActivateAction("feedback");
                         goTo(feedbackSelector);
                     }
@@ -617,11 +623,11 @@ let renderEventHistory = (event, actions, just) => {
                     sessionStorage.setItem("event_id", event["_id"]);
                     resetActionIds("feedback");
                     performCheck();
+                    sessionStorage.setItem("the_current_event", JSON.stringify(event));
+                    renderCurrentEventDeets();
                     ActivateAction("feedback");
                     goTo(feedbackSelector);
                 }
-                sessionStorage.setItem("the_current_event", JSON.stringify(event));
-                renderCurrentEventDeets();
             }
             else {
                 return;
@@ -1531,17 +1537,16 @@ let nextQuestionTrue = (type) => {
 }
 
 nextQuestionBtn.addEventListener("click", () => {
-    if (questionNumber > (questions.length - 2)) {
+    if (questionNumber == (questions.length - 1)) {
         popup("End of Quiz Questions", "Error");
     }
     else {
-
         nextQuestionTrue("quiz");
     }
 });
 
 nextPollBtn.addEventListener("click", () => {
-    if (questionNumber > (questions.length - 2)) {
+    if (questionNumber == (questions.length - 1)) {
         popup("End of poll Questions", "Error")
     }
     else {
@@ -1571,6 +1576,9 @@ let getQuizDetails = () => {
             }
             else {
                 quiz = result;
+                if(quiz["Questions"].length == 1){
+                    nextQuestionBtn.classList.add("disable-btn");
+                }
                 getQuizOptions();
             }
         })
@@ -1692,7 +1700,6 @@ let renderQuizDetails = () => {
 }
 
 let resetActionVariables = (type) => {
-    console.log("resetActionVariables")
     currentQuestionId = "";
     questionNumber = 0;
     quiz_opts = [];
@@ -1710,6 +1717,7 @@ let resetActionVariables = (type) => {
         questionsData = [];
     }
     socket = undefined;
+    MyChart.destroy();
     nextQuestionBtn.classList.remove("disable-btn")
     nextPollBtn.classList.remove("disable-btn")
 }
@@ -1821,12 +1829,14 @@ let closeAction = (type, ref) => {
                     let emitingData = [];
                     emitingData.push(sessionStorage.getItem(`${type}_action_id`));
                     sessionStorage.removeItem(`${type}_action_id`);
+                    performCheck();
                     socket = io('https://mighty-sea-62531.herokuapp.com/');
                     socket.on("connect", () => {
                         socket.emit("close quiz", emitingData);
                     })
                     popup("Previous Action ended due to refresh")
                     sessionStorage.setItem(`${type}_active`, "false")
+
                     resolve();
                 }
             })
@@ -1880,6 +1890,9 @@ let getPollDetails = () => {
             }
             else {
                 quiz = result;
+                if(quiz["Questions"].length == 1){
+                    nextPollBtn.classList.add("disable-btn");
+                }
                 getQuizOptions();
             }
         })
@@ -1983,6 +1996,7 @@ let getFeedbackDeets = () => {
             .then(result => {
                 console.log(result);
                 getFeedbackAnswers(result);
+                
                 resolve();
             })
             .catch(error => {
@@ -1996,7 +2010,7 @@ let resetFeedbackVariables = (action) => {
     feedbackResultQuestions = [];
     feedbackAnswers = [];
     feedbackNo = 0;
-    if(action){
+    if (action) {
         feedbackQuestions = [];
     }
     prevFeedbackBtn.classList.remove("disable-btn")
@@ -2052,15 +2066,17 @@ let firstQuestionPublish = (id, type) => {
         .then(result => {
             console.log(result);
             if (type == "quiz") {
+                document.querySelector(".quiz-loader").classList.remove("show")
                 getQuizDetails();
                 createChart(ctxa, sessionStorage.getItem("quizTheme"));
             }
             if (type == "poll") {
-                console.log("Action is poll")
+                document.querySelector(".poll-loader").classList.remove("show")
                 getPollDetails();
                 createChart(pollChart, sessionStorage.getItem("pollTheme"));
             }
             if (type == "feedback") {
+                document.querySelector(".feedback-loader").classList.remove("show")
                 console.log("action type is feedback");
                 getFeedbackDeets()
             }
@@ -2075,12 +2091,19 @@ let firstQuestionPublish = (id, type) => {
 function publishAction(e) {
     e.preventDefault();
     let actid = "0";
+    let quizLoader = document.querySelector(".quiz-loader")
+    let pollLoader = document.querySelector(".poll-loader")
+    let feedbackLoader = document.querySelector(".feedback-loader")
+    quizLoader.classList.remove("show")
+    pollLoader.classList.remove("show")
+    feedbackLoader.classList.remove("show")
     if (this.id == "publish_quiz") {
         if (sessionStorage.getItem("quiz_action_id")) {
             if (questionsData.length == 0) {
                 popup("There are no questions to publish", "Error");
             }
             else {
+                quizLoader.classList.add("show")
                 actid = sessionStorage.getItem("quiz_action_id");
                 addLoader(this)
                 var myHeaders = new Headers();
@@ -2130,6 +2153,7 @@ function publishAction(e) {
                 popup("There are no questions to publish", "Error");
             }
             else {
+                pollLoader.classList.add("show");
                 actid = sessionStorage.getItem("poll_action_id");
                 addLoader(this)
                 var myHeaders = new Headers();
@@ -2179,6 +2203,7 @@ function publishAction(e) {
                 popup("There are no questions to publish", "Error");
             }
             else {
+                feedbackLoader.classList.add("show");
                 actid = sessionStorage.getItem("feedback_action_id");
                 addLoader(this)
                 var myHeaders = new Headers();
@@ -2280,9 +2305,7 @@ navButtons.forEach(ele => {
 
 
 let performCheck = () => {
-    console.log("performCheck")
     if (!sessionStorage.getItem("quiz_action_id")) {
-        console.log("now here")
         quizSelector.forEach(ele => {
             ele.style.color = "rgb(189, 189, 189)";
             ele.removeEventListener("click", selectItem);

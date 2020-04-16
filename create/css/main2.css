@@ -664,7 +664,9 @@ label[for = "theme_feedback"] {
     margin-left: 0;
 }
 
-
+.feedback-loader, .quiz-loader, .poll-loader{
+    display: none;
+}
 
 
 

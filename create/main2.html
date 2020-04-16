@@ -132,6 +132,7 @@
                     <div class="content">
                         <div class="quiz-result result">
                             <button class="invert-btn quiz back-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                            <div class="quiz-loader"><img src="../img/event-loader.gif" class="event-loader" alt=""></div>
                             <canvas class="quiz-details">
 
                             </canvas>
@@ -258,12 +259,13 @@
                     <div class="content">
                         <div class="poll-result result">
                             <button class="invert-btn poll back-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                            <div class="poll-loader"><img src="../img/event-loader.gif" class="event-loader" alt=""></div>
                             <canvas class="poll-details">
 
                             </canvas>
                             <div class="poll-result-buttons">
-                                <button id="next_poll" class="main-button">Next Poll Question</button>
-                                <button id="close_poll" class="main-button">Close Poll Session</button>
+                                <button id="next_poll" class="main-button">Next Question</button>
+                                <button id="close_poll" class="main-button">Close Poll</button>
                                 <button id="reset_stat" class="main-button reset-stat">Clear Responses</button>
                             </div>
                         </div>
@@ -378,6 +380,7 @@
                         <div class="feedback-result result">
                             <button class="invert-btn feedback back-btn"><i class="back-icon material-icons">arrow_back</i></button>
                             <button class="refresh-btn"><img src="../img/refresh.png" alt=""></button>
+                            <div class="feedback-loader"><img src="../img/event-loader.gif" class="event-loader" alt=""></div>
                             <div class="feedback-result-grid">
                                 <div class="feedback-details">
                                     <h1 class="feedback-question"></h1>
@@ -385,10 +388,9 @@
                                     </div>
                                 </div>
                                 <div class="feedback-result-buttons">
-                                    <button class="main-button" id="prev_feedback_btn">Prev Feedback question</button>
-                                    <button id="close_feedback" class="invert-btn feedback main-button">Close Feedback
-                                        Action</button>
-                                    <button class="main-button" id="next_feedback_btn">Next Feedback Question</button>
+                                    <button class="main-button" id="prev_feedback_btn">Prev Question</button>
+                                    <button id="close_feedback" class="invert-btn feedback main-button">Close Feedback</button>
+                                    <button class="main-button" id="next_feedback_btn">Next Question</button>
                                 </div>
                             </div>
                         </div>
@@ -424,7 +426,7 @@
                                         <button id="add_feedback_btn" class="main-button feedback">+ Add
                                             Question</button>
                                         <button class="main-button review-btn feedback">Review Feedback</button>
-                                        <button class="main-button feedback continue-feedback-btn continue-btn">Continue Quiz</button>
+                                        <button class="main-button feedback continue-feedback-btn continue-btn">Continue Feedback</button>
                                     </div>
                                 </form>
                                 <div class="feedback-summary">
