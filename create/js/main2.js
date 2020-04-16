@@ -337,9 +337,13 @@ let handleEventDeets = (event_id, action_id) => {
         .then(result => {
             console.log(result);
             event_type = result["action_type"];
+            feedbackDiv.classList.remove("show");
+            feedbackDiv.innerHTML = '';
             if (result["Questions"].length == 0) {
                 document.querySelector(".action-buttons").style.display = "none";
-                document.querySelector(".feedback-history").innerHTML = '<h1>There are no questions in this action</h1>'
+                displayChart.destroy();
+                feedbackDiv.classList.add("show")
+                feedbackDiv.innerHTML = '<h1 style = "text-align: center; margin-top: 20vh;">There are no questions in this action</h1>'
             }
             else {
                 document.querySelector(".action-buttons").removeAttribute("style");
@@ -399,9 +403,7 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
     displayChart.destroy();
     renderPrev.classList.remove("disable-btn");
     renderNext.classList.remove("disable-btn")
-
     renderPrev.classList.add("disable-btn");
-
     /* displayChart = new Chart(actionGraph, temp1); */
 })
 
@@ -472,6 +474,8 @@ let renderEventHistory = (event, actions, just) => {
         p.id = `${ele["_id"]}`
         p.value = `${event["_id"]}`
         p.addEventListener("click", () => {
+            feedbackDiv.classList.add("show");
+            feedbackDiv.innerHTML = '<img src="../img/event-loader.gif" class="event-loader" alt="">';
             handleEventDeets(p.value, p.id);
         })
         if (ele["action_type"] == "Quiz") {
@@ -1645,15 +1649,23 @@ let renderQuizDetails = () => {
 
 }
 
-let resetActionVariables = () => {
+let resetActionVariables = (type) => {
     currentQuestionId = "";
     questionNumber = 0;
     quiz_opts = [];
     quiz = {};
     questions = [];
-    questionIds = []
-    questionsData = [];
-    pollQuestionsData = [];
+    questionIds = [];
+    if (type == "quiz") {
+        questionsData = [];
+    }
+    else if (type == "poll") {
+        pollQuestionsData = [];
+    }
+    else {
+        pollQuestionsData = [];
+        questionsData = [];
+    }
     socket = undefined;
     nextQuestionBtn.classList.remove("disable-btn")
     nextPollBtn.classList.remove("disable-btn")
@@ -1727,7 +1739,7 @@ let closeAction = (type) => {
                 popup("Quiz Closed")
                 goTo(homeSelector);
                 resetActionIds("quiz");
-                resetActionVariables();
+                resetActionVariables("quiz");
                 performCheck();
             }
             if (type == "poll") {
@@ -1743,7 +1755,7 @@ let closeAction = (type) => {
                 popup("Poll Closed")
                 goTo(homeSelector);
                 resetActionIds("poll");
-                resetActionVariables();
+                resetActionVariables("poll");
                 performCheck();
             }
             if (type == "feedback") {
@@ -2180,7 +2192,7 @@ let performCheck = () => {
         document.querySelector(".quiz-create-container").classList.add("show-action");
         document.querySelector(".quiz-create").classList.add("show-select");
         document.querySelector(".Quiz-name").classList.add("show-action");
-        resetActionVariables();
+        resetActionVariables("quiz");
     }
     if (!sessionStorage.getItem("poll_action_id")) {
         pollSelector.forEach(ele => {
@@ -2194,7 +2206,7 @@ let performCheck = () => {
         document.querySelector(".poll-create-container").classList.add("show-action");
         document.querySelector(".poll-create").classList.add("show-select");
         document.querySelector(".Poll-name").classList.add("show-action");
-        resetActionVariables()
+        resetActionVariables("poll")
     }
     if (!sessionStorage.getItem("feedback_action_id")) {
         feedbackSelector.forEach(ele => {
