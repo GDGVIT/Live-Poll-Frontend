@@ -181,7 +181,9 @@
             /* box-shadow: inset -6px -6px 10px rgb(150, 150, 150), inset 6px 6px 20px rgba(0, 0, 0, .2);
             ; */
         }
-
+        .grey-text{
+            color: rgb(150, 150, 150);
+        }
         .not-show {
             display: none;
         }
@@ -592,9 +594,9 @@
             questionDiv.innerHTML = question["name"];
 
             options_div.innerHTML = "";
-            question["options"].forEach(opt => {
+            question["options"].forEach((opt, i) => {
                 let button = document.createElement("button");
-                button.innerHTML = opt["option"];
+                button.innerHTML = `<p class = "grey-text">${i}.</p> ${opt["option"]}`;
                 button.value = opt["_id"];
                 button.classList.add("main-button");
                 button.addEventListener("click", () => {
