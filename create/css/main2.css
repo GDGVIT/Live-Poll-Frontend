@@ -1273,13 +1273,19 @@ button {
         color: red;
     }
     .possible-actions{
-        width: 100%;
+        width: 50%;
         min-width: 0px;
+        grid-template-columns: none;
+        grid-template-rows: auto auto auto;
+        row-gap: 10px;
     }
     .possible-actions > button{
-        width: 90%;
+        width: 100%;
         margin: auto;
-        padding: 0;
+        padding: 7px 2px;
+    }
+    .possible-actions > button:nth-child(1){
+        margin: auto;
     }
     .name-div{
         width: 90%;
