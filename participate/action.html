@@ -89,7 +89,7 @@
             color: var(--main-color);
             font-size: 1.4rem;
             font-weight: bolder;
-            box-shadow: var(--main-shadow);
+            /* box-shadow: var(--main-shadow); */
             margin-bottom: 30px;
             min-width: 100px;
             outline: none;
@@ -97,12 +97,13 @@
         }
 
         .main-button:hover {
-            box-shadow: var(--main-shadow-hover);
+            color: white;
+            /* box-shadow: var(--main-shadow-hover); */
             background-color: #83D39D;
         }
 
         .select {
-            box-shadow: var(--main-shadow-hover);
+            /* box-shadow: var(--main-shadow-hover); */
             background-color: #83D39D;
         }
 
@@ -128,6 +129,8 @@
             width: 90%;
             font-size: 1.8rem;
             font-weight: 600;
+            max-width: 90vw;
+            overflow-wrap: break-word;
         }
 
         .options-div {
@@ -169,12 +172,14 @@
 
         .grey {
             background-color: rgb(150, 150, 150);
+            color: white;
         }
 
         .grey:hover {
+            color: white;
             background-color: rgb(150, 150, 150);
-            box-shadow: inset -6px -6px 10px rgb(150, 150, 150), inset 6px 6px 20px rgba(0, 0, 0, .2);
-            ;
+            /* box-shadow: inset -6px -6px 10px rgb(150, 150, 150), inset 6px 6px 20px rgba(0, 0, 0, .2);
+            ; */
         }
 
         .not-show {
@@ -228,6 +233,9 @@
         }
 
         @media only screen and (max-width: 600px) {
+            main{
+                grid-template-rows: 8% 92%;
+            }
             .main-container {
                 width: 90%;
                 height: 90%;
@@ -254,7 +262,9 @@
             input {
                 width: 90%;
             }
-
+            .header > svg{
+                height: 80%;
+            }
             .main-button {
                 padding: 12px 0;
                 width: 100%;

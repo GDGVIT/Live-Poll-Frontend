@@ -588,6 +588,8 @@ label[for = "theme_feedback"] {
 }
 .feedback-details > h1{
     margin-bottom: 30px;
+    max-width: 90vw;
+    overflow-wrap: break-word;
 }
 .feedback-answer{
     position: relative;
