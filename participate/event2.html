@@ -201,6 +201,8 @@
     </main>
     <script>
         if (window.innerWidth < 600) {
+            vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
             const main = document.querySelector("main");
             main.style.minHeight = window.innerHeight + "px";
         }
