@@ -1322,8 +1322,8 @@ button {
         font-size: 0.9rem;
     }
     .create-section{
-        margin-top: 5.5vh;
-        margin-bottom: 5vh;
+        margin-top: 15%;
+        margin-bottom: 15%;
     }
     .mobile {
         display: block;
