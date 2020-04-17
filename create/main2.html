@@ -5,12 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-    <script>
-        if(window.innerWidth < 600){
-            vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-    </script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./css/main2.css">
     <link rel="icon" type="image/png" href="../img/favicon.png">
@@ -488,10 +482,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <script>
-        /* if (window.innerWidth < 600) {
+        if(window.innerWidth < 600){
+            vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        if (window.innerWidth < 600) {
             const main = document.querySelector("main");
             main.style.height = window.innerHeight + "px";
-        } */
+        }
     </script>
     <script src="./js/main2.js"></script>
 </body>
