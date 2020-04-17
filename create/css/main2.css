@@ -1279,12 +1279,13 @@ button {
     .possible-actions > button{
         width: 90%;
         margin: auto;
+        padding: 0;
     }
     .name-div{
         width: 90%;
         grid-template-areas: "abs abs" "l1 l1" "i1 i1" "b b";
         justify-items: center;
-        margin-top: 10vh;
+        margin-top: 18%;
         padding: 40px 10px;
     }
     .name-div > input{
