@@ -700,6 +700,7 @@ label[for = "theme_feedback"] {
     grid-template-columns: auto auto;
     justify-items: center;
     align-items: center;
+    display: none;
 }
 .notify > p{
     padding-left: 10px;
@@ -707,7 +708,9 @@ label[for = "theme_feedback"] {
 .enter{
     opacity: 1;
 }
-
+.enter-grid{
+    display: grid;
+}
 .Quiz-name, .Poll-name, .Feedback-name{
     display: none;
     position: relative;

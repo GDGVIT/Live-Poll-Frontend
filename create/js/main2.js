@@ -20,10 +20,14 @@ let popup = (text, error) => {
         notify.classList.remove("button-hover")
         notify.innerHTML = `<i class = "material-icons">check</i>  <p>  ${text}</p>`;
     }
+    notify.classList.add("enter-grid");
     notify.classList.add("enter");
     setTimeout(() => {
         notify.classList.remove("enter");
     }, 4000);
+    setTimeout(() => {
+        notify.classList.remove("enter-grid")
+    },5000);
 }
 let addLoader = (button) => {
 
