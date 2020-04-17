@@ -1060,6 +1060,9 @@ button {
     ::-webkit-scrollbar{
         display: block;
     }
+    body{
+        height: calc(var(--vh, 1vh) * 100);
+    }
     main{
         min-width: 0;
         grid-template-rows: 8% 92%;
@@ -1108,7 +1111,6 @@ button {
     #login_form {
         width: 100%;
         grid-template-areas: "label1 label1" "input1 input1" "label2 label2" "input2 input2" "button button";
-
     }
     .login-label-1 {
         margin-bottom: 0;

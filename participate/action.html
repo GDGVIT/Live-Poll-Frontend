@@ -33,6 +33,7 @@
         main {
             position: relative;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
             width: 100vw;
             display: grid;
             grid-template-rows: 12% 88%;
@@ -111,6 +112,7 @@
             border-bottom: solid black 1px;
             margin: auto;
             margin-bottom: 6vh;
+            margin-bottom: calc(var(--vh, 1vh) * 6);
             display: block;
             padding: 10px;
             font-size: 1.2rem;
@@ -121,6 +123,7 @@
             position: relative;
             margin: auto;
             margin-top: 5vh;
+            margin-top: calc(var(--vh, 1vh) * 5);
             text-align: left;
             width: 90%;
             font-size: 1.8rem;
@@ -131,6 +134,7 @@
             position: relative;
             margin: auto;
             margin-top: 18vh;
+            margin-top: calc(var(--vh, 1vh) * 18);
             display: grid;
             grid-template-columns: 50% 50%;
             justify-items: center;
@@ -157,6 +161,7 @@
             text-align: left;
             margin: auto;
             margin-top: 7vh;
+            margin-top: calc(var(--vh, 1vh) * 7);
             width: 90%;
             font-weight: 800;
             color: #707070;
@@ -345,6 +350,12 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script>
+        if (window.innerWidth < 600) {
+            vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            const main = document.querySelector("main");
+            main.style.minHeight = window.innerHeight + "px";
+        }
         var url_string = window.location.href;
         var url = new URL(url_string);
         var actionId = url.searchParams.get("id");
