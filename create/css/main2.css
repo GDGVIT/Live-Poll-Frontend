@@ -1079,7 +1079,7 @@ button {
         align-items: center;
     }
     .header > svg{
-        height: 5.6vh;
+        height: 70%;
         padding-left: 15px;
     }
     .header > button {
