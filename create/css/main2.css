@@ -513,6 +513,7 @@ label[for = "theme_poll"] {
     width: 90%;
     margin: auto;
     row-gap: 5.4vh;
+    row-gap: calc(var(--vh, 1vh) * 5.4);
     /* padding-top: 13vh; */
     display: none;
 }
