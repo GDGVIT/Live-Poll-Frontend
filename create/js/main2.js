@@ -1375,7 +1375,7 @@ DeleteOptionsBtn.forEach(ele => {
 /* SelectTheme */
 
 
-sessionStorage.setItem("quizTheme", "pie");
+sessionStorage.setItem("quizTheme", "bar");
 sessionStorage.setItem("pollTheme", "bar");
 sessionStorage.setItem("feedbackTheme", "cont");
 
@@ -1576,7 +1576,7 @@ let getQuizDetails = () => {
             }
             else {
                 quiz = result;
-                if(quiz["Questions"].length == 1){
+                if (quiz["Questions"].length == 1) {
                     nextQuestionBtn.classList.add("disable-btn");
                 }
                 getQuizOptions();
@@ -1670,13 +1670,19 @@ let createChart = (chartDiv, ty) => {
                     ticks: {
                         beginAtZero: true
                     }
+                }],
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
                 }]
             },
             title: {
                 display: true,
                 text: ""
             },
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            responsive: true
         }
 
     })
@@ -1756,7 +1762,7 @@ let updateStats = (type, id) => {
 
 
 
-let closeAction = (type, ref) => {
+let closeAction = (type, ref, nohome) => {
     return new Promise((resolve, reject) => {
         let closeUrl;
         if (type == "quiz") {
@@ -1777,7 +1783,7 @@ let closeAction = (type, ref) => {
             .then(response => response.text())
             .then(result => {
                 console.log(result);
-                if (!ref) {
+                if (ref == "normal") {
                     continueResultBtn(type);
                     let emitingData = [];
                     if (type == "quiz") {
@@ -1792,10 +1798,12 @@ let closeAction = (type, ref) => {
                         updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
                         popup("Quiz Closed")
                         socket.disconnect();
-                        goTo(homeSelector);
                         resetActionIds("quiz");
                         resetActionVariables("quiz");
                         performCheck();
+                        if(nohome != "nohome"){
+                            goTo(homeSelector);
+                        }
                         resolve();
                     }
                     if (type == "poll") {
@@ -1809,23 +1817,27 @@ let closeAction = (type, ref) => {
                         socket.disconnect();
                         updateStats("poll", sessionStorage.getItem("poll_action_id"));
                         popup("Poll Closed")
-                        goTo(homeSelector);
                         resetActionIds("poll");
                         resetActionVariables("poll");
                         performCheck();
+                        if(nohome != "nohome"){
+                            goTo(homeSelector);
+                        }
                         resolve();
                     }
                     if (type == "feedback") {
                         popup("Feedback Closed")
-                        goTo(homeSelector);
                         resetActionIds("feedback")
                         resetFeedbackVariables("okay");
                         performCheck();
+                        if(nohome != "nohome"){
+                            goTo(homeSelector);
+                        }
                         resolve()
                     }
                     sessionStorage.setItem(`${type}_active`, "false")
                 }
-                else {
+                else if(ref = "ref"){
                     let emitingData = [];
                     emitingData.push(sessionStorage.getItem(`${type}_action_id`));
                     sessionStorage.removeItem(`${type}_action_id`);
@@ -1849,15 +1861,15 @@ let closeAction = (type, ref) => {
 
 const closeQuizBtn = document.querySelector("#close_quiz");
 closeQuizBtn.addEventListener("click", () => {
-    closeAction("quiz");
+    closeAction("quiz", "normal");
 });
 const closePollBtn = document.querySelector('#close_poll');
 closePollBtn.addEventListener("click", () => {
-    closeAction("poll")
+    closeAction("poll", "normal")
 })
 const closeFeedbackBtn = document.querySelector("#close_feedback");
 closeFeedbackBtn.addEventListener("click", () => {
-    closeAction("feedback")
+    closeAction("feedback", "normal")
 })
 
 
@@ -1890,7 +1902,7 @@ let getPollDetails = () => {
             }
             else {
                 quiz = result;
-                if(quiz["Questions"].length == 1){
+                if (quiz["Questions"].length == 1) {
                     nextPollBtn.classList.add("disable-btn");
                 }
                 getQuizOptions();
@@ -1996,7 +2008,7 @@ let getFeedbackDeets = () => {
             .then(result => {
                 console.log(result);
                 getFeedbackAnswers(result);
-                
+
                 resolve();
             })
             .catch(error => {
@@ -2088,166 +2100,173 @@ let firstQuestionPublish = (id, type) => {
 
 
 
-function publishAction(e) {
+async function publishAction(e) {
     e.preventDefault();
-    let actid = "0";
-    let quizLoader = document.querySelector(".quiz-loader")
-    let pollLoader = document.querySelector(".poll-loader")
-    let feedbackLoader = document.querySelector(".feedback-loader")
-    quizLoader.classList.remove("show")
-    pollLoader.classList.remove("show")
-    feedbackLoader.classList.remove("show")
-    if (this.id == "publish_quiz") {
-        if (sessionStorage.getItem("quiz_action_id")) {
-            if (questionsData.length == 0) {
-                popup("There are no questions to publish", "Error");
-            }
-            else {
-                quizLoader.classList.add("show")
-                actid = sessionStorage.getItem("quiz_action_id");
-                addLoader(this)
-                var myHeaders = new Headers();
-                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                myHeaders.append("Content-Type", "application/json")
-                var raw = JSON.stringify(questionsData);
-                console.log(raw)
+    await multipleActions("publish").then(res => {
+        if (res == true) {
+            let actid = "0";
+            let quizLoader = document.querySelector(".quiz-loader")
+            let pollLoader = document.querySelector(".poll-loader")
+            let feedbackLoader = document.querySelector(".feedback-loader")
+            quizLoader.classList.remove("show")
+            pollLoader.classList.remove("show")
+            feedbackLoader.classList.remove("show")
+            if (this.id == "publish_quiz") {
+                if (sessionStorage.getItem("quiz_action_id")) {
+                    if (questionsData.length == 0) {
+                        popup("There are no questions to publish", "Error");
+                    }
+                    else {
+                        quizLoader.classList.add("show")
+                        actid = sessionStorage.getItem("quiz_action_id");
+                        addLoader(this)
+                        var myHeaders = new Headers();
+                        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+                        myHeaders.append("Content-Type", "application/json")
+                        var raw = JSON.stringify(questionsData);
+                        console.log(raw)
 
-                var requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
-
-                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-                    .then(response => response.json())
-                    .then(result => {
-                        console.log(result);
-                        popup("Quiz Published")
                         var requestOptions = {
-                            method: 'GET',
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: raw,
                             redirect: 'follow'
                         };
 
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                            .then(response => response.text())
+                        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+                            .then(response => response.json())
                             .then(result => {
                                 console.log(result);
-                                sessionStorage.setItem("quiz_active", "true");
-                                continueResultBtn("quiz");
-                                firstQuestionPublish(actid, "quiz");
-                                removeLoader(this, "Publish Quiz")
+                                popup("Quiz Published")
+                                var requestOptions = {
+                                    method: 'GET',
+                                    redirect: 'follow'
+                                };
+
+                                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                                    .then(response => response.text())
+                                    .then(result => {
+                                        console.log(result);
+                                        sessionStorage.setItem("quiz_active", "true");
+                                        continueResultBtn("quiz");
+                                        firstQuestionPublish(actid, "quiz");
+                                        removeLoader(this, "Publish Quiz")
+                                    })
+                                    .catch(error => console.log('error', error));
                             })
                             .catch(error => console.log('error', error));
-                    })
-                    .catch(error => console.log('error', error));
+                    }
+                }
+                else {
+                    console.log("no quiz made");
+                }
             }
-        }
-        else {
-            console.log("no quiz made");
-        }
-    }
-    if (this.id == "publish_poll") {
-        if (sessionStorage.getItem("poll_action_id")) {
-            if (pollQuestionsData.length == 0) {
-                popup("There are no questions to publish", "Error");
-            }
-            else {
-                pollLoader.classList.add("show");
-                actid = sessionStorage.getItem("poll_action_id");
-                addLoader(this)
-                var myHeaders = new Headers();
-                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                myHeaders.append("Content-Type", "application/json")
-                var raw = JSON.stringify(pollQuestionsData);
+            if (this.id == "publish_poll") {
+                if (sessionStorage.getItem("poll_action_id")) {
+                    if (pollQuestionsData.length == 0) {
+                        popup("There are no questions to publish", "Error");
+                    }
+                    else {
+                        pollLoader.classList.add("show");
+                        actid = sessionStorage.getItem("poll_action_id");
+                        addLoader(this)
+                        var myHeaders = new Headers();
+                        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+                        myHeaders.append("Content-Type", "application/json")
+                        var raw = JSON.stringify(pollQuestionsData);
 
-                var requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
-
-                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                    .then(response => response.text())
-                    .then(result => {
-                        console.log(result);
-                        popup("Poll Published")
                         var requestOptions = {
-                            method: 'GET',
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: raw,
                             redirect: 'follow'
                         };
 
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
                             .then(response => response.text())
                             .then(result => {
                                 console.log(result);
-                                sessionStorage.setItem("poll_active", "true");
-                                continueResultBtn("poll");
-                                firstQuestionPublish(actid, "poll");
-                                removeLoader(this, "Publish Poll")
+                                popup("Poll Published")
+                                var requestOptions = {
+                                    method: 'GET',
+                                    redirect: 'follow'
+                                };
+
+                                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                                    .then(response => response.text())
+                                    .then(result => {
+                                        console.log(result);
+                                        sessionStorage.setItem("poll_active", "true");
+                                        continueResultBtn("poll");
+                                        firstQuestionPublish(actid, "poll");
+                                        removeLoader(this, "Publish Poll")
+                                    })
+                                    .catch(error => console.log('error', error));
                             })
                             .catch(error => console.log('error', error));
-                    })
-                    .catch(error => console.log('error', error));
 
+                    }
+                }
+                else {
+                    console.log("no poll made");
+                }
             }
-        }
-        else {
-            console.log("no poll made");
-        }
-    }
-    if (this.id == "publish_feedback") {
-        if (sessionStorage.getItem("feedback_action_id")) {
-            if (feedbackQuestions.length == 0) {
-                popup("There are no questions to publish", "Error");
-            }
-            else {
-                feedbackLoader.classList.add("show");
-                actid = sessionStorage.getItem("feedback_action_id");
-                addLoader(this)
-                var myHeaders = new Headers();
-                myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                myHeaders.append("Content-Type", "application/json")
-                var raw = JSON.stringify(feedbackQuestions);
+            if (this.id == "publish_feedback") {
+                if (sessionStorage.getItem("feedback_action_id")) {
+                    if (feedbackQuestions.length == 0) {
+                        popup("There are no questions to publish", "Error");
+                    }
+                    else {
+                        feedbackLoader.classList.add("show");
+                        actid = sessionStorage.getItem("feedback_action_id");
+                        addLoader(this)
+                        var myHeaders = new Headers();
+                        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+                        myHeaders.append("Content-Type", "application/json")
+                        var raw = JSON.stringify(feedbackQuestions);
 
-                var requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
-
-                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                    .then(response => response.text())
-                    .then(result => {
-                        console.log(result);
                         var requestOptions = {
-                            method: 'GET',
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: raw,
                             redirect: 'follow'
                         };
 
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
                             .then(response => response.text())
                             .then(result => {
                                 console.log(result);
-                                sessionStorage.setItem("feedback_active", "true");
-                                continueResultBtn("feedback");
-                                firstQuestionPublish(actid, "feedback");
-                                removeLoader(this, "Publish Feedback")
+                                var requestOptions = {
+                                    method: 'GET',
+                                    redirect: 'follow'
+                                };
+
+                                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
+                                    .then(response => response.text())
+                                    .then(result => {
+                                        console.log(result);
+                                        sessionStorage.setItem("feedback_active", "true");
+                                        continueResultBtn("feedback");
+                                        firstQuestionPublish(actid, "feedback");
+                                        removeLoader(this, "Publish Feedback")
+                                    })
+                                    .catch(error => console.log('error', error));
                             })
                             .catch(error => console.log('error', error));
-                    })
-                    .catch(error => console.log('error', error));
+                    }
+                }
+                else {
+                    console.log("no feedback made");
+                }
+            }
+            if (actid == "0") {
+                console.log("nice")
             }
         }
-        else {
-            console.log("no feedback made");
+        else{
+            return;
         }
-    }
-    if (actid == "0") {
-        console.log("nice")
-    }
+    })
 }
 
 
@@ -2627,7 +2646,7 @@ continueBtn.forEach(ele => {
 /* Handling multiple Actions trying to go live */
 
 
-async function multipleActions() {
+async function multipleActions(publish) {
     return new Promise(async (resolve, reject) => {
         let types = ["quiz", "poll", "feedback"];
         let closeTypes;
@@ -2641,7 +2660,12 @@ async function multipleActions() {
         })
         if (flag == 1) {
             if (window.confirm("An Action is still live, you will have to close it to make another")) {
-                await closeAction(closeTypes)
+                if(publish == "publish"){
+                    await closeAction(closeTypes, "normal", "nohome")
+                }
+                else{
+                    await closeAction(closeTypes, "normal")
+                }
                 resolve(true)
             }
             else {

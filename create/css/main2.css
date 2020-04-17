@@ -670,7 +670,9 @@ label[for = "theme_feedback"] {
 
 
 
-
+.hor-chart{
+    transform: rotate(90deg)
+}
 
 
 .notify{
