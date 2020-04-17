@@ -1063,6 +1063,7 @@ button {
     main{
         min-width: 0;
         grid-template-rows: 8% 92%;
+        height: calc(var(--vh, 1vh) * 100);
     }
     .main-container{
         height: 90%;
