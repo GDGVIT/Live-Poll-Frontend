@@ -36,7 +36,7 @@
             height: calc(var(--vh, 1vh) * 100);
             width: 100vw;
             display: grid;
-            grid-template-rows: 12% 88%;
+            grid-template-rows: 8% 92%;
         }
 
         .header {
@@ -50,6 +50,7 @@
         .header>svg {
             position: relative;
             margin-left: 20px;
+            height: 80%;
         }
 
         .main {
@@ -140,12 +141,12 @@
             margin-top: calc(var(--vh, 1vh) * 18);
             display: grid;
             grid-template-columns: 50% 50%;
+            /* grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); */
             justify-items: center;
             align-items: center;
             width: 90%;
 
         }
-
         .next-question-wait {
             position: relative;
             height: fit-content;
@@ -596,7 +597,7 @@
             options_div.innerHTML = "";
             question["options"].forEach((opt, i) => {
                 let button = document.createElement("button");
-                button.innerHTML = `<p class = "grey-text">${i}.</p> ${opt["option"]}`;
+                button.innerHTML = `<strong class = "grey-text">${i}. </strong>${opt["option"]}`;
                 button.value = opt["_id"];
                 button.classList.add("main-button");
                 button.addEventListener("click", () => {
@@ -608,6 +609,10 @@
                     }
                 })
                 options_div.appendChild(button);
+                let butt = document.querySelector(".options-div button").offsetHeight;
+                if(butt > 450){
+                    options_div.style.gridTemplateColumns = `auto`;
+                }
             })
         }
 
