@@ -1606,7 +1606,7 @@ let getQuizOptions = (numberFrom) => {
         }
     })
     console.log(quiz_opts)
-    if (!numberFrom) {
+    if (numberFrom == undefined) {
         currentQuestionId = questions[0]["_id"];
     }
     socketConnection();
