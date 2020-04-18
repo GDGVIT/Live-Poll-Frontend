@@ -2128,13 +2128,14 @@ let addQuestionPublish = (type, numberFrom) => {
         var myHeaders = new Headers();
         myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
         myHeaders.append("Content-Type", "application/json")
-        if (numberFrom) {
+        if (numberFrom != undefined) {
             let data = [];
             questionsData.forEach((ele, i) => {
                 if (i > numberFrom) {
                     data.push(ele);
                 }
             })
+            console.log(data)
             var raw = JSON.stringify(data);
         }
         else {
@@ -2156,7 +2157,7 @@ let addQuestionPublish = (type, numberFrom) => {
                 quizQuestionsLength = questionsData.length - 1;
                 console.log("after adding quiz: quizQuestionsLength: ", quizQuestionsLength)
                 popup("Quiz Published")
-                if (numberFrom) {
+                if (numberFrom != undefined) {
                     popup("Questions Added");
                     nextQuestionBtn.classList.remove("disable-btn")
                     getQuizDetails(numberFrom);
@@ -2184,7 +2185,7 @@ let addQuestionPublish = (type, numberFrom) => {
         var myHeaders = new Headers();
         myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
         myHeaders.append("Content-Type", "application/json")
-        if (numberFrom) {
+        if (numberFrom != undefined) {
             let data = [];
             pollQuestionsData.forEach((ele, i) => {
                 if (i > numberFrom) {
@@ -2209,7 +2210,7 @@ let addQuestionPublish = (type, numberFrom) => {
             .then(result => {
                 console.log(result);
                 pollQuestionsLength = pollQuestionsData.length - 1;
-                if (numberFrom) {
+                if (numberFrom != undefined) {
                     popup("Questions Added");
                     nextPollBtn.classList.remove("disable-btn");
                     getPollDetails(numberFrom);
@@ -2238,7 +2239,8 @@ let addQuestionPublish = (type, numberFrom) => {
         var myHeaders = new Headers();
         myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
         myHeaders.append("Content-Type", "application/json")
-        if (numberFrom) {
+        
+        if (numberFrom != undefined) {
             let data = [];
             feedbackQuestions.forEach((ele, i) => {
                 if (i > numberFrom) {
@@ -2250,6 +2252,7 @@ let addQuestionPublish = (type, numberFrom) => {
         else {
             var raw = JSON.stringify(feedbackQuestions);
         }
+        console.log(raw)
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -2262,7 +2265,7 @@ let addQuestionPublish = (type, numberFrom) => {
             .then(result => {
                 console.log(result);
                 feedbackQuestionsLength = feedbackQuestions.length - 1;
-                if (numberFrom) {
+                if (numberFrom != undefined) {
                     popup("Questions Added");
                     getFeedbackDeets();
                 }
@@ -2720,15 +2723,15 @@ closeActiveActions();
 
 function checkQuestions(e) {
     e.preventDefault();
-    console.log(quizQuestionsLength)
+    console.log(feedbackQuestionsLength, feedbackQuestions.length)
     if (this.classList[1] == "quiz" && quizQuestionsLength != (questionsData.length - 1)) {
         addQuestionPublish("quiz", quizQuestionsLength);
     }
     if (this.classList[1] == "poll" && pollQuestionsLength != (pollQuestionsData.length - 1)) {
         addQuestionPublish("poll", pollQuestionsLength);
     }
-    if (this.classList[1] == "feedabck" && feedbackQuestionsLength != (feedbackQuestions.length - 1)) {
-        addQuestionPublish("quiz", feedbackQuestionsLength);
+    if (this.classList[1] == "feedback" && (feedbackQuestionsLength != (feedbackQuestions.length - 1))) {
+        addQuestionPublish("feedback", feedbackQuestionsLength);
     }
 }
 
