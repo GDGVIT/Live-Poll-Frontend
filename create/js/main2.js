@@ -2031,7 +2031,7 @@ let resetFeedbackVariables = (action) => {
     nextFeedbackBtn.classList.remove("disable-btn");
     prevFeedbackBtn.classList.add("disable-btn");
 }
-
+  
 const refreshBtn = document.querySelector(".refresh-btn");
 refreshBtn.addEventListener("click", async () => {
     resetFeedbackVariables()
@@ -2099,7 +2099,9 @@ let firstQuestionPublish = (id, type) => {
 }
 
 
-
+let quizQuestionsLength = 0;
+let pollQuestionsLength = 0;
+let feedbackQuestionsLength = 0;
 
 
 async function publishAction(e) {
@@ -2119,6 +2121,7 @@ async function publishAction(e) {
                         popup("There are no questions to publish", "Error");
                     }
                     else {
+                        quizQuestionsLength = questionsData.length;
                         quizLoader.classList.add("show")
                         actid = sessionStorage.getItem("quiz_action_id");
                         addLoader(this)
@@ -2169,6 +2172,7 @@ async function publishAction(e) {
                         popup("There are no questions to publish", "Error");
                     }
                     else {
+                        pollQuestionsLength = pollQuestionsData.length;
                         pollLoader.classList.add("show");
                         actid = sessionStorage.getItem("poll_action_id");
                         addLoader(this)
@@ -2219,6 +2223,7 @@ async function publishAction(e) {
                         popup("There are no questions to publish", "Error");
                     }
                     else {
+                        feedbackQuestionsLength = feedbackQuestions.length;
                         feedbackLoader.classList.add("show");
                         actid = sessionStorage.getItem("feedback_action_id");
                         addLoader(this)
@@ -2631,12 +2636,31 @@ closeActiveActions();
 
 /* closing Actions if any active: End */
 
+/* function checkQuestions(e){
+    e.preventDefault();
+    if()
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Handling continuing Action */
 
 const continueBtn = document.querySelectorAll(".continue-btn");
 
 continueBtn.forEach(ele => {
     ele.addEventListener("click", handleInvert);
+    /* ele.addEventListener("click", checkQuestions) */
 })
 
 
