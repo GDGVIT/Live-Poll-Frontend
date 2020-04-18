@@ -600,12 +600,16 @@ label[for = "theme_feedback"] {
     position: relative;
     width: 80%;
     margin: auto;
-    padding: 50px 0;
-    background: rgb(203, 236, 219);
-    margin-bottom: 10px;
+    padding: 50px 30px;
+    background: white;
+    border: solid 2px var(--main-color);
+    border-radius: 7px;
+    box-shadow: var(--main-shadow);
+    margin-bottom: 20px;
     overflow-wrap: break-word;
     height: auto;
     text-align: center;
+    max-width: 70vw;
 }
 
 .feedback-result-buttons{
@@ -613,6 +617,7 @@ label[for = "theme_feedback"] {
     width: fit-content;
     width: -moz-max-content;
     margin: auto;
+    margin: 50px auto;
 }
 
 /* Feedback Result: End */
@@ -1265,6 +1270,7 @@ button {
     }
     .answer{
         width: 100%;
+        max-width: 90vw;
     }
     .feedback-result-buttons{
         width: 80%;

@@ -1937,13 +1937,6 @@ let renderFeedbackDeets = (question, answers) => {
     feedbackQuestionDiv.innerHTML = question;
     answers.forEach(answer => {
         let div = document.createElement("div");
-        if (window.innerWidth > 600) {
-            div.style.maxWidth = (0.5 * window.innerWidth) + "px";
-        }
-        else {
-
-            div.style.maxWidth = (0.8 * window.innerWidth) + "px";
-        }
         div.innerHTML = answer["option"];
         div.classList.add("answer")
         feedbackAnswerDiv.appendChild(div)
@@ -1956,12 +1949,12 @@ if (feedbackNo == 0) {
 }
 
 nextFeedbackBtn.addEventListener("click", () => {
-    prevFeedbackBtn.classList.remove("disable-btn")
-    if (feedbackNo > (feedbackResultQuestions.length - 2)) {
+    if (feedbackNo == (feedbackResultQuestions.length - 1)) {
         popup("End of Feedback Questions", "Error")
     }
     else {
         feedbackNo++;
+        prevFeedbackBtn.classList.remove("disable-btn")
         if (feedbackNo == (feedbackResultQuestions.length - 1)) {
             nextFeedbackBtn.classList.add("disable-btn");
         }
@@ -1969,12 +1962,12 @@ nextFeedbackBtn.addEventListener("click", () => {
     }
 })
 prevFeedbackBtn.addEventListener("click", () => {
-    nextFeedbackBtn.classList.remove("disable-btn");
-    if (feedbackNo < 1) {
-        popup("First Feedback Question")
+    if (feedbackNo == 0) {
+        popup("First Feedback Question", "Error")
     }
     else {
         feedbackNo--;
+        nextFeedbackBtn.classList.remove("disable-btn");
         if (feedbackNo == 0) {
             prevFeedbackBtn.classList.add("disable-btn")
         }
@@ -2011,6 +2004,9 @@ let getFeedbackDeets = () => {
             .then(response => response.json())
             .then(result => {
                 console.log(result);
+                if(result["Questions"].length == 1){
+                    nextFeedbackBtn.classList.add("disable-btn");
+                }
                 getFeedbackAnswers(result);
 
                 resolve();
@@ -2029,7 +2025,9 @@ let resetFeedbackVariables = (action) => {
     if (action) {
         feedbackQuestions = [];
     }
-    prevFeedbackBtn.classList.remove("disable-btn")
+    feedbackQuestionDiv.innerHTML = "";
+    feedbackAnswerDiv.innerHTML = "";
+    prevFeedbackBtn.classList.add("disable-btn")
     nextFeedbackBtn.classList.remove("disable-btn");
     prevFeedbackBtn.classList.add("disable-btn");
 }
