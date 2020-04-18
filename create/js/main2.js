@@ -27,7 +27,7 @@ let popup = (text, error) => {
     }, 4000);
     setTimeout(() => {
         notify.classList.remove("enter-grid")
-    },5000);
+    }, 5000);
 }
 let addLoader = (button) => {
 
@@ -1516,6 +1516,7 @@ let nextQuestionTrue = (type) => {
     fetch(url, requestOptions)
         .then(response => response.json())
         .then(result => {
+            console.log("falkdsjf;lkdsajf;ldsakf")
             console.log(result);
             questionNumber++;
             currentQuestionId = result["_id"];
@@ -1559,7 +1560,7 @@ nextPollBtn.addEventListener("click", () => {
 });
 
 
-let getQuizDetails = () => {
+let getQuizDetails = (numberFrom) => {
 
     var requestOptions = {
         method: 'GET',
@@ -1583,21 +1584,31 @@ let getQuizDetails = () => {
                 if (quiz["Questions"].length == 1) {
                     nextQuestionBtn.classList.add("disable-btn");
                 }
-                getQuizOptions();
+                getQuizOptions(numberFrom);
             }
         })
         .catch(error => console.log('error', error));
 
 }
-let getQuizOptions = () => {
+let getQuizOptions = (numberFrom) => {
     questions = quiz["Questions"];
     console.log(questions)
-    questions.forEach(ele => {
-        quiz_opts.push(ele["options"])
-        questionIds.push(ele["_id"])
+    questions.forEach((ele, i) => {
+        if (numberFrom != undefined) {
+            if (i > numberFrom) {
+                quiz_opts.push(ele["options"])
+                questionIds.push(ele["_id"])
+            }
+        }
+        else {
+            quiz_opts.push(ele["options"])
+            questionIds.push(ele["_id"])
+        }
     })
     console.log(quiz_opts)
-    currentQuestionId = questions[0]["_id"];
+    if (!numberFrom) {
+        currentQuestionId = questions[0]["_id"];
+    }
     socketConnection();
 }
 
@@ -1613,6 +1624,7 @@ let socketConnection = () => {
 let continueSocketConnection = () => {
     socket.on('all options', (new_data) => {
         console.log(new_data)
+        console.log(quiz_opts)
         for (let k of quiz_opts) {
             k.forEach(ele => {
                 if (new_data._id == ele._id) {
@@ -1620,6 +1632,7 @@ let continueSocketConnection = () => {
                 }
             })
         }
+        console.log(quiz_opts)
         renderQuizDetails();
     })
 }
@@ -1718,13 +1731,17 @@ let resetActionVariables = (type) => {
     questionIds = [];
     if (type == "quiz") {
         questionsData = [];
+        quizQuestionsLength = undefined;
     }
     else if (type == "poll") {
         pollQuestionsData = [];
+        pollQuestionsLength = undefined;
     }
     else {
         pollQuestionsData = [];
         questionsData = [];
+        quizQuestionsLength = undefined;
+        pollQuestionsLength = undefined;
     }
     socket = undefined;
     MyChart.destroy();
@@ -1805,7 +1822,7 @@ let closeAction = (type, ref, nohome) => {
                         resetActionIds("quiz");
                         resetActionVariables("quiz");
                         performCheck();
-                        if(nohome != "nohome"){
+                        if (nohome != "nohome") {
                             goTo(homeSelector);
                         }
                         resolve();
@@ -1824,7 +1841,7 @@ let closeAction = (type, ref, nohome) => {
                         resetActionIds("poll");
                         resetActionVariables("poll");
                         performCheck();
-                        if(nohome != "nohome"){
+                        if (nohome != "nohome") {
                             goTo(homeSelector);
                         }
                         resolve();
@@ -1834,14 +1851,14 @@ let closeAction = (type, ref, nohome) => {
                         resetActionIds("feedback")
                         resetFeedbackVariables("okay");
                         performCheck();
-                        if(nohome != "nohome"){
+                        if (nohome != "nohome") {
                             goTo(homeSelector);
                         }
                         resolve()
                     }
                     sessionStorage.setItem(`${type}_active`, "false")
                 }
-                else if(ref = "ref"){
+                else if (ref = "ref") {
                     let emitingData = [];
                     emitingData.push(sessionStorage.getItem(`${type}_action_id`));
                     sessionStorage.removeItem(`${type}_action_id`);
@@ -1885,7 +1902,7 @@ closeFeedbackBtn.addEventListener("click", () => {
 
 
 
-let getPollDetails = () => {
+let getPollDetails = (numberFrom) => {
 
     var requestOptions = {
         method: 'GET',
@@ -1909,7 +1926,7 @@ let getPollDetails = () => {
                 if (quiz["Questions"].length == 1) {
                     nextPollBtn.classList.add("disable-btn");
                 }
-                getQuizOptions();
+                getQuizOptions(numberFrom);
             }
         })
         .catch(error => console.log('error', error));
@@ -2004,7 +2021,7 @@ let getFeedbackDeets = () => {
             .then(response => response.json())
             .then(result => {
                 console.log(result);
-                if(result["Questions"].length == 1){
+                if (result["Questions"].length == 1) {
                     nextFeedbackBtn.classList.add("disable-btn");
                 }
                 getFeedbackAnswers(result);
@@ -2031,7 +2048,7 @@ let resetFeedbackVariables = (action) => {
     nextFeedbackBtn.classList.remove("disable-btn");
     prevFeedbackBtn.classList.add("disable-btn");
 }
-  
+
 const refreshBtn = document.querySelector(".refresh-btn");
 refreshBtn.addEventListener("click", async () => {
     resetFeedbackVariables()
@@ -2104,6 +2121,183 @@ let pollQuestionsLength = 0;
 let feedbackQuestionsLength = 0;
 
 
+
+let addQuestionPublish = (type, numberFrom) => {
+    console.log("number from: ", numberFrom)
+    if (type == "quiz") {
+        var myHeaders = new Headers();
+        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+        myHeaders.append("Content-Type", "application/json")
+        if (numberFrom) {
+            let data = [];
+            questionsData.forEach((ele, i) => {
+                if (i > numberFrom) {
+                    data.push(ele);
+                }
+            })
+            var raw = JSON.stringify(data);
+        }
+        else {
+            var raw = JSON.stringify(questionsData);
+        }
+        console.log(raw)
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                quizQuestionsLength = questionsData.length - 1;
+                console.log("after adding quiz: quizQuestionsLength: ", quizQuestionsLength)
+                popup("Quiz Published")
+                if (numberFrom) {
+                    popup("Questions Added");
+                    nextQuestionBtn.classList.remove("disable-btn")
+                    getQuizDetails(numberFrom);
+                }
+                else {
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+                        .then(response => response.text())
+                        .then(result => {
+                            console.log(result);
+                            sessionStorage.setItem("quiz_active", "true");
+                            continueResultBtn("quiz");
+                            firstQuestionPublish(sessionStorage.getItem("quiz_action_id"), "quiz");
+                        })
+                        .catch(error => console.log('error', error));
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
+    if (type == "poll") {
+        var myHeaders = new Headers();
+        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+        myHeaders.append("Content-Type", "application/json")
+        if (numberFrom) {
+            let data = [];
+            pollQuestionsData.forEach((ele, i) => {
+                if (i > numberFrom) {
+                    data.push(ele);
+                }
+            })
+            var raw = JSON.stringify(data);
+        }
+        else {
+            var raw = JSON.stringify(pollQuestionsData);
+        }
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("poll_action_id"), requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                pollQuestionsLength = pollQuestionsData.length - 1;
+                if (numberFrom) {
+                    popup("Questions Added");
+                    nextPollBtn.classList.remove("disable-btn");
+                    getPollDetails(numberFrom);
+                }
+                else {
+                    popup("Poll Published")
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("poll_action_id"), requestOptions)
+                        .then(response => response.text())
+                        .then(result => {
+                            console.log(result);
+                            sessionStorage.setItem("poll_active", "true");
+                            continueResultBtn("poll");
+                            firstQuestionPublish(sessionStorage.getItem("poll_action_id"), "poll");
+                        })
+                        .catch(error => console.log('error', error));
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
+    if (type == "feedback") {
+        var myHeaders = new Headers();
+        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+        myHeaders.append("Content-Type", "application/json")
+        if (numberFrom) {
+            let data = [];
+            feedbackQuestions.forEach((ele, i) => {
+                if (i > numberFrom) {
+                    data.push(ele);
+                }
+            })
+            var raw = JSON.stringify(data);
+        }
+        else {
+            var raw = JSON.stringify(feedbackQuestions);
+        }
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                feedbackQuestionsLength = feedbackQuestions.length - 1;
+                if (numberFrom) {
+                    popup("Questions Added");
+                    getFeedbackDeets();
+                }
+                else {
+                    var requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
+                        .then(response => response.text())
+                        .then(result => {
+                            console.log(result);
+                            sessionStorage.setItem("feedback_active", "true");
+                            continueResultBtn("feedback");
+                            firstQuestionPublish(sessionStorage.getItem("feedback_action_id"), "feedback");
+                        })
+                        .catch(error => console.log('error', error));
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 async function publishAction(e) {
     e.preventDefault();
     await multipleActions("publish").then(res => {
@@ -2121,45 +2315,8 @@ async function publishAction(e) {
                         popup("There are no questions to publish", "Error");
                     }
                     else {
-                        quizQuestionsLength = questionsData.length;
                         quizLoader.classList.add("show")
-                        actid = sessionStorage.getItem("quiz_action_id");
-                        addLoader(this)
-                        var myHeaders = new Headers();
-                        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                        myHeaders.append("Content-Type", "application/json")
-                        var raw = JSON.stringify(questionsData);
-                        console.log(raw)
-
-                        var requestOptions = {
-                            method: 'POST',
-                            headers: myHeaders,
-                            body: raw,
-                            redirect: 'follow'
-                        };
-
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-                            .then(response => response.json())
-                            .then(result => {
-                                console.log(result);
-                                popup("Quiz Published")
-                                var requestOptions = {
-                                    method: 'GET',
-                                    redirect: 'follow'
-                                };
-
-                                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                                    .then(response => response.text())
-                                    .then(result => {
-                                        console.log(result);
-                                        sessionStorage.setItem("quiz_active", "true");
-                                        continueResultBtn("quiz");
-                                        firstQuestionPublish(actid, "quiz");
-                                        removeLoader(this, "Publish Quiz")
-                                    })
-                                    .catch(error => console.log('error', error));
-                            })
-                            .catch(error => console.log('error', error));
+                        addQuestionPublish("quiz")
                     }
                 }
                 else {
@@ -2172,45 +2329,8 @@ async function publishAction(e) {
                         popup("There are no questions to publish", "Error");
                     }
                     else {
-                        pollQuestionsLength = pollQuestionsData.length;
                         pollLoader.classList.add("show");
-                        actid = sessionStorage.getItem("poll_action_id");
-                        addLoader(this)
-                        var myHeaders = new Headers();
-                        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                        myHeaders.append("Content-Type", "application/json")
-                        var raw = JSON.stringify(pollQuestionsData);
-
-                        var requestOptions = {
-                            method: 'POST',
-                            headers: myHeaders,
-                            body: raw,
-                            redirect: 'follow'
-                        };
-
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                            .then(response => response.text())
-                            .then(result => {
-                                console.log(result);
-                                popup("Poll Published")
-                                var requestOptions = {
-                                    method: 'GET',
-                                    redirect: 'follow'
-                                };
-
-                                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                                    .then(response => response.text())
-                                    .then(result => {
-                                        console.log(result);
-                                        sessionStorage.setItem("poll_active", "true");
-                                        continueResultBtn("poll");
-                                        firstQuestionPublish(actid, "poll");
-                                        removeLoader(this, "Publish Poll")
-                                    })
-                                    .catch(error => console.log('error', error));
-                            })
-                            .catch(error => console.log('error', error));
-
+                        addQuestionPublish("poll")
                     }
                 }
                 else {
@@ -2223,54 +2343,16 @@ async function publishAction(e) {
                         popup("There are no questions to publish", "Error");
                     }
                     else {
-                        feedbackQuestionsLength = feedbackQuestions.length;
                         feedbackLoader.classList.add("show");
-                        actid = sessionStorage.getItem("feedback_action_id");
-                        addLoader(this)
-                        var myHeaders = new Headers();
-                        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
-                        myHeaders.append("Content-Type", "application/json")
-                        var raw = JSON.stringify(feedbackQuestions);
-
-                        var requestOptions = {
-                            method: 'POST',
-                            headers: myHeaders,
-                            body: raw,
-                            redirect: 'follow'
-                        };
-
-                        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + actid, requestOptions)
-                            .then(response => response.text())
-                            .then(result => {
-                                console.log(result);
-                                var requestOptions = {
-                                    method: 'GET',
-                                    redirect: 'follow'
-                                };
-
-                                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + actid, requestOptions)
-                                    .then(response => response.text())
-                                    .then(result => {
-                                        console.log(result);
-                                        sessionStorage.setItem("feedback_active", "true");
-                                        continueResultBtn("feedback");
-                                        firstQuestionPublish(actid, "feedback");
-                                        removeLoader(this, "Publish Feedback")
-                                    })
-                                    .catch(error => console.log('error', error));
-                            })
-                            .catch(error => console.log('error', error));
+                        addQuestionPublish("feedback")
                     }
                 }
                 else {
                     console.log("no feedback made");
                 }
             }
-            if (actid == "0") {
-                console.log("nice")
-            }
         }
-        else{
+        else {
             return;
         }
     })
@@ -2636,10 +2718,19 @@ closeActiveActions();
 
 /* closing Actions if any active: End */
 
-/* function checkQuestions(e){
+function checkQuestions(e) {
     e.preventDefault();
-    if()
-} */
+    console.log(quizQuestionsLength)
+    if (this.classList[1] == "quiz" && quizQuestionsLength != (questionsData.length - 1)) {
+        addQuestionPublish("quiz", quizQuestionsLength);
+    }
+    if (this.classList[1] == "poll" && pollQuestionsLength != (pollQuestionsData.length - 1)) {
+        addQuestionPublish("poll", pollQuestionsLength);
+    }
+    if (this.classList[1] == "feedabck" && feedbackQuestionsLength != (feedbackQuestions.length - 1)) {
+        addQuestionPublish("quiz", feedbackQuestionsLength);
+    }
+}
 
 
 
@@ -2660,7 +2751,7 @@ const continueBtn = document.querySelectorAll(".continue-btn");
 
 continueBtn.forEach(ele => {
     ele.addEventListener("click", handleInvert);
-    /* ele.addEventListener("click", checkQuestions) */
+    ele.addEventListener("click", checkQuestions)
 })
 
 
@@ -2686,10 +2777,10 @@ async function multipleActions(publish) {
         })
         if (flag == 1) {
             if (window.confirm("An Action is still live, you will have to close it to make another")) {
-                if(publish == "publish"){
+                if (publish == "publish") {
                     await closeAction(closeTypes, "normal", "nohome")
                 }
-                else{
+                else {
                     await closeAction(closeTypes, "normal")
                 }
                 resolve(true)

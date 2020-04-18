@@ -105,6 +105,7 @@
 
         .select {
             /* box-shadow: var(--main-shadow-hover); */
+            color:rgb(150, 150, 150);
             background-color: #83D39D;
         }
 
@@ -147,6 +148,7 @@
             width: 90%;
 
         }
+
         .next-question-wait {
             position: relative;
             height: fit-content;
@@ -182,9 +184,11 @@
             /* box-shadow: inset -6px -6px 10px rgb(150, 150, 150), inset 6px 6px 20px rgba(0, 0, 0, .2);
             ; */
         }
-        .grey-text{
+
+        .grey-text {
             color: rgb(150, 150, 150);
         }
+
         .not-show {
             display: none;
         }
@@ -236,9 +240,10 @@
         }
 
         @media only screen and (max-width: 600px) {
-            main{
+            main {
                 grid-template-rows: 8% 92%;
             }
+
             .main-container {
                 width: 90%;
                 height: 90%;
@@ -265,9 +270,11 @@
             input {
                 width: 90%;
             }
-            .header > svg{
+
+            .header>svg {
                 height: 80%;
             }
+
             .main-button {
                 padding: 12px 0;
                 width: 100%;
@@ -525,7 +532,7 @@
 
 
 
-
+        let i = 0;
         //Connecting to the socket
         let socketConnection = () => {
             socket = io('https://mighty-sea-62531.herokuapp.com/');
@@ -553,14 +560,16 @@
                     sessionStorage.setItem("Answered", "false");
                     waitDiv.classList.remove("show");
                     container.classList.add("show")
+                    i = 0;
                 }
             })
         }
 
-        let selectOption = (id, just) => {
-            if (sessionStorage.getItem("Answered") == "false" || sessionStorage.getItem("Answered") === null || just == "just") {
+        let selectOption = (id) => {
+            console.log("selectOption")
+            console.log(id)
+            if (sessionStorage.getItem("Answered") == "false" || sessionStorage.getItem("Answered") === null) {
                 let mainButton = document.querySelectorAll(".main-button");
-                console.log(id)
                 mainButton.forEach(ele => {
                     console.log(ele.id)
                     if (ele.value == id) {
@@ -577,8 +586,10 @@
 
         //Handling the answers
         let handleAnswers = (option_id) => {
+            console.log(option_id)
+            console.log("here")
             if (sessionStorage.getItem("Answered") == "false" || sessionStorage.getItem("Answered") == null) {
-                console.log(option_id)
+
                 socket.emit("option", option_id);
                 sessionStorage.setItem("Answered", "true");
                 sessionStorage.setItem("opt_id", option_id);
@@ -589,8 +600,18 @@
             }
         }
         //Rendering the quiz
+        function optionsMaster(){
+            console.log("optionsMaster")
+            if (i == 0) {
+                selectOption(this.value);
+                handleAnswers(this.value);
+                i++
+            }
+        }
+
+
+
         let renderQuiz = (question) => {
-            let i = 0;
 
             questionDiv.innerHTML = question["name"];
 
@@ -600,19 +621,12 @@
                 button.innerHTML = `<strong class = "grey-text">${i}. </strong>${opt["option"]}`;
                 button.value = opt["_id"];
                 button.classList.add("main-button");
-                button.addEventListener("click", () => {
-                    if (i == 0) {
-                        selectOption(opt["_id"], "nice");
-                        handleAnswers(opt["_id"]);
-
-                        i++
-                    }
-                })
+                button.addEventListener("click", optionsMaster)
                 options_div.appendChild(button);
-                let butt = document.querySelector(".options-div button").offsetHeight;
+                /* let butt = document.querySelector(".options-div button").offsetHeight;
                 if(butt > 450){
                     options_div.style.gridTemplateColumns = `auto`;
-                }
+                } */
             })
         }
 
