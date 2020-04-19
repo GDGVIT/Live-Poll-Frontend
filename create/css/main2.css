@@ -1056,12 +1056,13 @@ button {
     fill: var(--main-color)
 }
 .event-loader{
-    margin-top: 10vh;
+    /* margin-top: 10vh; */
     position: relative;
     left: 50%;
-    transform: translate(-50%, 0);
-    -webkit-transform: translate(-50%, 0);
-    -moz-transform: translate(-50%, 0);
+    /* top: 50%; */
+    transform: translate(-50%, 0%);
+    -webkit-transform: translate(-50%, 0%);
+    -moz-transform: translate(-50%, 0%);
 }
 
 @media(max-width: 600px) {
