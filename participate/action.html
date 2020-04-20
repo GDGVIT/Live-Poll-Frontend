@@ -105,7 +105,7 @@
 
         .select {
             /* box-shadow: var(--main-shadow-hover); */
-            color:rgb(150, 150, 150);
+            color: rgb(150, 150, 150);
             background-color: #83D39D;
         }
 
@@ -504,7 +504,7 @@
 
 
 
-
+        let nextFired = false;
 
 
 
@@ -556,6 +556,7 @@
             })
             socket.on("next", data => {
                 if (data == actionId) {
+                    nextFired = true;
                     fetchNextQuestion();
                     sessionStorage.setItem("Answered", "false");
                     waitDiv.classList.remove("show");
@@ -594,13 +595,16 @@
                 sessionStorage.setItem("Answered", "true");
                 sessionStorage.setItem("opt_id", option_id);
                 setTimeout(() => {
-                    container.classList.remove("show");
-                    waitDiv.classList.add("show")
-                }, 3000)
+                    if (!nextFired) {
+                        container.classList.remove("show");
+                        waitDiv.classList.add("show")
+                        nextFired = false;
+                    }
+                }, 1000)
             }
         }
         //Rendering the quiz
-        function optionsMaster(){
+        function optionsMaster() {
             console.log("optionsMaster")
             if (i == 0) {
                 selectOption(this.value);
@@ -624,7 +628,7 @@
                 button.addEventListener("click", optionsMaster)
                 options_div.appendChild(button);
                 let butt = document.querySelector(".options-div button").offsetHeight;
-                if(butt > 450){
+                if (butt > 450) {
                     options_div.style.gridTemplateColumns = `auto`;
                 }
             })

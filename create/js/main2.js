@@ -661,7 +661,6 @@ let renderEventHistory = (event, actions, just) => {
 
 
 let getActions = async (event) => {
-    console.log(event)
     let actionDeets = [];
     const GatherActions = new Promise((resolve, reject) => {
         let i = 0;
@@ -805,16 +804,34 @@ let loggedIn = () => {
                 ele.removeEventListener("click", selectItem);
             })
         }
+        else {
+            quizSelector.forEach(ele => {
+                ele.style.color = "black";
+                ele.addEventListener("click", selectItem);
+            })
+        }
         if (!sessionStorage.getItem("poll_action_id")) {
             pollSelector.forEach(ele => {
                 ele.style.color = "rgb(189, 189, 189)";
                 ele.removeEventListener("click", selectItem);
             })
         }
+        else {
+            pollSelector.forEach(ele => {
+                ele.style.color = "black";
+                ele.addEventListener("click", selectItem);
+            })
+        }
         if (!sessionStorage.getItem("feedback_action_id")) {
             feedbackSelector.forEach(ele => {
                 ele.style.color = "rgb(189, 189, 189)"
                 ele.removeEventListener("click", selectItem);
+            })
+        }
+        else {
+            feedbackSelector.forEach(ele => {
+                ele.style.color = "black"
+                ele.addEventListener("click", selectItem);
             })
         }
         homeSelector.forEach(ele => {
@@ -1122,7 +1139,10 @@ AddActionBtn.forEach(ele => {
 
 
 /* Adding Actions: End */
+let options;
 
+var elems = document.querySelector('.quiz-create-container');
+var quizCollapsible = M.Collapsible.init(elems, options);
 
 
 /* Adding Question and answers */
@@ -1258,14 +1278,52 @@ let checkOptions = (options, correct) => {
 
 const AddQuestionBtn = document.querySelector("#add_question_btn");
 const AddPollBtn = document.querySelector("#add_poll_btn");
+
+
+
+
+
+
+
+
+let delQuestion = (ele) => {
+    console.log(ele);
+    let i = parseInt(ele.classList[2])
+    if (ele.classList[1] == "quiz") {
+        console.log(i - 1);
+        questionsData.splice((i - 1), 1);
+        console.log(questionsData)
+
+        let questionDivs = document.querySelectorAll(".quiz-create-container > li").length;
+        console.log(questionDivs)
+        for (let index = 0; index < questionDivs; index++) {
+            if (index > (i - 1)) {
+                console.log("here", index)
+                document.querySelector(`#quiz-question-${index + 1} > .question-header > p`).innerHTML = `Question ${index}`;
+                document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz_options_div`).id = `quiz_options_div_${index}`;
+                document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .add-remove-options > .add-option-btn`).classList = `add-option-btn quiz_options_div_${index} main-button`;
+                document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .add-remove-options > .delete-option-btn`).classList = `delete-option-btn quiz_options_div_${index} main-button`;
+                document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #add_question_btn`).classList = `main-button ${index}`;
+                if(document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList[4] == "show"){
+                    document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList = `main-button quiz ${index} del-btn show`;
+                }
+                else{
+                    document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList = `main-button quiz ${index} del-btn`;
+                }
+                document.querySelector(`#quiz-question-${index + 1}`).id = `quiz-question-${index}`
+            }
+        }
+        document.querySelector(`#quiz-question-${i}`).remove();
+        QuestionDivsNo--;
+
+    }
+}
 let questionsData = [];
 let question_no = 0;
-function addQuestion(e) {
-    e.preventDefault();
-    let questionOptions = document.querySelectorAll(".quiz-option");
-    let questionName = document.querySelector("#question_name");
-    let correctOption = document.querySelector("#correct_option");
-    let Form = document.querySelector("#question_form");
+let addQuizQuestion = (btn) => {
+    let questionOptions = document.querySelectorAll(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .quiz_options_div > .quiz-option`);
+    let questionName = document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .question_name`);
+    let correctOption = document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .correct_option`);
     questionName.classList.remove("Opt-match")
     questionName.placeholder = "Enter Question"
     correctOption.placeholder = "Enter Correct Option(must match the options)"
@@ -1286,26 +1344,70 @@ function addQuestion(e) {
             }
             question.options.push(opti);
         })
-        if (this.value) {
-            questionsData.splice(this.value, 1, question);
-            console.log(questionsData);
-            this.removeAttribute("value")
-            this.innerHTML = "+ Add Question";
+        questionsData[btn.classList[1] - 1] = question;
+        if (btn.value) {
             popup("Question Edited")
         }
         else {
-            questionsData.push(question);
-            console.log(questionsData)
+            btn.innerHTML = "Insert Edited Question"
             popup("Quiz Question Added")
+            btn.value = true;
+            document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList.add("show");
+            insertQuizQuestion();
         }
-
-        Form.reset();
-
+        console.log(questionsData)
     }
 }
 
 
-AddQuestionBtn.addEventListener("click", addQuestion);
+
+let QuestionDivsNo = 1;
+let insertQuizQuestion = () => {
+    QuestionDivsNo++;
+    let masterUl = document.querySelector(".quiz-create-container");
+    let masterLi = document.createElement("li");
+    masterLi.id = `quiz-question-${QuestionDivsNo}`;
+    masterLi.innerHTML = `
+    <div class="collapsible-header question-header">
+        <p>Question ${QuestionDivsNo}</p>
+        <p>Question Title</p>
+        <i class="material-icons">arrow_drop_down</i>
+    </div>
+    <div class="collapsible-body">
+        <div class="quiz-question-create">
+            <label for="question_name">Question</label>
+            <input type="text" class="question_name main-input" placeholder="Enter Question">
+            <label for="correct_option">Correct Option</label>
+            <input type="text" class="correct_option main-input" placeholder="Correct Option(must match an option)">
+            <label for="quiz_options">Options</label>
+            <div id="quiz_options_div_${QuestionDivsNo}" class="quiz_options_div"><input type="text" class="main-input quiz-option" placeholder="Enter Option"></div>
+            <div class="add-remove-options">
+                <button class="add-option-btn quiz_options_div_${QuestionDivsNo} main-button" onclick = "addOption(this)">+ Add</button>
+                <button class="delete-option-btn quiz_options_div_${QuestionDivsNo} main-button" onclick = "deleteOption(this)">- Remove</button>
+            </div>
+            <div class="quiz-actions">
+                <button id="add_question_btn" onclick = "addQuizQuestion(this)" class="main-button ${QuestionDivsNo}">+ Add Question</button>
+                <button class="main-button quiz ${QuestionDivsNo} del-btn" id = "del_question_btn" onclick = "delQuestion(this)">Delete Question</button>
+                <button class="main-button quiz continue-quiz-btn continue-btn">Continue Quiz</button>
+            </div>
+        </div>
+    </div>`
+    masterUl.appendChild(masterLi)
+    quizCollapsible.open(QuestionDivsNo - 1);
+    masterLi.scrollIntoView();
+}
+
+
+
+
+
+
+
+
+
+
+/* AddQuestionBtn.addEventListener("click", addQuestion); */
+/* AddQuestionBtn.addEventListener("click", insertQuizQuestion); */
 AddPollBtn.addEventListener("click", AddPollQuestion);
 
 
@@ -1322,51 +1424,35 @@ AddPollBtn.addEventListener("click", AddPollQuestion);
 
 /* Handling Adding and Removing Options */
 
-const AddOptionsBtn = document.querySelectorAll(".add-option-btn")
-const DeleteOptionsBtn = document.querySelectorAll(".delete-option-btn");
+
 let quizOptlength = 1;
 let pollOptlength = 1;
 
-function addOption(e) {
-    e.preventDefault();
-    if ((this.classList[1] == "quiz_options" && quizOptlength < 4) || (this.classList[1] == "poll_options" && pollOptlength < 4)) {
-        if (this.classList[1] == "quiz_options") quizOptlength++;
-        if (this.classList[1] == "poll_options") pollOptlength++;
-        const OptionsDiv = document.querySelector(`#${this.classList[1]}_div`)
-        let inputField = document.createElement("input");
-        inputField.placeholder = "Enter Option";
-        if (this.classList[1] == "quiz_options") {
-            inputField.classList.add("quiz-option");
-        }
-        if (this.classList[1] == "poll_options") {
-            inputField.classList.add("poll-option");
-        }
-        inputField.classList.add("main-input");
-        OptionsDiv.appendChild(inputField)
+function addOption(ele) {
+    console.log(ele)
+    const OptionsDiv = document.querySelector(`#${ele.classList[1]}`)
+    if (OptionsDiv.childElementCount == 4) {
+        return;
     }
+    let inputField = document.createElement("input");
+    inputField.placeholder = "Enter Option";
+    if (OptionsDiv.classList[0] == "quiz_options_div") {
+        inputField.classList.add(`quiz-option`);
+    }
+    inputField.classList.add("main-input");
+    OptionsDiv.appendChild(inputField)
+
 }
-function deleteOption(e) {
-    e.preventDefault();
-    const OptionsDiv = document.querySelector(`#${this.classList[1]}_div`);
-    if (OptionsDiv.innerHTML === "") {
+function deleteOption(ele) {
+    const OptionsDiv = document.querySelector(`#${ele.classList[1]}`);
+    if (OptionsDiv.childElementCount == 1) {
         return;
     }
     else {
-        if (((this.classList[1] == "quiz_options" && quizOptlength > 1) || (this.classList[1] == "poll_options" && pollOptlength > 1))) {
-            if (this.classList[1] == "quiz_options") quizOptlength--;
-            if (this.classList[1] == "poll_options") pollOptlength--;
-            OptionsDiv.removeChild(OptionsDiv.lastChild)
-        }
+        OptionsDiv.removeChild(OptionsDiv.lastChild)
     }
 }
 
-AddOptionsBtn.forEach(ele => {
-
-    ele.addEventListener("click", addOption);
-})
-DeleteOptionsBtn.forEach(ele => {
-    ele.addEventListener("click", deleteOption);
-})
 
 
 /* Handling Adding and Removing Options: End */
@@ -2239,7 +2325,7 @@ let addQuestionPublish = (type, numberFrom) => {
         var myHeaders = new Headers();
         myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
         myHeaders.append("Content-Type", "application/json")
-        
+
         if (numberFrom != undefined) {
             let data = [];
             feedbackQuestions.forEach((ele, i) => {
@@ -2424,7 +2510,7 @@ let performCheck = () => {
         document.querySelector(".Quiz-internal").classList.remove("show-action");
         document.querySelector(".quiz-result").classList.remove("show-select");
         document.querySelector(".quiz-summary").classList.remove("show");
-        document.querySelector(".quiz-create-container").classList.add("show-action");
+        document.querySelector(".quiz-create-container").classList.add("show");
         document.querySelector(".quiz-create").classList.add("show-select");
         document.querySelector(".Quiz-name").classList.add("show-action");
         resetActionVariables("quiz");
@@ -2495,9 +2581,7 @@ let renderReviewPage = (type) => {
             icon1.innerHTML = "delete";
             icon2.innerHTML = "mode_edit";
             icon1.addEventListener("click", () => {
-                console.log(i);
-                questionsData.splice(i, 1);
-                console.log(questionsData)
+
                 renderReviewPage("quiz");
             })
             icon2.addEventListener("click", () => {
@@ -2797,7 +2881,6 @@ async function multipleActions(publish) {
         }
     })
 }
-
 
 
 

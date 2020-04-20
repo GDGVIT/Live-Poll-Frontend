@@ -111,7 +111,8 @@
                                 </li>
                             </ul>
                             <div class="prev-event-deets">
-                                <button class="cancel-event-deets back-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                                <button class="cancel-event-deets back-btn"><i
+                                        class="back-icon material-icons">arrow_back</i></button>
                                 <div class="event-contents">
                                     <canvas class="action-graph" id="graph">
 
@@ -134,12 +135,17 @@
                 <div class="tab-content quiz-control">
                     <div class="content">
                         <div class="quiz-result result">
-                            <button class="invert-btn quiz back-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                            <button class="invert-btn quiz back-btn"><i
+                                    class="back-icon material-icons">arrow_back</i></button>
                             <div class="event-name-and-code grid-area-apply">
                                 <p class="current-event-name"></p>
                                 <p class="current-event-code"></p>
                             </div>
-                            <div class="quiz-loader"><lottie-player src="../img/data.json"  background="transparent"  speed="1"  style="width: 35vh; height: 35vh;" class="event-loader"  loop autoplay></lottie-player></div>
+                            <div class="quiz-loader">
+                                <lottie-player src="../img/data.json" background="transparent" speed="1"
+                                    style="width: 35vh; height: 35vh;" class="event-loader" loop autoplay>
+                                </lottie-player>
+                            </div>
                             <canvas class="quiz-details">
 
                             </canvas>
@@ -152,72 +158,42 @@
                         </div>
                         <div class="quiz-create create show-select">
                             <div class="Quiz-internal show-action">
-
-                                <form action="" method="post" class="quiz-create-container show-action"
-                                    id="question_form">
+                                <ul class="quiz-create-container show collapsible" id="question_form">
                                     <div class="event-name-and-code create-section grid-area-apply">
                                         <p class="current-event-name"></p>
                                         <p class="current-event-code"></p>
                                     </div>
-                                    <label for="question_name">Question</label>
-                                    <input type="text" id="question_name" class="main-input"
-                                        placeholder="Enter Question">
-                                    <label for="correct_option">Correct Option</label>
-                                    <input type="text" id="correct_option" class="main-input"
-                                        placeholder="Correct Option(must match an option)">
-                                    <label for="quiz_options">Options</label>
-                                    <div id="quiz_options_div"><input type="text" class="main-input quiz-option"
-                                            placeholder="Enter Option"></div>
-                                    <div class="add-remove-options">
-                                        <button class="add-option-btn quiz_options main-button">+ Add</button>
-                                        <button class="delete-option-btn quiz_options main-button">- Remove</button>
-                                    </div>
-                                    <label for="theme">Theme</label>
-                                    <div id="theme" class="theme">
-                                        <button class="main-button theme-btn quiz pie pie-quiz">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30.002" height="30.003">
-                                                <rect width="100%" height="100%" x="0" y="0" fill="none"
-                                                    stroke="none" />
-                                                <g class="currentLayer">
-                                                    <title>Layer 1</title>
-                                                    <g class="pie-quiz-white icon" data-name="Group 29" fill="#2784FB"
-                                                        fill-opacity="1">
-                                                        <path data-name="Path 62"
-                                                            d="M16.283 14.344h13.09a.626.626 0 0 0 .624-.68A14.979 14.979 0 0 0 16.339.004a.632.632 0 0 0-.477.162.626.626 0 0 0-.2.462v13.09a.626.626 0 0 0 .621.626z" />
-                                                        <path data-name="Path 63"
-                                                            d="M29.375 15.597H18.057a.626.626 0 0 0-.443 1.069l8.006 8.006a.625.625 0 0 0 .443.184h.027a.626.626 0 0 0 .453-.223A14.919 14.919 0 0 0 30 16.278a.626.626 0 0 0-.624-.68z" />
-                                                        <path data-name="Path 64"
-                                                            d="M14.591 15.414a.641.641 0 0 1-.184-.443V.628a.626.626 0 0 0-.2-.462.608.608 0 0 0-.481-.165 15.028 15.028 0 1 0 10.965 26.48.626.626 0 0 0 .04-.922z" />
-                                                    </g>
-                                                </g>
-                                            </svg>
-                                            <p class="pie-quiz-text theme-text">pie chart</p>
-                                        </button>
-                                        <button class="main-button theme-btn quiz bar bar-quiz">
-                                            <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
-                                                width="29.139" height="26.71" viewBox="0 0 29.139 26.71">
-                                                <path class="bar-quiz-white icon" id="Path_61" data-name="Path 61"
-                                                    d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
-                                                    transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
-                                            <p class="bar-quiz-text theme-text">bar chart</p>
-                                        </button>
-                                        <button class="main-button theme-btn quiz horizontalBar scatter-quiz">
-                                            <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
-                                                width="29.139" height="26.71" viewBox="0 0 29.139 26.71" class="hor-chart">
-                                                <path class="scatter-quiz-white icon" id="Path_61" data-name="Path 61"
-                                                    d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
-                                                    transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
-                                            <p class="scatter-quiz-text theme-text">horizontal bar</p>
-                                        </button>
-                                    </div>
-                                    <div class="quiz-actions">
-                                        <button id="add_question_btn" class="main-button quiz">+ Add Question</button>
-                                        <button class="main-button review-btn quiz" id="">Review Quiz</button>
-                                        <button class="main-button quiz continue-quiz-btn continue-btn">Continue Quiz</button>
-                                    </div>
-                                </form>
+                                    <li id="quiz-question-1" class="active">
+                                        <div class="collapsible-header question-header">
+                                            <p>Question 1</p>
+                                            <p>Question Title</p>
+                                            <i class="material-icons">arrow_drop_down</i>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div class="quiz-question-create">
+                                                <label for="question_name">Question</label>
+                                                <input type="text" id="question_name" class="question_name main-input" placeholder="Enter Question">
+                                                <label for="correct_option">Correct Option</label>
+                                                <input type="text" id="correct_option" class="correct_option main-input" placeholder="Correct Option(must match an option)">
+                                                <label for="quiz_options">Options</label>
+                                                <div id="quiz_options_div_1" class="quiz_options_div"><input type="text" class="main-input quiz-option" placeholder="Enter Option"></div>
+                                                <div class="add-remove-options">
+                                                    <button class="add-option-btn quiz_options_div_1 main-button" onclick = "addOption(this)">+ Add</button>
+                                                    <button class="delete-option-btn quiz_options_div_1 main-button" onclick="deleteOption(this)">- Remove</button>
+                                                </div>
+                                                <div class="quiz-actions">
+                                                    <button id="add_question_btn" onclick = "addQuizQuestion(this)" class="main-button 1">+ Add Question</button>
+                                                    <button class="main-button quiz 1 del-btn" id = "del_question_btn" onclick = "delQuestion(this)">Delete Question</button>
+                                                    <!-- <button class="main-button review-btn quiz" id="">Review Quiz</button> -->
+                                                    <!-- <button class="main-button quiz continue-quiz-btn continue-btn">Continue Quiz</button> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                                 <div class="quiz-summary">
-                                    <button class="back-btn quiz form-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                                    <button class="back-btn quiz form-btn"><i
+                                            class="back-icon material-icons">arrow_back</i></button>
                                     <div class="current-quiz-deets">
                                         <h1 class="quiz-title">Quiz title: </h1>
                                         <div class="question-deets first-deet">
@@ -254,12 +230,16 @@
                 <div class="tab-content poll-control">
                     <div class="content">
                         <div class="poll-result result">
-                            <button class="invert-btn poll back-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                            <button class="invert-btn poll back-btn"><i
+                                    class="back-icon material-icons">arrow_back</i></button>
                             <div class="event-name-and-code grid-area-apply">
                                 <p class="current-event-name"></p>
                                 <p class="current-event-code"></p>
                             </div>
-                            <div class="poll-loader"><lottie-player src="../img/data.json"  background="transparent"  speed="1"  style="width: 35vh; height: 35vh;" class="event-loader"  loop autoplay></div>
+                            <div class="poll-loader">
+                                <lottie-player src="../img/data.json" background="transparent" speed="1"
+                                    style="width: 35vh; height: 35vh;" class="event-loader" loop autoplay>
+                            </div>
                             <canvas class="poll-details">
 
                             </canvas>
@@ -316,7 +296,8 @@
                                         </button>
                                         <button class="main-button theme-btn poll horizontalBar scatter-poll">
                                             <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
-                                                width="29.139" height="26.71" viewBox="0 0 29.139 26.71" class="hor-chart">
+                                                width="29.139" height="26.71" viewBox="0 0 29.139 26.71"
+                                                class="hor-chart">
                                                 <path class="scatter-poll-white icon" id="Path_61" data-name="Path 61"
                                                     d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
                                                     transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
@@ -326,11 +307,13 @@
                                     <div class="poll-actions">
                                         <button id="add_poll_btn" class="main-button poll">+ Add Poll Question</button>
                                         <button class="main-button review-btn poll">Review Poll</button>
-                                        <button class="main-button poll continue-poll-btn continue-btn">Continue Poll</button>
+                                        <button class="main-button poll continue-poll-btn continue-btn">Continue
+                                            Poll</button>
                                     </div>
                                 </form>
                                 <div class="poll-summary">
-                                    <button class="back-btn poll form-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                                    <button class="back-btn poll form-btn"><i
+                                            class="back-icon material-icons">arrow_back</i></button>
                                     <div class="current-poll-deets">
                                         <h1 class="poll-title">Quiz title: </h1>
                                         <div class="question-deets first-deet">
@@ -367,13 +350,17 @@
 
                     <div class="content">
                         <div class="feedback-result result">
-                            <button class="invert-btn feedback back-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                            <button class="invert-btn feedback back-btn"><i
+                                    class="back-icon material-icons">arrow_back</i></button>
                             <button class="refresh-btn"><img src="../img/refresh.png" alt=""></button>
                             <div class="event-name-and-code grid-area-apply">
                                 <p class="current-event-name"></p>
                                 <p class="current-event-code"></p>
                             </div>
-                            <div class="feedback-loader"><lottie-player src="../img/data.json"  background="transparent"  speed="1"  style="width: 35vh; height: 35vh;" class="event-loader"  loop autoplay></div>
+                            <div class="feedback-loader">
+                                <lottie-player src="../img/data.json" background="transparent" speed="1"
+                                    style="width: 35vh; height: 35vh;" class="event-loader" loop autoplay>
+                            </div>
                             <div class="feedback-result-grid">
                                 <div class="feedback-details">
                                     <h1 class="feedback-question"></h1>
@@ -382,7 +369,8 @@
                                 </div>
                                 <div class="feedback-result-buttons">
                                     <button class="main-button" id="prev_feedback_btn">Prev Question</button>
-                                    <button id="close_feedback" class="invert-btn feedback main-button">Close Feedback</button>
+                                    <button id="close_feedback" class="invert-btn feedback main-button">Close
+                                        Feedback</button>
                                     <button class="main-button" id="next_feedback_btn">Next Question</button>
                                 </div>
                             </div>
@@ -419,11 +407,13 @@
                                         <button id="add_feedback_btn" class="main-button feedback">+ Add
                                             Question</button>
                                         <button class="main-button review-btn feedback">Review Feedback</button>
-                                        <button class="main-button feedback continue-feedback-btn continue-btn">Continue Feedback</button>
+                                        <button class="main-button feedback continue-feedback-btn continue-btn">Continue
+                                            Feedback</button>
                                     </div>
                                 </form>
                                 <div class="feedback-summary">
-                                    <button class="back-btn feedback form-btn"><i class="back-icon material-icons">arrow_back</i></button>
+                                    <button class="back-btn feedback form-btn"><i
+                                            class="back-icon material-icons">arrow_back</i></button>
                                     <div class="current-feedback-deets">
                                         <h1 class="feedback-title">Quiz title: </h1>
                                         <div class="question-deets first-deet">
@@ -438,7 +428,7 @@
                                     <button class="invert-btn feedback main-button publish-btn"
                                         id="publish_feedback">Publish
                                         Feedback</button>
-                                        
+
                                 </div>
                             </div>
                             <div class="Feedback-name">
@@ -497,7 +487,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <script>
-        if(window.innerWidth < 800){
+        if (window.innerWidth < 800) {
             nice = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${nice}px`);
         }
