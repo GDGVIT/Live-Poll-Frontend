@@ -63,6 +63,9 @@ main {
     align-items: center;
     background-color: white;
 }
+.tab-item{
+    color: rgb(189, 189, 189);
+}
 .options-container {
     position: relative;
     display: grid;
