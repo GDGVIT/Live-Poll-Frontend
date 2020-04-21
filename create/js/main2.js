@@ -1480,7 +1480,7 @@ let insertQuizQuestion = () => {
         document.querySelector(`#quiz-question-${QuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
     }
     else{
-        document.querySelector(`#quiz-question-${QuestionDivsNo} > .question-header > p`).scrollIntoView({ behavior: 'smooth' });
+        document.querySelector(`#quiz-question-${QuestionDivsNo-1} > .collapsible-header`).scrollIntoView({ behavior: 'smooth' });
     }
 }
 
