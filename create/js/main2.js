@@ -1207,7 +1207,7 @@ let insertPollQuestion = () => {
     <div class="question-header collapsible-header">
         <p>Question ${pollQuestionDivsNo}</p>
         <p class="question-title">Question Title</p>
-        <i class="material-icons">arrow_drop_down</i>
+        <i class="material-icons" id="drop">arrow_drop_down</i>
     </div>
     <div class="collapsible-body">
         <div class="poll-question-create">
@@ -1227,7 +1227,7 @@ let insertPollQuestion = () => {
     </div>`
     masterUl.appendChild(masterLi)
     pollCollapsible.open(pollQuestionDivsNo - 1);
-    masterLi.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(`#poll-question-${pollQuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
 }
 
 
@@ -1351,13 +1351,13 @@ let delQuestion = (ele) => {
         document.querySelector(`#quiz-question-${i}`).remove();
         QuestionDivsNo--;
     }
-    if(ele.classList[1] == "poll"){
-        pollQuestionsData.splice((i - 1),1);
+    if (ele.classList[1] == "poll") {
+        pollQuestionsData.splice((i - 1), 1);
         console.log(pollQuestionsData)
         let questionDivs = document.querySelectorAll(".poll-collapsible > li").length;
         console.log(questionDivs)
-        for(let index = 0; index < questionDivs; index++){
-            if(index > (i - 1)){
+        for (let index = 0; index < questionDivs; index++) {
+            if (index > (i - 1)) {
                 document.querySelector(`#poll-question-${index + 1} .question-header > p`).innerHTML = `Question ${index}`;
                 document.querySelector(`#poll-question-${index + 1} .poll_options_div`).id = `poll_options_div_${index}`;
                 document.querySelector(`#poll-question-${index + 1} .add-option-btn`).classList = `add-option-btn poll_options_div_${index} main-button`;
@@ -1420,10 +1420,10 @@ let addQuizQuestion = (btn) => {
         }
         else {
             btn.innerHTML = "Insert Edited Question";
-            
+
             popup("Quiz Question Added")
             btn.value = true;
-            document.querySelector(`#quiz-question-${btn.classList[1]} > #del_question_btn`).classList.add("show");
+            document.querySelector(`#quiz-question-${btn.classList[1]} #del_question_btn`).classList.add("show");
             insertQuizQuestion();
         }
         console.log(questionsData)
@@ -1452,7 +1452,7 @@ let insertQuizQuestion = () => {
     <div class="collapsible-header question-header">
         <p>Question ${QuestionDivsNo}</p>
         <p class = "question-title">Question Title</p>
-        <i class="material-icons">arrow_drop_down</i>
+        <i class="material-icons" id = "drop">arrow_drop_down</i>
     </div>
     <div class="collapsible-body">
         <div class="quiz-question-create">
@@ -1474,7 +1474,7 @@ let insertQuizQuestion = () => {
     </div>`
     masterUl.appendChild(masterLi)
     quizCollapsible.open(QuestionDivsNo - 1);
-    masterLi.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(`#quiz-question-${QuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
 }
 
 
@@ -1511,7 +1511,7 @@ function addOption(ele) {
     if (OptionsDiv.classList[0] == "quiz_options_div") {
         inputField.classList.add(`quiz-option`);
     }
-    if(OptionsDiv.classList[0] == "poll_options_div"){
+    if (OptionsDiv.classList[0] == "poll_options_div") {
         inputField.classList.add("poll-option");
     }
     inputField.classList.add("main-input");
