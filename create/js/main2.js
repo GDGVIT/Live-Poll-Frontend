@@ -1139,10 +1139,12 @@ AddActionBtn.forEach(ele => {
 
 
 /* Adding Actions: End */
-let options;
-
+let collOpts = {};
+if(window.innerWidth < 600){
+    collOpts.inDuration =  700
+}
 var elems = document.querySelector('.quiz-collapsible');
-var quizCollapsible = M.Collapsible.init(elems, options);
+var quizCollapsible = M.Collapsible.init(elems, collOpts);
 
 
 /* Adding Question and answers */
@@ -1196,7 +1198,7 @@ let validate = (question, options, corrOpt) => {
 
 
 let pollelems = document.querySelector(".poll-collapsible");
-let pollCollapsible = M.Collapsible.init(pollelems, options);
+let pollCollapsible = M.Collapsible.init(pollelems, collOpts);
 let pollQuestionDivsNo = 1;
 let insertPollQuestion = () => {
     pollQuestionDivsNo++;
@@ -1227,9 +1229,8 @@ let insertPollQuestion = () => {
     </div>`
     masterUl.appendChild(masterLi)
     pollCollapsible.open(pollQuestionDivsNo - 1);
-    if(window.innerWidth > 600){
-        document.querySelector(`#poll-question-${pollQuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector(`#poll-question-${pollQuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
+
 }
 
 
@@ -1476,11 +1477,11 @@ let insertQuizQuestion = () => {
     </div>`
     masterUl.appendChild(masterLi)
     quizCollapsible.open(QuestionDivsNo - 1);
-    if(window.innerWidth > 600){
+    if (window.innerWidth > 600) {
         document.querySelector(`#quiz-question-${QuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
     }
-    else{
-        document.querySelector(`#quiz-question-${QuestionDivsNo-1} > .collapsible-header`).scrollIntoView({ behavior: 'smooth' });
+    else {
+        document.querySelector(`#quiz-question-${QuestionDivsNo - 1} > .collapsible-header`).scrollIntoView({ behavior: 'smooth' });
     }
 }
 
