@@ -1195,6 +1195,43 @@ let validate = (question, options, corrOpt) => {
 
 
 
+let pollelems = document.querySelector(".poll-collapsible");
+let pollCollapsible = M.Collapsible.init(pollelems, options);
+let pollQuestionDivsNo = 1;
+let insertPollQuestion = () => {
+    pollQuestionDivsNo++;
+    let masterUl = document.querySelector(".poll-collapsible");
+    let masterLi = document.createElement("li");
+    masterLi.id = `poll-question-${pollQuestionDivsNo}`;
+    masterLi.innerHTML = `
+    <div class="question-header collapsible-header">
+        <p>Question ${pollQuestionDivsNo}</p>
+        <p class="question-title">Question Title</p>
+        <i class="material-icons">arrow_drop_down</i>
+    </div>
+    <div class="collapsible-body">
+        <div class="poll-question-create">
+            <label for="poll_name">Question</label>
+            <input type="text" id="poll_name" class="question_name main-input" placeholder="Enter Question">
+            <label for="poll_options">Options</label>
+            <div id="poll_options_div_${pollQuestionDivsNo}" class="poll_options_div"><input type="text" class="main-input poll-option" placeholder="Enter Option"></div>
+            <div class="add-remove-options">
+                <button class="add-option-btn poll_options_div_${pollQuestionDivsNo} main-button" onclick="addOption(this)">+ Add</button>
+                <button class="delete-option-btn poll_options_div_${pollQuestionDivsNo} main-button" onclick="deleteOption(this)">- Remove</button>
+            </div>
+            <div class="poll-actions">
+                <button id="add_poll_btn" onclick="addPollQuestion(this)" class="main-button ${pollQuestionDivsNo}">+ Add Poll Question</button>
+                <button class="main-button poll ${pollQuestionDivsNo} del-btn" onclick = "delQuestion(this)" id="del_question_btn">Delete Question</button>
+            </div>
+        </div>
+    </div>`
+    masterUl.appendChild(masterLi)
+    pollCollapsible.open(pollQuestionDivsNo - 1);
+    masterLi.scrollIntoView({ behavior: 'smooth' });
+}
+
+
+
 
 
 
@@ -1202,11 +1239,12 @@ let validate = (question, options, corrOpt) => {
 
 let pollQuestionsData = [];
 
-function AddPollQuestion(e) {
-    e.preventDefault();
-    let questionOptions = document.querySelectorAll(".poll-option");
-    let questionName = document.querySelector("#poll_name");
-    let Form = document.querySelector("#poll_form");
+function addPollQuestion(btn) {
+    let value = btn.classList[1];
+    console.log(value)
+    let questionOptions = document.querySelectorAll(`#poll-question-${value} .poll-option`);
+    let questionName = document.querySelector(`#poll-question-${value} #poll_name`);
+    let questionTitle = document.querySelector(`#poll-question-${value} .question-title`);
     questionOptions.forEach(ele => {
         ele.classList.remove("Opt-match");
         ele.placeholder = "Enter Option"
@@ -1223,20 +1261,19 @@ function AddPollQuestion(e) {
             }
             question.options.push(opti);
         })
-        if (this.value) {
-            pollQuestionsData.splice(this.value, 1, question);
-            console.log(pollQuestionsData);
-            this.removeAttribute("value")
-            this.innerHTML = "+ Add Poll Question";
+        pollQuestionsData[value - 1] = question;
+        questionTitle.innerHTML = questionName.value;
+        if (btn.value) {
             popup("Question Edited")
         }
         else {
-            pollQuestionsData.push(question);
-            console.log(pollQuestionsData)
+            btn.innerHTML = "Insert Edited Question";
+            btn.value = true;
+            document.querySelector(`#poll-question-${value} #del_question_btn`).classList.add("show")
             popup("Poll Question Added")
+            insertPollQuestion();
         }
-
-        Form.reset()
+        console.log(pollQuestionsData)
     }
 }
 
@@ -1314,6 +1351,30 @@ let delQuestion = (ele) => {
         document.querySelector(`#quiz-question-${i}`).remove();
         QuestionDivsNo--;
     }
+    if(ele.classList[1] == "poll"){
+        pollQuestionsData.splice((i - 1),1);
+        console.log(pollQuestionsData)
+        let questionDivs = document.querySelectorAll(".poll-collapsible > li").length;
+        console.log(questionDivs)
+        for(let index = 0; index < questionDivs; index++){
+            if(index > (i - 1)){
+                document.querySelector(`#poll-question-${index + 1} .question-header > p`).innerHTML = `Question ${index}`;
+                document.querySelector(`#poll-question-${index + 1} .poll_options_div`).id = `poll_options_div_${index}`;
+                document.querySelector(`#poll-question-${index + 1} .add-option-btn`).classList = `add-option-btn poll_options_div_${index} main-button`;
+                document.querySelector(`#poll-question-${index + 1} .delete-option-btn`).classList = `delete-option-btn poll_options_div_${index} main-button`;
+                document.querySelector(`#poll-question-${index + 1} #add_poll_btn`).classList = `main-button ${index}`;
+                if (document.querySelector(`#poll-question-${index + 1} #del_question_btn`).classList[4] == "show") {
+                    document.querySelector(`#poll-question-${index + 1} #del_question_btn`).classList = `main-button poll ${index} del-btn show`;
+                }
+                else {
+                    document.querySelector(`#poll-question-${index + 1} #del_question_btn`).classList = `main-button poll ${index} del-btn`;
+                }
+                document.querySelector(`#poll-question-${index + 1}`).id = `poll-question-${index}`
+            }
+        }
+        document.querySelector(`#poll-question-${i}`).remove();
+        pollQuestionDivsNo--;
+    }
 }
 
 
@@ -1353,15 +1414,16 @@ let addQuizQuestion = (btn) => {
             question.options.push(opti);
         })
         questionsData[btn.classList[1] - 1] = question;
+        questionTItle.innerHTML = questionName.value;
         if (btn.value) {
             popup("Question Edited")
         }
         else {
             btn.innerHTML = "Insert Edited Question";
-            questionTItle.innerHTML = questionName.value;
+            
             popup("Quiz Question Added")
             btn.value = true;
-            document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList.add("show");
+            document.querySelector(`#quiz-question-${btn.classList[1]} > #del_question_btn`).classList.add("show");
             insertQuizQuestion();
         }
         console.log(questionsData)
@@ -1421,13 +1483,6 @@ let insertQuizQuestion = () => {
 
 
 
-
-
-
-
-AddPollBtn.addEventListener("click", AddPollQuestion);
-
-
 /* Adding Question and answers: End */
 
 
@@ -1455,6 +1510,9 @@ function addOption(ele) {
     inputField.placeholder = "Enter Option";
     if (OptionsDiv.classList[0] == "quiz_options_div") {
         inputField.classList.add(`quiz-option`);
+    }
+    if(OptionsDiv.classList[0] == "poll_options_div"){
+        inputField.classList.add("poll-option");
     }
     inputField.classList.add("main-input");
     OptionsDiv.appendChild(inputField)
@@ -2595,7 +2653,7 @@ let performCheck = () => {
         document.querySelector(".Poll-internal").classList.remove("show-action");
         document.querySelector(".poll-result").classList.remove("show-select")
         document.querySelector(".poll-summary").classList.remove("show");
-        document.querySelector(".poll-create-container").classList.add("show-action");
+        document.querySelector(".poll-create-container").classList.add("show");
         document.querySelector(".poll-create").classList.add("show-select");
         document.querySelector(".Poll-name").classList.add("show-action");
         resetActionVariables("poll")

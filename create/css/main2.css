@@ -431,7 +431,7 @@ main {
     box-shadow: none;
 }
 .quiz-question-create > label,
-.poll-create-container > label,
+.poll-question-create > label,
 .feedback-create-container > label {
     font-weight: 900;
     font-size: 1.3rem;
@@ -457,7 +457,7 @@ label[for = "poll_options"] {
     grid-area: l3;
 }
 .quiz_options_div,
-#poll_options_div {
+.poll_options_div {
     grid-area: i3;
     position: relative;
     display: grid;
@@ -505,12 +505,7 @@ label[for = "theme_poll"] {
 
 .poll-create-container {
     position: relative;
-    display: grid;
-    grid-template-areas: "abs abs" "l1 i1" "l3 i3" ". i4" "l5 i5" ". i6";
-    width: 90%;
-    margin: auto;
-    row-gap: 40px;
-    /* padding-top: 15vh; */
+    padding-bottom: 200px;
     display: none;
 }
 
@@ -922,7 +917,13 @@ label[for = "theme_feedback"] {
     grid-area: abs;
 }
 
-
+.poll-question-create{
+    display: grid;
+    grid-template-areas: ". ." "l1 i1" "l3 i3" ". i4" ". i6";
+    width: 90%;
+    margin: auto;
+    row-gap: 40px;
+}
 
 .question-header{
     position: relative;
@@ -940,10 +941,10 @@ label[for = "theme_feedback"] {
 .question-header > i{
     justify-self: right;
 }
-.quiz-collapsible > li{
+.quiz-collapsible > li, .poll-collapsible > li{
     margin-top:20px;
 }
-.quiz-question-create {
+.quiz-question-create,.poll-question-create{
     box-shadow: var(--main-shadow);
     margin-top: 20px;
     padding: 30px;
@@ -953,7 +954,7 @@ label[for = "theme_feedback"] {
 .del-btn{
     display: none;
 }
-.final-quiz-actions{
+.final-quiz-actions,.final-poll-actions{
     position: absolute;
     bottom: 0;
     display: grid;
@@ -964,7 +965,6 @@ label[for = "theme_feedback"] {
     border-radius: 15px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-    
     grid-template-areas: "p ." "t r";
     justify-items: center;
     align-items: center;
@@ -976,7 +976,7 @@ label[for = "theme_feedback"] {
     -moz-transform: translate(-50%, 0%);
     box-shadow: var(--main-shadow);
 }
-.final-quiz-actions > p{
+.final-quiz-actions > p,.final-poll-actions > p{
     grid-area: p;
     justify-self: left;
     font-size: 1.1rem;
