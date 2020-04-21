@@ -979,11 +979,11 @@ function createEvent(e) {
             removeLoader(createEventBtn, "Generate Event Code")
             sessionStorage.setItem("event_id", result._id);
             sessionStorage.setItem("the_current_event", JSON.stringify(result))
-            renderCurrentEventDeets();
             AddActionDiv.classList.add("show");
             eventCreated = result;
             EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
             EventCodeDiv.classList.add("show");
+            renderCurrentEventDeets();
             renderEventHistory(result, [], "just");
             popup("Event Generated");
         })
@@ -1141,7 +1141,7 @@ AddActionBtn.forEach(ele => {
 /* Adding Actions: End */
 let options;
 
-var elems = document.querySelector('.quiz-create-container');
+var elems = document.querySelector('.quiz-collapsible');
 var quizCollapsible = M.Collapsible.init(elems, options);
 
 
@@ -1293,9 +1293,7 @@ let delQuestion = (ele) => {
         console.log(i - 1);
         questionsData.splice((i - 1), 1);
         console.log(questionsData)
-
-        let questionDivs = document.querySelectorAll(".quiz-create-container > li").length;
-        console.log(questionDivs)
+        let questionDivs = document.querySelectorAll(".quiz-collapsible > li").length;
         for (let index = 0; index < questionDivs; index++) {
             if (index > (i - 1)) {
                 console.log("here", index)
@@ -1304,10 +1302,10 @@ let delQuestion = (ele) => {
                 document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .add-remove-options > .add-option-btn`).classList = `add-option-btn quiz_options_div_${index} main-button`;
                 document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .add-remove-options > .delete-option-btn`).classList = `delete-option-btn quiz_options_div_${index} main-button`;
                 document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #add_question_btn`).classList = `main-button ${index}`;
-                if(document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList[4] == "show"){
+                if (document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList[4] == "show") {
                     document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList = `main-button quiz ${index} del-btn show`;
                 }
-                else{
+                else {
                     document.querySelector(`#quiz-question-${index + 1} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList = `main-button quiz ${index} del-btn`;
                 }
                 document.querySelector(`#quiz-question-${index + 1}`).id = `quiz-question-${index}`
@@ -1315,9 +1313,18 @@ let delQuestion = (ele) => {
         }
         document.querySelector(`#quiz-question-${i}`).remove();
         QuestionDivsNo--;
-
     }
 }
+
+
+
+
+
+
+/* Adding Question to the DB */
+
+
+
 let questionsData = [];
 let question_no = 0;
 let addQuizQuestion = (btn) => {
@@ -1361,10 +1368,20 @@ let addQuizQuestion = (btn) => {
 
 
 
+/* Adding Question to the DB: End */
+
+
+
+
+
+
+/* Adding Question Div to DOM */
+
+
 let QuestionDivsNo = 1;
 let insertQuizQuestion = () => {
     QuestionDivsNo++;
-    let masterUl = document.querySelector(".quiz-create-container");
+    let masterUl = document.querySelector(".quiz-collapsible");
     let masterLi = document.createElement("li");
     masterLi.id = `quiz-question-${QuestionDivsNo}`;
     masterLi.innerHTML = `
@@ -1388,16 +1405,16 @@ let insertQuizQuestion = () => {
             <div class="quiz-actions">
                 <button id="add_question_btn" onclick = "addQuizQuestion(this)" class="main-button ${QuestionDivsNo}">+ Add Question</button>
                 <button class="main-button quiz ${QuestionDivsNo} del-btn" id = "del_question_btn" onclick = "delQuestion(this)">Delete Question</button>
-                <button class="main-button quiz continue-quiz-btn continue-btn">Continue Quiz</button>
             </div>
         </div>
     </div>`
     masterUl.appendChild(masterLi)
     quizCollapsible.open(QuestionDivsNo - 1);
-    masterLi.scrollIntoView();
+    masterLi.scrollIntoView({ behavior: 'smooth' });
 }
 
 
+/* Adding Question Div to DOM: End */
 
 
 
@@ -1406,8 +1423,6 @@ let insertQuizQuestion = () => {
 
 
 
-/* AddQuestionBtn.addEventListener("click", addQuestion); */
-/* AddQuestionBtn.addEventListener("click", insertQuizQuestion); */
 AddPollBtn.addEventListener("click", AddPollQuestion);
 
 
@@ -1818,6 +1833,33 @@ let resetActionVariables = (type) => {
     if (type == "quiz") {
         questionsData = [];
         quizQuestionsLength = undefined;
+        document.querySelector(".quiz-collapsible").innerHTML = `
+        <li id="quiz-question-1" class="active">
+            <div class="collapsible-header question-header">
+                <p>Question 1</p>
+                <p>Question Title</p>
+                <i class="material-icons">arrow_drop_down</i>
+            </div>
+            <div class="collapsible-body">
+                <div class="quiz-question-create">
+                    <label for="question_name">Question</label>
+                    <input type="text" id="question_name" class="question_name main-input" placeholder="Enter Question">
+                    <label for="correct_option">Correct Option</label>
+                    <input type="text" id="correct_option" class="correct_option main-input" placeholder="Correct Option(must match an option)">
+                    <label for="quiz_options">Options</label>
+                    <div id="quiz_options_div_1" class="quiz_options_div"><input type="text" class="main-input quiz-option" placeholder="Enter Option"></div>
+                    <div class="add-remove-options">
+                        <button class="add-option-btn quiz_options_div_1 main-button" onclick = "addOption(this)">+ Add</button>
+                        <button class="delete-option-btn quiz_options_div_1 main-button" onclick="deleteOption(this)">- Remove</button>
+                    </div>
+                    <div class="quiz-actions">
+                        <button id="add_question_btn" onclick = "addQuizQuestion(this)" class="main-button 1">+ Add Question</button>
+                        <button class="main-button quiz 1 del-btn" id = "del_question_btn" onclick = "delQuestion(this)">Delete Question</button>
+                    </div>
+                </div>
+            </div>
+        </li>`;
+        QuestionDivsNo = 1;
     }
     else if (type == "poll") {
         pollQuestionsData = [];
@@ -1828,6 +1870,33 @@ let resetActionVariables = (type) => {
         questionsData = [];
         quizQuestionsLength = undefined;
         pollQuestionsLength = undefined;
+        document.querySelector(".quiz-collapsible").innerHTML = `
+        <li id="quiz-question-1" class="active">
+            <div class="collapsible-header question-header">
+                <p>Question 1</p>
+                <p>Question Title</p>
+                <i class="material-icons">arrow_drop_down</i>
+            </div>
+            <div class="collapsible-body">
+                <div class="quiz-question-create">
+                    <label for="question_name">Question</label>
+                    <input type="text" id="question_name" class="question_name main-input" placeholder="Enter Question">
+                    <label for="correct_option">Correct Option</label>
+                    <input type="text" id="correct_option" class="correct_option main-input" placeholder="Correct Option(must match an option)">
+                    <label for="quiz_options">Options</label>
+                    <div id="quiz_options_div_1" class="quiz_options_div"><input type="text" class="main-input quiz-option" placeholder="Enter Option"></div>
+                    <div class="add-remove-options">
+                        <button class="add-option-btn quiz_options_div_1 main-button" onclick = "addOption(this)">+ Add</button>
+                        <button class="delete-option-btn quiz_options_div_1 main-button" onclick="deleteOption(this)">- Remove</button>
+                    </div>
+                    <div class="quiz-actions">
+                        <button id="add_question_btn" onclick = "addQuizQuestion(this)" class="main-button 1">+ Add Question</button>
+                        <button class="main-button quiz 1 del-btn" id = "del_question_btn" onclick = "delQuestion(this)">Delete Question</button>
+                    </div>
+                </div>
+            </div>
+        </li>`;
+        QuestionDivsNo = 1;
     }
     socket = undefined;
     MyChart.destroy();
@@ -2701,7 +2770,7 @@ function ReviewPage(e) {
     console.log(this.classList)
     let form = document.querySelector(`.${this.classList[2]}-create-container`);
     let reviewControl = document.querySelector(`.${this.classList[2]}-summary`);
-    form.classList.remove("show-action")
+    form.classList.remove("show")
     reviewControl.classList.add("show");
     renderReviewPage(this.classList[2]);
 }
@@ -2713,7 +2782,7 @@ function FormPage() {
     let form = document.querySelector(`.${this.classList[1]}-create-container`);
     let reviewControl = document.querySelector(`.${this.classList[1]}-summary`);
     reviewControl.classList.remove("show");
-    form.classList.add("show-action");
+    form.classList.add("show");
 }
 
 
@@ -2735,9 +2804,9 @@ const eventNameDivs = document.querySelectorAll(".current-event-name")
 const eventCodeDivs = document.querySelectorAll(".current-event-code")
 let renderCurrentEventDeets = () => {
     let event = JSON.parse(sessionStorage.getItem("the_current_event"));
+    console.log(event);
     eventNameDivs.forEach(ele => {
         ele.innerHTML = `Event Name: ${event["Name"]}`
-
     })
     eventCodeDivs.forEach(ele => {
         ele.innerHTML = `Event Code: ${event["Code"]}`;

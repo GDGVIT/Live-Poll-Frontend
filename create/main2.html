@@ -158,39 +158,56 @@
                         </div>
                         <div class="quiz-create create show-select">
                             <div class="Quiz-internal show-action">
-                                <ul class="quiz-create-container show collapsible" id="question_form">
+                                <div class="quiz-create-container show" id="question_form">
                                     <div class="event-name-and-code create-section grid-area-apply">
                                         <p class="current-event-name"></p>
                                         <p class="current-event-code"></p>
                                     </div>
-                                    <li id="quiz-question-1" class="active">
-                                        <div class="collapsible-header question-header">
-                                            <p>Question 1</p>
-                                            <p>Question Title</p>
-                                            <i class="material-icons">arrow_drop_down</i>
-                                        </div>
-                                        <div class="collapsible-body">
-                                            <div class="quiz-question-create">
-                                                <label for="question_name">Question</label>
-                                                <input type="text" id="question_name" class="question_name main-input" placeholder="Enter Question">
-                                                <label for="correct_option">Correct Option</label>
-                                                <input type="text" id="correct_option" class="correct_option main-input" placeholder="Correct Option(must match an option)">
-                                                <label for="quiz_options">Options</label>
-                                                <div id="quiz_options_div_1" class="quiz_options_div"><input type="text" class="main-input quiz-option" placeholder="Enter Option"></div>
-                                                <div class="add-remove-options">
-                                                    <button class="add-option-btn quiz_options_div_1 main-button" onclick = "addOption(this)">+ Add</button>
-                                                    <button class="delete-option-btn quiz_options_div_1 main-button" onclick="deleteOption(this)">- Remove</button>
-                                                </div>
-                                                <div class="quiz-actions">
-                                                    <button id="add_question_btn" onclick = "addQuizQuestion(this)" class="main-button 1">+ Add Question</button>
-                                                    <button class="main-button quiz 1 del-btn" id = "del_question_btn" onclick = "delQuestion(this)">Delete Question</button>
-                                                    <!-- <button class="main-button review-btn quiz" id="">Review Quiz</button> -->
-                                                    <!-- <button class="main-button quiz continue-quiz-btn continue-btn">Continue Quiz</button> -->
+                                    <ul class="quiz-collapsible collapsible">
+                                        <li id="quiz-question-1" class="active">
+                                            <div class="collapsible-header question-header">
+                                                <p>Question 1</p>
+                                                <p>Question Title</p>
+                                                <i class="material-icons">arrow_drop_down</i>
+                                            </div>
+                                            <div class="collapsible-body">
+                                                <div class="quiz-question-create">
+                                                    <label for="question_name">Question</label>
+                                                    <input type="text" id="question_name"
+                                                        class="question_name main-input" placeholder="Enter Question">
+                                                    <label for="correct_option">Correct Option</label>
+                                                    <input type="text" id="correct_option"
+                                                        class="correct_option main-input"
+                                                        placeholder="Correct Option(must match an option)">
+                                                    <label for="quiz_options">Options</label>
+                                                    <div id="quiz_options_div_1" class="quiz_options_div"><input
+                                                            type="text" class="main-input quiz-option"
+                                                            placeholder="Enter Option"></div>
+                                                    <div class="add-remove-options">
+                                                        <button class="add-option-btn quiz_options_div_1 main-button"
+                                                            onclick="addOption(this)">+ Add</button>
+                                                        <button class="delete-option-btn quiz_options_div_1 main-button"
+                                                            onclick="deleteOption(this)">- Remove</button>
+                                                    </div>
+                                                    <div class="quiz-actions">
+                                                        <button id="add_question_btn" onclick="addQuizQuestion(this)"
+                                                            class="main-button 1">+ Add Question</button>
+                                                        <button class="main-button quiz 1 del-btn" id="del_question_btn"
+                                                            onclick="delQuestion(this)">Delete Question</button>
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                        </li>
+                                    </ul>
+                                    <div class="final-quiz-actions">
+                                        <!-- <button class="main-button review-btn quiz" id="">Review Quiz</button> -->
+                                        <button class="invert-btn quiz main-button publish-btn"
+                                            id="publish_quiz">Publish Quiz</button>
+                                        <button class="main-button quiz continue-quiz-btn continue-btn">Continue
+                                            Quiz</button>
+                                    </div>
+                                </div>
                                 <div class="quiz-summary">
                                     <button class="back-btn quiz form-btn"><i
                                             class="back-icon material-icons">arrow_back</i></button>
@@ -205,8 +222,7 @@
 
                                         </div>
                                     </div>
-                                    <button class="invert-btn quiz main-button publish-btn" id="publish_quiz">Publish
-                                        Quiz</button>
+
                                 </div>
                             </div>
                             <div class="Quiz-name">
@@ -305,7 +321,8 @@
                                         </button>
                                     </div>
                                     <div class="poll-actions">
-                                        <button id="add_poll_btn" class="main-button poll">+ Add Poll Question</button>
+                                        <button id="add_poll_btn" class="main-button poll">+ Add Poll
+                                            Question</button>
                                         <button class="main-button review-btn poll">Review Poll</button>
                                         <button class="main-button poll continue-poll-btn continue-btn">Continue
                                             Poll</button>
