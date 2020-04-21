@@ -1185,6 +1185,9 @@ button {
     body {
         height: calc(var(--vh, 1vh) * 100);
     }
+    #drop {
+        display: none;
+    }
     main {
         min-width: 0;
         grid-template-rows: 8% 92%;
@@ -1285,6 +1288,9 @@ button {
         transition: clip-path ease-out 1s;
         -webkit-transition: -webkit-clip-path ease-out 1s;
         background: white;
+    }
+    .question-header > i{
+        display: none;
     }
     .ham {
         z-index: 100;
@@ -1496,9 +1502,7 @@ button {
     .mobile-grid {
         display: grid;
     }
-    #drop {
-        display: none;
-    }
+    
 }
 button::-moz-focus-inner {
     border: 0;
