@@ -1479,6 +1479,9 @@ let insertQuizQuestion = () => {
     if(window.innerWidth > 600){
         document.querySelector(`#quiz-question-${QuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
     }
+    else{
+        document.querySelector(`#quiz-question-${QuestionDivsNo} > .question-header > p`).scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 
