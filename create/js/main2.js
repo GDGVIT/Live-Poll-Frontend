@@ -237,11 +237,13 @@ let renderChart = () => {
 
 let updateChartData = () => {
     displayChart.options.title.text = renderQuestions[renderQuestionNumber];
+    displayChart.data.labels = [];
+    displayChart.data.datasets[0].data = []
+    console.log(displayChart.data.labels)
     renderOptions[renderQuestionNumber].forEach((ele, index) => {
         displayChart.data.labels[index] = ele["option"]
         displayChart.data.datasets[0].data[index] = ele["stat"];
     })
-
     displayChart.update();
 }
 
@@ -1880,6 +1882,8 @@ let createChart = (chartDiv, ty) => {
 
 let renderQuizDetails = () => {
     MyChart.options.title.text = questions[questionNumber]["name"];
+    MyChart.data.labels = [];
+    MyChart.data.datasets[0].data = []
     quiz_opts[questionNumber].forEach((ele, index) => {
         quiz_labels.push(ele["option"])
         MyChart.data.labels[index] = ele["option"]
