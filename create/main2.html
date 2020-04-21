@@ -167,7 +167,7 @@
                                         <li id="quiz-question-1" class="active">
                                             <div class="collapsible-header question-header">
                                                 <p>Question 1</p>
-                                                <p>Question Title</p>
+                                                <p class="question-title">Question Title</p>
                                                 <i class="material-icons">arrow_drop_down</i>
                                             </div>
                                             <div class="collapsible-body">
@@ -202,10 +202,50 @@
                                     </ul>
                                     <div class="final-quiz-actions">
                                         <!-- <button class="main-button review-btn quiz" id="">Review Quiz</button> -->
-                                        <button class="invert-btn quiz main-button publish-btn"
+                                        <p>Select Theme</p>
+                                        <div id="theme" class="theme">
+                                            <button class="main-button theme-btn quiz pie pie-quiz">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="30.002" height="30.003">
+                                                    <rect width="100%" height="100%" x="0" y="0" fill="none"
+                                                        stroke="none" />
+                                                    <g class="currentLayer">
+                                                        <title>Layer 1</title>
+                                                        <g class="pie-quiz-white icon" data-name="Group 29" fill="#2784FB"
+                                                            fill-opacity="1">
+                                                            <path data-name="Path 62"
+                                                                d="M16.283 14.344h13.09a.626.626 0 0 0 .624-.68A14.979 14.979 0 0 0 16.339.004a.632.632 0 0 0-.477.162.626.626 0 0 0-.2.462v13.09a.626.626 0 0 0 .621.626z" />
+                                                            <path data-name="Path 63"
+                                                                d="M29.375 15.597H18.057a.626.626 0 0 0-.443 1.069l8.006 8.006a.625.625 0 0 0 .443.184h.027a.626.626 0 0 0 .453-.223A14.919 14.919 0 0 0 30 16.278a.626.626 0 0 0-.624-.68z" />
+                                                            <path data-name="Path 64"
+                                                                d="M14.591 15.414a.641.641 0 0 1-.184-.443V.628a.626.626 0 0 0-.2-.462.608.608 0 0 0-.481-.165 15.028 15.028 0 1 0 10.965 26.48.626.626 0 0 0 .04-.922z" />
+                                                        </g>
+                                                    </g>
+                                                </svg>
+                                                <p class="pie-quiz-text theme-text">pie chart</p>
+                                            </button>
+                                            <button class="main-button theme-btn quiz bar bar-quiz">
+                                                <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
+                                                    width="29.139" height="26.71" viewBox="0 0 29.139 26.71">
+                                                    <path class="bar-quiz-white icon" id="Path_61" data-name="Path 61"
+                                                        d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
+                                                        transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
+                                                <p class="bar-quiz-text theme-text">bar chart</p>
+                                            </button>
+                                            <button class="main-button theme-btn quiz horizontalBar scatter-quiz">
+                                                <svg id="Group_27" data-name="Group 27" xmlns="http://www.w3.org/2000/svg"
+                                                    width="29.139" height="26.71" viewBox="0 0 29.139 26.71" class="hor-chart">
+                                                    <path class="scatter-quiz-white icon" id="Path_61" data-name="Path 61"
+                                                        d="M28.532,45.615h-.607V21.94a.607.607,0,0,0-.607-.607H21.247a.607.607,0,0,0-.607.607V45.615H18.212v-17.6A.607.607,0,0,0,17.6,27.4H11.534a.607.607,0,0,0-.607.607v17.6H8.5V34.081a.607.607,0,0,0-.607-.607H1.821a.607.607,0,0,0-.607.607V45.615H.607A.607.607,0,0,0,0,46.222v1.214a.607.607,0,0,0,.607.607H28.532a.607.607,0,0,0,.607-.607V46.222A.607.607,0,0,0,28.532,45.615Z"
+                                                        transform="translate(0 -21.333)" fill="#2784fb" /> </svg>
+                                                <p class="scatter-quiz-text theme-text">horizontal bar</p>
+                                            </button>
+                                        </div>
+                                        <div class="actions-buttons">
+                                            <button class="invert-btn quiz main-button publish-btn"
                                             id="publish_quiz">Publish Quiz</button>
                                         <button class="main-button quiz continue-quiz-btn continue-btn">Continue
                                             Quiz</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="quiz-summary">

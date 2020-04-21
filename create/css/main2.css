@@ -1,7 +1,7 @@
 :root {
     --main-color: rgb(40, 131, 251);
-    --main-shadow: -5px -5px 10px rgba(255, 255, 255, 0.02), 5px 5px 15px rgba(0, 0, 0, 0.1);
-    --main-shadow-hover: inset -6px -6px 10px rgba(39, 132, 251, 0.5), inset 6px 6px 20px rgba(0, 0, 0, 0.1);
+    --main-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.2);
+    --main-shadow-hover: inset -6px -6px 10px rgba(39, 132, 251, 1), inset 6px 6px 20px rgba(0, 0, 0, 0.1);
 }
 .html{
     scroll-behavior: smooth;
@@ -413,11 +413,11 @@ main {
     display: block;
     /* padding-top: 13vh; */
     display: none;
-    padding-bottom: 100px;
+    padding-bottom: 200px;
 }
 .quiz-question-create{
     display: grid;
-    grid-template-areas: "abs abs" "l1 i1" "l2 i2" "l3 i3" ". i4" "l5 i5" ". i6";
+    grid-template-areas: ". ." "l1 i1" "l2 i2" "l3 i3" ". i4" ". i6";
     width: 90%;
     margin: auto;
     row-gap: 40px;
@@ -473,7 +473,6 @@ label[for = "theme_poll"] {
     grid-area: l5;
 }
 .theme {
-    grid-area: i5;
     display: grid;
     grid-template-columns: repeat(3, 32%);
     width: 100%;
@@ -958,13 +957,36 @@ label[for = "theme_feedback"] {
     position: absolute;
     bottom: 0;
     display: grid;
-    margin: 30px auto;
-    grid-template-columns: auto auto;
+    margin: auto;
+    margin-top: 10px;
+    padding: 20px 20px;
+    width: 80%;
+    border-radius: 15px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    
+    grid-template-areas: "p ." "t r";
+    justify-items: center;
+    align-items: center;
     column-gap: 20px;
+    row-gap: 20px;
     left: 50%;
     transform: translate(-50%, 0%);
     -webkit-transform: translate(-50%, 0%);
     -moz-transform: translate(-50%, 0%);
+    box-shadow: var(--main-shadow);
+}
+.final-quiz-actions > p{
+    grid-area: p;
+    justify-self: left;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.theme{
+    grid-area: t;
+}
+.actions-buttons{
+    grid-area: r;
 }
 
 ::-webkit-scrollbar {
@@ -1068,7 +1090,19 @@ button {
 .theme-btn {
     background-color: white;
     border-radius: 30px;
-    color: var(--main-color)
+    color: var(--main-color);
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    text-align: center;
+    justify-items: center;
+    justify-content: center;
+}
+.theme-btn > svg{
+    margin-right: 10px;
+}
+.theme-btn > p{
+    text-align: center;
 }
 
 .button-hover{

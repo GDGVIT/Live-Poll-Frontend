@@ -1331,6 +1331,7 @@ let addQuizQuestion = (btn) => {
     let questionOptions = document.querySelectorAll(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .quiz_options_div > .quiz-option`);
     let questionName = document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .question_name`);
     let correctOption = document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .correct_option`);
+    let questionTItle = document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-header > .question-title`);
     questionName.classList.remove("Opt-match")
     questionName.placeholder = "Enter Question"
     correctOption.placeholder = "Enter Correct Option(must match the options)"
@@ -1356,7 +1357,8 @@ let addQuizQuestion = (btn) => {
             popup("Question Edited")
         }
         else {
-            btn.innerHTML = "Insert Edited Question"
+            btn.innerHTML = "Insert Edited Question";
+            questionTItle.innerHTML = questionName.value;
             popup("Quiz Question Added")
             btn.value = true;
             document.querySelector(`#quiz-question-${btn.classList[1]} > .collapsible-body > div > .quiz-actions > #del_question_btn`).classList.add("show");
@@ -1387,7 +1389,7 @@ let insertQuizQuestion = () => {
     masterLi.innerHTML = `
     <div class="collapsible-header question-header">
         <p>Question ${QuestionDivsNo}</p>
-        <p>Question Title</p>
+        <p class = "question-title">Question Title</p>
         <i class="material-icons">arrow_drop_down</i>
     </div>
     <div class="collapsible-body">
@@ -1837,7 +1839,7 @@ let resetActionVariables = (type) => {
         <li id="quiz-question-1" class="active">
             <div class="collapsible-header question-header">
                 <p>Question 1</p>
-                <p>Question Title</p>
+                <p class = "question-title">Question Title</p>
                 <i class="material-icons">arrow_drop_down</i>
             </div>
             <div class="collapsible-body">
@@ -1874,7 +1876,7 @@ let resetActionVariables = (type) => {
         <li id="quiz-question-1" class="active">
             <div class="collapsible-header question-header">
                 <p>Question 1</p>
-                <p>Question Title</p>
+                <p class = "question-title">Question Title</p>
                 <i class="material-icons">arrow_drop_down</i>
             </div>
             <div class="collapsible-body">
