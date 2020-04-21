@@ -1191,7 +1191,11 @@ button {
         height: calc(var(--vh, 1vh) * 100);
     }
     .main-container {
-        height: 90%;
+        height: calc(90% - 10px);
+        top: initial;
+        transform: none;
+        -webkit-transform: none;
+        -moz-transform: none;
     }
     .not-mobile {
         display: none;
@@ -1266,6 +1270,7 @@ button {
         display: none;
         margin-bottom: 0;
         align-items: center;
+        margin-bottom: 10px;
     }
     .options-container-mobile {
         position: absolute;
