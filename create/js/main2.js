@@ -1227,7 +1227,9 @@ let insertPollQuestion = () => {
     </div>`
     masterUl.appendChild(masterLi)
     pollCollapsible.open(pollQuestionDivsNo - 1);
-    document.querySelector(`#poll-question-${pollQuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
+    if(window.innerWidth > 600){
+        document.querySelector(`#poll-question-${pollQuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 
@@ -1474,7 +1476,9 @@ let insertQuizQuestion = () => {
     </div>`
     masterUl.appendChild(masterLi)
     quizCollapsible.open(QuestionDivsNo - 1);
-    document.querySelector(`#quiz-question-${QuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
+    if(window.innerWidth > 600){
+        document.querySelector(`#quiz-question-${QuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 
