@@ -1190,8 +1190,9 @@ button {
         grid-template-rows: 8% 92%;
         height: calc(var(--vh, 1vh) * 100);
     }
+    
     .main-container {
-        height: calc(90% - 10px);
+        /* height: calc(90% - 40px); */
         top: initial;
         transform: none;
         -webkit-transform: none;
@@ -1225,9 +1226,9 @@ button {
     h1 {
         font-size: 2rem;
     }
-    .main-container {
+    /* .main-container {
         margin-bottom: 30px;
-    }
+    } */
     .user-login-container {
         width: 95%;
     }
@@ -1276,6 +1277,7 @@ button {
         position: absolute;
         display: block;
         height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
         width: 100vw;
         z-index: 10;
         clip-path: circle(10px at -5% 10%);
