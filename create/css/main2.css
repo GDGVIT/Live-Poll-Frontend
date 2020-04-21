@@ -1359,7 +1359,7 @@ button {
         grid-template-areas: ". ." "l1 l1" "i1 i1" "l2 l2" "i2 i2" "l3 l3" "i3 i3" "i4 i4"  "i6 i6";
         justify-items: center;
     }
-    .final-quiz-actions{
+    .final-quiz-actions, .final-poll-actions{
         grid-template-areas: "p" "t" "r";
         justify-items: center;
         width: 90%;
@@ -1390,18 +1390,22 @@ button {
     .theme-btn {
         margin-bottom: 20px;
     }
-    .quiz-create-container input,
-    .poll-create-container input,
+    .quiz-question-create input,
+    .poll-question-create input,
     .feedback-create-container textarea {
         padding-top: 10px;
         padding-bottom: 10px;
         width: 90%;
         margin: auto;
     }
-    .poll-create-container {
+    .poll-create-container{
+        padding-bottom: 400px;
+    }
+    .poll-question-create {
         /* padding-top: 6vh; */
-        grid-template-areas: "abs abs" "l1 l1" "i1 i1" "l3 l3" "i3 i3" "i4 i4" "l5 l5" "i5 i5" "i6 i6";
+        grid-template-areas: ". ." "l1 l1" "i1 i1" "l3 l3" "i3 i3" "i4 i4"  "i6 i6";
         justify-items: center;
+        
     }
     .feedback-create-container {
         /* padding-top: 6vh; */
