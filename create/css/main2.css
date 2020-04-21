@@ -1351,7 +1351,7 @@ button {
     .question-header {
         justify-items: center;
         font-size: 0.8rem;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: auto auto;
     }
     .quiz-question-create {
         display: grid;
