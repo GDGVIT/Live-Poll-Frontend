@@ -1369,7 +1369,7 @@ button {
         grid-template-areas: ". ." "l1 l1" "i1 i1" "l2 l2" "i2 i2" "l3 l3" "i3 i3" "i4 i4"  "i6 i6";
         justify-items: center;
     }
-    .final-quiz-actions, .final-poll-actions {
+    .final-quiz-actions, .final-poll-actions, .final-feedback-actions {
         grid-template-areas: "p" "t" "r";
         justify-items: center;
         width: 90%;
@@ -1402,10 +1402,10 @@ button {
     }
     .quiz-question-create input,
     .poll-question-create input,
-    .feedback-create-container textarea {
+    .feedback-question-create textarea {
         padding-top: 10px;
         padding-bottom: 10px;
-        width: 90%;
+        width: 100%;
         margin: auto;
     }
     .poll-create-container{
@@ -1419,7 +1419,11 @@ button {
     }
     .feedback-create-container {
         /* padding-top: 6vh; */
-        grid-template-areas: "abs abs" "l1 l1" "i1 i1" "n2 n2" "i5 i5" ". ." "x x";
+        display: block;
+        padding-bottom: 400px;
+    }
+    .feedback-question-create{
+        grid-template-areas: ". ." "l1 l1" "i1 i1" ". ." ". ." "x x";
         justify-items: center;
     }
     .question-header > p:nth-child(1){
