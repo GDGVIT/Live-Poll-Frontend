@@ -556,7 +556,9 @@
             })
             socket.on("next", data => {
                 if (data == actionId) {
-                    nextFired = true;
+                    if(show == true){
+                        show == false;
+                    }
                     fetchNextQuestion();
                     sessionStorage.setItem("Answered", "false");
                     waitDiv.classList.remove("show");
@@ -594,12 +596,13 @@
                 socket.emit("option", option_id);
                 sessionStorage.setItem("Answered", "true");
                 sessionStorage.setItem("opt_id", option_id);
+                show = true;
                 setTimeout(() => {
-                    if (!nextFired) {
+                    if (show == true) {
                         container.classList.remove("show");
                         waitDiv.classList.add("show")
                     }
-                    nextFired = false;
+                    show = false;
                 }, 1000)
             }
         }
