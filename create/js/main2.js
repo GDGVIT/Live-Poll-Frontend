@@ -2342,6 +2342,8 @@ prevFeedbackBtn.addEventListener("click", () => {
 
 
 let getFeedbackAnswers = (data) => {
+    feedbackResultQuestions = [];
+    feedbackAnswers = [];
     data.Questions.forEach(question => {
         feedbackResultQuestions.push(question["name"]);
         feedbackAnswers.push(question["options"]);
