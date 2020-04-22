@@ -952,7 +952,7 @@ function createEvent(e) {
             if (sessionStorage.getItem("event_id")) {
                 if (window.confirm("An Event already exists, you will lose that data?")) {
                     sessionStorage.removeItem("event_id")
-
+                    resetFeedbackVariables("okay")
                     resetActionIds();
                     performCheck();
                     resetActionVariables();
