@@ -1178,7 +1178,7 @@ let validate = (question, options, corrOpt) => {
             corrVal = false;
         }
         else {
-            if (checkOptions(options, corrOpt.value)) {
+            if (checkOptions(options, corrOpt)) {
                 match = true;
             }
         }
@@ -1282,30 +1282,29 @@ function addPollQuestion(btn) {
     }
 }
 
-const correctOptionDiv = document.querySelector("#correct_option");
 
 let checkOptions = (options, correct) => {
     let flag = 0;
     options.forEach(opt => {
-        if (opt.value == correct) {
+        if (opt.value == correct.value) {
             flag++;
         }
     })
     if (flag == 0) {
-        correctOptionDiv.value = "";
-        correctOptionDiv.classList.add("Opt-match");
-        correctOptionDiv.placeholder = "There are no options that match this"
+        correct.value = "";
+        correct.classList.add("Opt-match");
+        correct.placeholder = "There are no options that match this"
         return false;
     }
     if (flag == 1) {
-        correctOptionDiv.classList.remove("Opt-match");
-        correctOptionDiv.placeholder = "Correct Option(must match an option)"
+        correct.classList.remove("Opt-match");
+        correct.placeholder = "Correct Option(must match an option)"
         return true;
     }
     if (flag > 1) {
-        correctOptionDiv.value = "";
-        correctOptionDiv.classList.add("Opt-match");
-        correctOptionDiv.placeholder = "There are multiple options that match this"
+        correct.value = "";
+        correct.classList.add("Opt-match");
+        correct.placeholder = "There are multiple options that match this"
         return false;
     }
 
@@ -1932,10 +1931,37 @@ let resetActionVariables = (type) => {
             </div>
         </li>`;
         QuestionDivsNo = 1;
+        quizCollapsible = M.Collapsible.init(elems, collOpts);
     }
     else if (type == "poll") {
         pollQuestionsData = [];
         pollQuestionsLength = undefined;
+        document.querySelector(".poll-collapsible").innerHTML = `
+        <li id="poll-question-1" class="active">
+            <div class="question-header collapsible-header">
+                <p>Question 1</p>
+                <p class="question-title">Question Title</p>
+                <i class="material-icons" id="drop">arrow_drop_down</i>
+            </div>
+            <div class="collapsible-body">
+                <div class="poll-question-create">
+                    <label for="poll_name">Question</label>
+                    <input type="text" id="poll_name" class="question_name main-input" placeholder="Enter Question">
+                    <label for="poll_options">Options</label>
+                    <div id="poll_options_div_1" class="poll_options_div"><input type="text" class="main-input poll-option" placeholder="Enter Option"></div>
+                    <div class="add-remove-options">
+                        <button class="add-option-btn poll_options_div_1 main-button" onclick="addOption(this)">+ Add</button>
+                        <button class="delete-option-btn poll_options_div_1 main-button" onclick="deleteOption(this)">- Remove</button>
+                    </div>
+                    <div class="poll-actions">
+                        <button id="add_poll_btn" onclick="addPollQuestion(this)" class="main-button 1">+ Add Poll Question</button>
+                        <button class="main-button poll 1 del-btn" id="del_question_btn" onclick="delQuestion(this)">Delete Question</button>
+                    </div>
+                </div>
+            </div>
+        </li>`;
+        pollQuestionDivsNo = 1;
+        pollCollapsible = M.Collapsible.init(pollelems, collOpts);
     }
     else {
         pollQuestionsData = [];
@@ -1969,6 +1995,33 @@ let resetActionVariables = (type) => {
             </div>
         </li>`;
         QuestionDivsNo = 1;
+        quizCollapsible = M.Collapsible.init(elems, collOpts);
+        document.querySelector(".poll-collapsible").innerHTML = `
+        <li id="poll-question-1" class="active">
+            <div class="question-header collapsible-header">
+                <p>Question 1</p>
+                <p class="question-title">Question Title</p>
+                <i class="material-icons" id="drop">arrow_drop_down</i>
+            </div>
+            <div class="collapsible-body">
+                <div class="poll-question-create">
+                    <label for="poll_name">Question</label>
+                    <input type="text" id="poll_name" class="question_name main-input" placeholder="Enter Question">
+                    <label for="poll_options">Options</label>
+                    <div id="poll_options_div_1" class="poll_options_div"><input type="text" class="main-input poll-option" placeholder="Enter Option"></div>
+                    <div class="add-remove-options">
+                        <button class="add-option-btn poll_options_div_1 main-button" onclick="addOption(this)">+ Add</button>
+                        <button class="delete-option-btn poll_options_div_1 main-button" onclick="deleteOption(this)">- Remove</button>
+                    </div>
+                    <div class="poll-actions">
+                        <button id="add_poll_btn" onclick="addPollQuestion(this)" class="main-button 1">+ Add Poll Question</button>
+                        <button class="main-button poll 1 del-btn" id="del_question_btn" onclick="delQuestion(this)">Delete Question</button>
+                    </div>
+                </div>
+            </div>
+        </li>`;
+        pollQuestionDivsNo = 1;
+        pollCollapsible = M.Collapsible.init(pollelems, collOpts);
     }
     socket = undefined;
     MyChart.destroy();
