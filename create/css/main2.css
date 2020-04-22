@@ -424,7 +424,7 @@ main {
 }
 .quiz-question-create input,
 .poll-question-create input,
-.feedback-create-container textarea {
+.feedback-question-create textarea {
     padding-top: 15px;
     padding-bottom: 15px;
     border-radius: 7px;
@@ -432,7 +432,7 @@ main {
 }
 .quiz-question-create > label,
 .poll-question-create > label,
-.feedback-create-container > label {
+.feedback-question-create > label {
     font-weight: 900;
     font-size: 1.3rem;
 }
@@ -513,14 +513,18 @@ label[for = "theme_poll"] {
 
 .feedback-create-container {
     position: relative;
-    display: grid;
-    grid-template-areas: "abs abs" "l1 i1" ". ." "n2 i5" ". ." ". ." ". ." ". x";
-    width: 90%;
-    margin: auto;
-    row-gap: 5.4vh;
-    row-gap: calc(var(--vh, 1vh) * 5.4);
+    display: block;
     /* padding-top: 13vh; */
     display: none;
+    padding-bottom: 200px;
+}
+.feedback-question-create{
+    position: relative;
+    display: grid;
+    grid-template-areas: ". ." "l1 i1" ". x";
+    width: 80%;
+    row-gap: 30px;
+    margin: 0 auto;
 }
 label[for = "theme_feedback"] {
     grid-area: n2;
@@ -959,11 +963,13 @@ label[for = "theme_feedback"] {
     justify-self: right;
 }
 .quiz-collapsible > li,
-.poll-collapsible > li {
+.poll-collapsible > li,
+.feedback-collapsible > li {
     margin-top: 20px;
 }
 .quiz-question-create,
-.poll-question-create {
+.poll-question-create,
+.feedback-question-create {
     box-shadow: var(--main-shadow);
     margin-top: 20px;
     padding: 30px;
@@ -974,7 +980,8 @@ label[for = "theme_feedback"] {
     display: none;
 }
 .final-quiz-actions,
-.final-poll-actions {
+.final-poll-actions,
+.final-feedback-actions {
     position: absolute;
     bottom: 0;
     display: grid;
@@ -997,12 +1004,14 @@ label[for = "theme_feedback"] {
     width: 80%;
 }
 .final-quiz-actions > p,
-.final-poll-actions > p {
+.final-poll-actions > p,
+.final-feedback-actions > p {
     grid-area: p;
     justify-self: left;
     font-size: 1.1rem;
     font-weight: 700;
 }
+
 .theme {
     grid-area: t;
 }

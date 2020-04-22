@@ -1142,8 +1142,8 @@ AddActionBtn.forEach(ele => {
 
 /* Adding Actions: End */
 let collOpts = {};
-if(window.innerWidth < 600){
-    collOpts.inDuration =  700
+if (window.innerWidth < 600) {
+    collOpts.inDuration = 700
 }
 var elems = document.querySelector('.quiz-collapsible');
 var quizCollapsible = M.Collapsible.init(elems, collOpts);
@@ -1317,8 +1317,8 @@ let checkOptions = (options, correct) => {
 
 
 
-const AddQuestionBtn = document.querySelector("#add_question_btn");
-const AddPollBtn = document.querySelector("#add_poll_btn");
+/* const AddQuestionBtn = document.querySelector("#add_question_btn");
+const AddPollBtn = document.querySelector("#add_poll_btn"); */
 
 
 
@@ -1359,7 +1359,6 @@ let delQuestion = (ele) => {
         pollQuestionsData.splice((i - 1), 1);
         console.log(pollQuestionsData)
         let questionDivs = document.querySelectorAll(".poll-collapsible > li").length;
-        console.log(questionDivs)
         for (let index = 0; index < questionDivs; index++) {
             if (index > (i - 1)) {
                 document.querySelector(`#poll-question-${index + 1} .question-header > p`).innerHTML = `Question ${index}`;
@@ -1378,6 +1377,26 @@ let delQuestion = (ele) => {
         }
         document.querySelector(`#poll-question-${i}`).remove();
         pollQuestionDivsNo--;
+    }
+    if(ele.classList[1] == "feedback"){
+        feedbackQuestions.splice((i - 1), 1);
+        console.log(feedbackQuestions);
+        let questionDivs = document.querySelectorAll(".feedback-collapsible > li").length;
+        for(let index = 0; index < questionDivs; index++){
+            if(index > (i - 1)){
+                document.querySelector(`#feedback-question-${index + 1} .question-header > p`).innerHTML = `Question ${index}`;
+                document.querySelector(`#feedback-question-${index + 1} > .collapsible-body > div > .feedback-actions > #add_feedback_btn`).classList = `main-button ${index}`;
+                if (document.querySelector(`#feedback-question-${index + 1} > .collapsible-body > div > .feedback-actions > #del_question_btn`).classList[4] == "show") {
+                    document.querySelector(`#feedback-question-${index + 1} > .collapsible-body > div > .feedback-actions > #del_question_btn`).classList = `main-button feedback ${index} del-btn show`;
+                }
+                else {
+                    document.querySelector(`#feedback-question-${index + 1} > .collapsible-body > div > .feedback-actions > #del_question_btn`).classList = `main-button feedback ${index} del-btn`;
+                }
+                document.querySelector(`#feedback-question-${index + 1}`).id = `feedback-question-${index}`
+            }
+        }
+        document.querySelector(`#feedback-question-${i}`).remove();
+        feedbackQuestionDivsNo--;
     }
 }
 
@@ -1603,12 +1622,56 @@ themeBtn.forEach(ele => {
 
 
 
-const addFeedbackBtn = document.querySelector("#add_feedback_btn");
+
+var feedbackElems = document.querySelector('.feedback-collapsible');
+var feedbackCollapsible = M.Collapsible.init(feedbackElems, collOpts);
+
+
+
+let feedbackQuestionDivsNo = 1;
+let insertFeedbackQuestion = () => {
+    feedbackQuestionDivsNo++;
+    let masterUl = document.querySelector(".feedback-collapsible");
+    let masterLi = document.createElement("li");
+    masterLi.id = `feedback-question-${feedbackQuestionDivsNo}`;
+    masterLi.innerHTML = `
+    <div class="question-header collapsible-header">
+        <p>Question ${feedbackQuestionDivsNo}</p>
+        <p class="question-title">Question Title</p>
+        <i class="material-icons" id="drop">arrow_drop_down</i>
+    </div>
+    <div class="collapsible-body">
+        <div class="feedback-question-create">
+            <label for="feedback_name">Question</label>
+            <textarea rows="3" type="text" id="feedback_name" class="main-input"
+                placeholder="Enter Feedback Question"></textarea>
+            <div class="feedback-actions">
+                <button id="add_feedback_btn" class="main-button ${feedbackQuestionDivsNo}" onclick="addFeedbackQuestion(this)">+ Add
+                    Question</button>
+                <button class="main-button feedback ${feedbackQuestionDivsNo} del-btn" id="del_question_btn"
+                    onclick="delQuestion(this)">Delete Question</button>
+            </div>
+        </div>
+    </div>
+    `
+    masterUl.appendChild(masterLi)
+    feedbackCollapsible.open(feedbackQuestionDivsNo - 1);
+    document.querySelector(`#feedback-question-${feedbackQuestionDivsNo - 1}`).scrollIntoView({ behavior: 'smooth' });
+}
+
+
+
+
+
+
+
+
 let feedbackQuestions = [];
-function addFeedbackQuestion(e) {
-    e.preventDefault();
-    let feedbackQuestion = document.querySelector("#feedback_name");
-    const Form = document.querySelector(".feedback-create-container");
+function addFeedbackQuestion(btn) {
+    let value = btn.classList[1];
+    console.log(value)
+    let feedbackQuestion = document.querySelector(`#feedback-question-${value} #feedback_name`);
+    let questiontitle = document.querySelector(`#feedback-question-${value} .question-title`);
     let question = {};
     feedbackQuestion.classList.remove("Opt-match")
     feedbackQuestion.placeholder = "Enter Feedback Question";
@@ -1618,23 +1681,23 @@ function addFeedbackQuestion(e) {
     }
     else {
         question.name = feedbackQuestion.value;
-        if (this.value) {
-            feedbackQuestions.splice(this.value, 1, question);
-            console.log(feedbackQuestions);
-            this.removeAttribute("value")
-            this.innerHTML = "+ Add Question";
+        questiontitle.innerHTML = feedbackQuestion.value;
+        feedbackQuestions[value - 1] = question;
+        if (btn.value) {
             popup("Question Edited")
         }
         else {
-            feedbackQuestions.push(question);
-            console.log(feedbackQuestions)
-            Form.reset();
+            btn.value = true;
+            btn.innerHTML = "Insert Edited Question";
+            document.querySelector(`#feedback-question-${value} #del_question_btn`).classList.add("show");
+            insertFeedbackQuestion();
             popup("Feedback Question Added")
         }
+        console.log(feedbackQuestions)
     }
 }
 
-addFeedbackBtn.addEventListener("click", addFeedbackQuestion)
+/* addFeedbackBtn.addEventListener("click", addFeedbackQuestion) */
 
 
 
@@ -2731,7 +2794,7 @@ let performCheck = () => {
         document.querySelector(".Feedback-internal").classList.remove("show-action");
         document.querySelector(".feedback-result").classList.remove("show-select")
         document.querySelector(".feedback-summary").classList.remove("show");
-        document.querySelector(".feedback-create-container").classList.add("show-action");
+        document.querySelector(".feedback-create-container").classList.add("show");
         document.querySelector(".feedback-create").classList.add("show-select");
         document.querySelector(".Feedback-name").classList.add("show-action");
 
