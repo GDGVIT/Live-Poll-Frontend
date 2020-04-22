@@ -947,55 +947,63 @@ let eventCreated = {};
 
 function createEvent(e) {
     e.preventDefault();
-    if (sessionStorage.getItem("event_id")) {
-        if (window.confirm("An Event already exists, you will lose that data?")) {
-            sessionStorage.removeItem("event_id")
-            resetActionIds();
-            performCheck();
-            resetActionVariables();
+    multipleActions("publish").then(res => {
+        if (res == true) {
+            if (sessionStorage.getItem("event_id")) {
+                if (window.confirm("An Event already exists, you will lose that data?")) {
+                    sessionStorage.removeItem("event_id")
+
+                    resetActionIds();
+                    performCheck();
+                    resetActionVariables();
+                }
+                else {
+                    return;
+                }
+            }
+            addLoader(createEventBtn)
+            const data = {
+                Name: EventName.value,
+            }
+            var raw = JSON.stringify(data);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": "" + sessionStorage.getItem("auth_key")
+                },
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("https://mighty-sea-62531.herokuapp.com/api/events/addEvent", requestOptions)
+                .then(response => { return response.json() })
+                .then(result => {
+                    console.log("Event Added", result);
+                    removeLoader(createEventBtn, "Generate Event Code")
+                    sessionStorage.setItem("event_id", result._id);
+                    sessionStorage.setItem("the_current_event", JSON.stringify(result))
+                    AddActionDiv.classList.add("show");
+                    eventCreated = result;
+                    EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
+                    EventCodeDiv.classList.add("show");
+                    renderCurrentEventDeets();
+                    renderEventHistory(result, [], "just");
+                    popup("Event Generated");
+                })
+                .catch(error => {
+                    console.log('Event Error', error);
+                    removeLoader(createEventBtn, "Generate Event Code")
+                    popup("Event Generation Error", "Error")
+                });
+
+            disableBtn(createEventBtn);
         }
         else {
             return;
         }
-    }
-    addLoader(createEventBtn)
-    const data = {
-        Name: EventName.value,
-    }
-    var raw = JSON.stringify(data);
-
-    var requestOptions = {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            "auth-token": "" + sessionStorage.getItem("auth_key")
-        },
-        body: raw,
-        redirect: 'follow'
-    };
-
-    fetch("https://mighty-sea-62531.herokuapp.com/api/events/addEvent", requestOptions)
-        .then(response => { return response.json() })
-        .then(result => {
-            console.log("Event Added", result);
-            removeLoader(createEventBtn, "Generate Event Code")
-            sessionStorage.setItem("event_id", result._id);
-            sessionStorage.setItem("the_current_event", JSON.stringify(result))
-            AddActionDiv.classList.add("show");
-            eventCreated = result;
-            EventCodeDiv.innerHTML = `Event Code: ${result["Code"]}`;
-            EventCodeDiv.classList.add("show");
-            renderCurrentEventDeets();
-            renderEventHistory(result, [], "just");
-            popup("Event Generated");
-        })
-        .catch(error => {
-            console.log('Event Error', error);
-            removeLoader(createEventBtn, "Generate Event Code")
-            popup("Event Generation Error", "Error")
-        });
-
-    disableBtn(createEventBtn);
+    })
 }
 
 
@@ -1378,12 +1386,12 @@ let delQuestion = (ele) => {
         document.querySelector(`#poll-question-${i}`).remove();
         pollQuestionDivsNo--;
     }
-    if(ele.classList[1] == "feedback"){
+    if (ele.classList[1] == "feedback") {
         feedbackQuestions.splice((i - 1), 1);
         console.log(feedbackQuestions);
         let questionDivs = document.querySelectorAll(".feedback-collapsible > li").length;
-        for(let index = 0; index < questionDivs; index++){
-            if(index > (i - 1)){
+        for (let index = 0; index < questionDivs; index++) {
+            if (index > (i - 1)) {
                 document.querySelector(`#feedback-question-${index + 1} .question-header > p`).innerHTML = `Question ${index}`;
                 document.querySelector(`#feedback-question-${index + 1} > .collapsible-body > div > .feedback-actions > #add_feedback_btn`).classList = `main-button ${index}`;
                 if (document.querySelector(`#feedback-question-${index + 1} > .collapsible-body > div > .feedback-actions > #del_question_btn`).classList[4] == "show") {
@@ -2383,7 +2391,7 @@ let getFeedbackDeets = () => {
 let resetFeedbackVariables = (action) => {
     feedbackResultQuestions = [];
     feedbackAnswers = [];
-    
+
     feedbackNo = 0;
     if (action) {
         feedbackQuestions = [];
