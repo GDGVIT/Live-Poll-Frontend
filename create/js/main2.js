@@ -2349,7 +2349,7 @@ let getFeedbackAnswers = (data) => {
         feedbackAnswers.push(question["options"]);
     })
     console.log(feedbackResultQuestions, feedbackAnswers)
-    renderFeedbackDeets(feedbackResultQuestions[0], feedbackAnswers[0]);
+    renderFeedbackDeets(feedbackResultQuestions[feedbackNo], feedbackAnswers[feedbackNo]);
 }
 
 
@@ -2383,6 +2383,7 @@ let getFeedbackDeets = () => {
 let resetFeedbackVariables = (action) => {
     feedbackResultQuestions = [];
     feedbackAnswers = [];
+    
     feedbackNo = 0;
     if (action) {
         feedbackQuestions = [];
@@ -2612,6 +2613,7 @@ let addQuestionPublish = (type, numberFrom) => {
                 feedbackQuestionsLength = feedbackQuestions.length - 1;
                 if (numberFrom != undefined) {
                     popup("Questions Added");
+                    document.querySelector("#next_feedback_btn").classList.remove("disable-btn");
                     getFeedbackDeets();
                 }
                 else {

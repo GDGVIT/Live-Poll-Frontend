@@ -1164,10 +1164,11 @@ button {
 }
 .disable-btn {
     background-color: rgb(150, 150, 150);
+    box-shadow: none;
 }
 .disable-btn:hover {
     background-color: rgb(150, 150, 150);
-    box-shadow: inset -6px -6px 10px rgba(150, 150, 150, 1), inset 6px 6px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
 }
 .logo-color {
     fill: var(--main-color)
