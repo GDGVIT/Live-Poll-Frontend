@@ -2393,8 +2393,32 @@ let resetFeedbackVariables = (action) => {
     feedbackAnswers = [];
 
     feedbackNo = 0;
-    if (action) {
+    if (action == "okay") {
         feedbackQuestions = [];
+        document.querySelector(".feedback-collapsible").innerHTML = `
+        <li id="feedback-question-1" class="active">
+            <div class="question-header collapsible-header">
+                <p>Question 1</p>
+                <p class="question-title">Question Title</p>
+                <i class="material-icons" id="drop">arrow_drop_down</i>
+            </div>
+            <div class="collapsible-body">
+                <div class="feedback-question-create">
+                    <label for="feedback_name">Question</label>
+                    <textarea rows="3" type="text" id="feedback_name" class="main-input"
+                        placeholder="Enter Feedback Question"></textarea>
+                    <div class="feedback-actions">
+                        <button id="add_feedback_btn" class="main-button 1" onclick="addFeedbackQuestion(this)">+ Add
+                            Question</button>
+                        <button class="main-button feedback 1 del-btn" id="del_question_btn"
+                            onclick="delQuestion(this)">Delete Question</button>
+                    </div>
+                </div>
+            </div>
+        </li>
+        `
+        feedbackQuestionDivsNo = 1;
+        feedbackCollapsible = M.Collapsible.init(feedbackElems, collOpts);
     }
     feedbackQuestionDiv.innerHTML = "";
     feedbackAnswerDiv.innerHTML = "";
