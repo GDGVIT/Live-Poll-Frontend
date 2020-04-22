@@ -622,7 +622,7 @@
             options_div.innerHTML = "";
             question["options"].forEach((opt, i) => {
                 let button = document.createElement("button");
-                button.innerHTML = `<strong class = "grey-text">${i}. </strong>${opt["option"]}`;
+                button.innerHTML = `<strong class = "grey-text">${i+1}. </strong>${opt["option"]}`;
                 button.value = opt["_id"];
                 button.classList.add("main-button");
                 button.addEventListener("click", optionsMaster)
