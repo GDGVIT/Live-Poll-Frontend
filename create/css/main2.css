@@ -390,7 +390,7 @@ main {
     -webkit-transform: none;
     -moz-transform: none;
     width: fit-content;
-    width: moz-max-content;
+    width: -moz-max-content;
     border: none;
     outline: none;
     background: white;
