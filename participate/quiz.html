@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Quiz</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+        console.log(sessionStorage.getItem("quiz_action_id"))
+        const body = document.querySelector("body");
+        let quiz = {};
+        let quiz_id, action_type,
+            questions = [], options = [], options_rendering = [];
+        let socket;
+
+
+        //Logging quiz variables
+        let showQuiz = () => {
+            console.log(quiz);
+            console.log(quiz_id)
+            console.log(questions)
+            console.log(options)
+            console.log(options_rendering)
+        }
+
+        //Connecting to the socket
+        let socketConnection = () => {
+            socket = io('https://mighty-sea-62531.herokuapp.com/');
+            socket.on("connect", () => {
+                console.log(socket.connected)
+                socket.on("New Connection", (updated_data) => {
+                    console.log(updated_data)
+                    if (updated_data.length != 0) {
+                        for (let i of updated_data) {
+                            for (let j of options) {
+                                if (i._id == j._id) {
+                                    j.stat = i.stat;
+                                }
+                            }
+                        }
+                    }
+                })
+            })
+        }
+
+        //Handling the answers
+        let handleAnswers = (option_id) => {
+            for (let k of options) {
+                if (option_id == k._id) {
+                    data = k;
+                }
+            }
+            socket.emit("option", data);
+            socket.on('all options', (new_data) => {
+                console.log(new_data)
+                for (let k of options) {
+                    if (new_data._id == k._id) {
+                        k.stat = new_data.stat;
+                    }
+                }
+            })
+        }
+
+
+        //Rendering the quiz
+        let renderQuiz = () => {
+            let i = 0;
+            let questions_div = document.createElement("div");
+            questions.forEach(question => {
+                let question_div = document.createElement("div")
+                let h2 = document.createElement("h2")
+                h2.innerHTML = question["name"];
+                question_div.appendChild(h2);
+                let options_div = document.createElement("div")
+                options_rendering[i].forEach(opt => {
+                    let button = document.createElement("button");
+                    button.innerHTML = opt["option"];
+                    button.value = opt["_id"];
+                    button.addEventListener("click", () => {
+                        handleAnswers(opt["_id"]);
+                    })
+                    options_div.appendChild(button);
+                })
+                question_div.appendChild(options_div);
+                questions_div.appendChild(question_div);
+                i++;
+            })
+            body.appendChild(questions_div);
+        }
+
+
+        //Setting variables of Quiz
+        let getQuiz = () => {
+            quiz_id = quiz["_id"]
+            action_type = quiz["action_type"]
+            questions = quiz["Questions"];
+            questions.forEach(ele => {
+                options_rendering.push(ele["options"]);
+                ele["options"].forEach(elem => {
+                    options.push(elem);
+                })
+            });
+            renderQuiz();
+            socketConnection();
+        }
+
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+            .then(response => {
+                if(response.status == 200){
+                    return response.json();
+                }
+                else{
+                    return "Error";
+                }
+            })
+            .then(result => {
+                if(result == "Error"){
+                    console.log("Error")
+                }
+                else{
+                    quiz = result;
+                    getQuiz();
+                }
+            })
+            .catch(error => console.log('error', error));
+
+
+
+    </script>
+</body>
+
+</html>

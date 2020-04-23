@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../img/favicon.png">
+    <title>Hermes | Participate</title>
+    <style>
+        :root {
+            --main-color: #2784FB;
+            --main-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, .2);
+            --main-shadow-hover: inset -6px -6px 10px #83D39D, inset 6px 6px 20px rgba(0, 0, 0, .2);
+            --neon-button-hover: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .logo-color {
+            fill: var(--main-color)
+        }
+
+        body {
+            position: relative;
+        }
+
+        main {
+            position: relative;
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+            width: 100vw;
+            display: grid;
+            grid-template-rows: 8% 92%;
+        }
+
+        .header {
+            position: relative;
+            width: 100%;
+            display: grid;
+            justify-items: left;
+            align-items: center;
+        }
+
+        .header>svg {
+            position: relative;
+            margin-left: 20px;
+            height: 80%;
+        }
+
+        .main {
+            position: relative;
+            background-color: #F5F5F5;
+        }
+
+        .main-container {
+            position: relative;
+            width: 80%;
+            height: 80%;
+            margin: auto;
+            background-color: white;
+            border-radius: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            box-shadow: var(--main-shadow);
+            overflow-x: auto;
+            overflow: auto;
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+            display: none;
+        }
+
+        .main-button {
+            padding: 16px 40px;
+            border-radius: 5px;
+            margin: 0 5px;
+            width: 90%;
+            background-color: white;
+            border: none;
+            color: var(--main-color);
+            font-size: 1.4rem;
+            font-weight: bolder;
+            /* box-shadow: var(--main-shadow); */
+            margin-bottom: 30px;
+            min-width: 100px;
+            outline: none;
+            overflow-wrap: break-word;
+        }
+
+        .main-button:hover {
+            color: white;
+            /* box-shadow: var(--main-shadow-hover); */
+            background-color: #83D39D;
+        }
+
+        .select {
+            /* box-shadow: var(--main-shadow-hover); */
+            color: white;
+            background-color: #83D39D;
+        }
+
+        input {
+            width: 40%;
+            border: none;
+            border-bottom: solid black 1px;
+            margin: auto;
+            margin-bottom: 6vh;
+            margin-bottom: calc(var(--vh, 1vh) * 6);
+            display: block;
+            padding: 10px;
+            font-size: 1.2rem;
+            outline: none;
+        }
+
+        .question {
+            position: relative;
+            margin: auto;
+            margin-top: 5vh;
+            margin-top: calc(var(--vh, 1vh) * 5);
+            text-align: left;
+            width: 90%;
+            font-size: 1.8rem;
+            font-weight: 600;
+            max-width: 90vw;
+            overflow-wrap: break-word;
+        }
+
+        .options-div {
+            position: relative;
+            margin: auto;
+            margin-top: 18vh;
+            margin-top: calc(var(--vh, 1vh) * 18);
+            display: grid;
+            grid-template-columns: 50% 50%;
+            /* grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); */
+            justify-items: center;
+            align-items: center;
+            width: 90%;
+
+        }
+
+        .next-question-wait {
+            position: relative;
+            height: fit-content;
+            height: -moz-max-content;
+            width: 80%;
+            top: 45%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            margin: 0 auto;
+            display: none;
+        }
+
+        .text {
+            position: relative;
+            text-align: left;
+            margin: auto;
+            margin-top: 7vh;
+            margin-top: calc(var(--vh, 1vh) * 7);
+            width: 90%;
+            font-weight: 800;
+            color: #707070;
+        }
+
+        .grey {
+            background-color: rgb(150, 150, 150);
+            color: white;
+        }
+
+        .grey:hover {
+            color: white;
+            background-color: rgb(150, 150, 150);
+            /* box-shadow: inset -6px -6px 10px rgb(150, 150, 150), inset 6px 6px 20px rgba(0, 0, 0, .2);
+            ; */
+        }
+
+        .grey-text {
+            color: rgb(150, 150, 150);
+        }
+
+        .not-show {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        ::-webkit-scrollbar {
+            background-color: #fff;
+            width: 10px;
+        }
+
+        /* background of the scrollbar except button or resizer */
+        ::-webkit-scrollbar-track {
+            background-color: #fff;
+        }
+
+        ::-webkit-scrollbar-track:hover {
+            background-color: #fff;
+        }
+
+        /* scrollbar itself */
+        ::-webkit-scrollbar-thumb {
+            background-color: #babac0;
+            border-radius: 10px;
+            border: 2px solid #fff;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #a0a0a5;
+            border: 2px solid #f4f4f4;
+        }
+
+        /* set button(top and bottom of the scrollbar) */
+        ::-webkit-scrollbar-button {
+            display: none
+        }
+
+        .submit {
+            width: 30%;
+            font-size: 1rem;
+            margin-top: 30px;
+        }
+
+        .feedback_info {
+            width: 100%;
+            border: solid 2px var(--main-color);
+        }
+
+        @media only screen and (max-width: 600px) {
+            main {
+                grid-template-rows: 8% 92%;
+            }
+
+            .main-container {
+                width: 90%;
+                height: 90%;
+            }
+
+            .question {
+                text-align: center;
+                font-size: 1.1rem;
+            }
+
+            .text {
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 1.1rem;
+            }
+
+            .options-div {
+                width: 90%;
+                grid-template-columns: auto;
+            }
+
+            input {
+                width: 90%;
+            }
+
+            .header>svg {
+                height: 80%;
+            }
+
+            .main-button {
+                padding: 12px 0;
+                width: 100%;
+                display: block;
+                margin: auto;
+                margin-bottom: 30px;
+                min-width: 0;
+                font-size: 1rem;
+            }
+
+            .feedback_info {
+                width: 80%;
+            }
+
+            .submit {
+                width: 70%;
+                margin-top: 30px;
+            }
+
+            .not-show {
+                display: none;
+            }
+        }
+
+        button::-moz-focus-inner {
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="header">
+            <svg xmlns="http://www.w3.org/2000/svg" height="70.271" viewBox="0 0 189.622 70.271">
+                <g id="Group_354" data-name="Group 354" transform="translate(-89.172 -74)">
+                    <g id="Group_349" data-name="Group 349" transform="translate(89.172 74)" class="logo-color">
+                        <path id="Path_132" data-name="Path 132"
+                            d="M711.584,398.894l-7.2-.9a1.6,1.6,0,0,0-1.681.976c-2.682,6.464-16.158,38.6-19.963,41.089-.127.083-.253.164-.373.255-1.338,1.023-8.456,6.362-11.28,6.362-1.431,0-1.312.746-.763,1.553a4.63,4.63,0,0,0,3.837,2H687.5a5.91,5.91,0,0,0,4.018-1.576l14.021-13a24.421,24.421,0,0,1,8.525-5.137l7.624-2.672a2.016,2.016,0,0,0,1.349-1.9v-4.558a5.034,5.034,0,0,0-.857-2.81l-3.426-5.093a4.766,4.766,0,0,1-.784-3.168l.182-1.7a.335.335,0,0,0-.453-.348l-4.316,1.65-1.066-10.262A.847.847,0,0,0,711.584,398.894Z"
+                            transform="translate(-669.938 -379.955)" />
+                        <g id="Group_348" data-name="Group 348" transform="translate(43.733 0)">
+                            <path id="Path_133" data-name="Path 133"
+                                d="M997.171,281.677h0a13.762,13.762,0,0,1,8.772-5.966L1028.992,271h0a14.264,14.264,0,0,1-10.006,6.987Z"
+                                transform="translate(-994.45 -271)" />
+                            <path id="Path_134" data-name="Path 134"
+                                d="M978.122,344.39,978,347.2l21.537-3.9a7.614,7.614,0,0,0,6.1-5.939h0l-25.451,4.663A2.516,2.516,0,0,0,978.122,344.39Z"
+                                transform="translate(-978 -327.94)" />
+                            <path id="Path_135" data-name="Path 135"
+                                d="M979.475,408.117l.235,2.355a1.69,1.69,0,0,0,1.993,1.493l13.555-2.542a5.8,5.8,0,0,0,4.733-5.7h0Z"
+                                transform="translate(-979.266 -384.88)" />
+                        </g>
+                        <circle id="Ellipse_16" data-name="Ellipse 16" cx="3.194" cy="3.194" r="3.194"
+                            transform="translate(40.326 24.985)" fill="#fff" />
+                    </g>
+                    <rect id="Rectangle_41" data-name="Rectangle 41" width="13.82" height="3.339"
+                        transform="translate(103.975 130.317) rotate(33.813)" fill="#fff" />
+                    <rect id="Rectangle_42" data-name="Rectangle 42" width="13.82" height="3.185"
+                        transform="translate(117.543 97.793) rotate(10.519)" fill="#fff" />
+                    <rect id="Rectangle_43" data-name="Rectangle 43" width="28.418" height="3.747"
+                        transform="translate(109.766 113.059) rotate(23.201)" fill="#fff" />
+                    <rect id="Rectangle_44" data-name="Rectangle 44" width="28.418" height="3.043"
+                        transform="translate(133.403 102.119) rotate(84.846)" fill="#fff" />
+                    <text id="Hermes" transform="translate(155.794 136)" font-size="30"
+                        font-family="Montserrat-Bold, Montserrat" font-weight="700">
+                        <tspan x="0" y="0">Hermes</tspan>
+                    </text>
+                </g>
+            </svg>
+        </div>
+        <div class="main">
+            <div class="main-container">
+                <div class="container show">
+                    <h1 class="question" id="question"></h1>
+                    <p class="text">Select the most appropriate option</p>
+                    <div class="options-div">
+                        <textarea class="feedback_info not-show" name="" id="" cols="" rows="15"
+                            placeholder="Enter your feedback"
+                            style=" background: white; border-radius: 5px; padding: 10px; outline: none;"></textarea>
+                    </div>
+                    <button class="main-button submit not-show">Submit Feedback</button>
+                </div>
+                <div class="next-question-wait">
+                    <img src="../img/check.svg" alt="">
+                    <h1>Wait until admin sets up the next question</h1>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+        if (window.innerWidth < 600) {
+            vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            const main = document.querySelector("main");
+            main.style.minHeight = window.innerHeight + "px";
+        }
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var actionId = url.searchParams.get("id");
+
+        const body = document.querySelector("body");
+        let quiz = {};
+        let quiz_id, action_type, theQuestion, theQuestionId, currentOptions,
+            questions = [], options = [], options_rendering = [];
+        let socket;
+        let feedbackData = {}, feedbackQuestions = [];
+        const questionDiv = document.querySelector("#question");
+        const options_div = document.querySelector(".options-div")
+        const submitBtn = document.querySelector(".submit");
+        const feedbackInfo = document.querySelector(".feedback_info");
+        let feedbackNo = 0;
+        let eventType;
+        const container = document.querySelector(".container");
+        const waitDiv = document.querySelector(".next-question-wait")
+        let fetchQuestions = () => {
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + actionId, requestOptions)
+                .then(response => {
+                    if (response.status == 200) {
+                        return response.json();
+                    }
+                    else {
+                        return "Error";
+                    }
+                })
+                .then(result => {
+                    if (result == "Error") {
+                        console.log("Error")
+                    }
+                    else {
+                        eventType = result["action_type"];
+                        console.log(result)
+                        if (result["isOpen"] == true) {
+                            if (result["action_type"] == "Feedback") {
+                                feedbackData = result;
+                                getFeedback();
+                                console.log(feedbackData)
+                                document.querySelector(".text").innerHTML = "Please provide your Feedback";
+                                options_div.style.gridTemplateColumns = "auto";
+                                feedbackInfo.classList.remove("not-show")
+                                submitBtn.classList.remove("not-show")
+
+                            }
+                            else {
+                                quiz = result;
+                                getQuiz();
+                            }
+                        }
+                        else {
+                            renderQuiz({
+                                name: `The ${eventType} has ended`,
+                                options: []
+                            })
+                            document.querySelector(".text").innerHTML = "";
+                            setTimeout(() => {
+                                window.location.href = "event2.html";
+                            }, 2000)
+                        }
+                    }
+                })
+                .catch(error => console.log('error', error));
+        }
+        fetchQuestions();
+
+
+        let renderFeedback = (question) => {
+            if (feedbackNo > (feedbackQuestions.length - 1)) {
+                questionDiv.innerHTML = "Thank you for your feedback";
+                document.querySelector(".text").innerHTML = "";
+                feedbackInfo.classList.add("not-show");
+                submitBtn.classList.add("not-show");
+            }
+            else {
+                questionDiv.innerHTML = question;
+                feedbackInfo.value = "";
+                submitBtn.value = feedbackData["_id"];
+                submitBtn.id = feedbackData["Questions"][feedbackNo]["_id"];
+            }
+        }
+
+        function submitFeedback(e) {
+            e.preventDefault();
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({ "option": feedbackInfo.value });
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            let url = "https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + this.value + "/" + this.id;
+            console.log(url)
+            fetch(url, requestOptions)
+                .then(response => response.text())
+                .then(result => { console.log(result); feedbackNo++; renderFeedback(feedbackQuestions[feedbackNo]) })
+                .catch(error => console.log('error', error));
+        }
+        submitBtn.addEventListener("click", submitFeedback)
+
+
+        let getFeedback = () => {
+            feedbackData["Questions"].forEach(question => {
+                feedbackQuestions.push(question["name"])
+            })
+            console.log(feedbackQuestions)
+            renderFeedback(feedbackQuestions[0]);
+        }
+
+
+
+
+
+
+
+
+
+
+        let nextFired = false;
+
+
+
+        //Logging quiz variables
+        let showQuiz = () => {
+            console.log(quiz);
+            console.log(quiz_id)
+            console.log(questions)
+            console.log(options)
+            console.log(options_rendering)
+        }
+
+        let fetchNextQuestion = () => {
+            return new Promise((resolve, reject) => {
+                var requestOptions = {
+                    method: 'GET',
+                    redirect: 'follow'
+                };
+                console.log(theQuestionId)
+                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/nextQuestion/" + actionId + "/" + theQuestionId, requestOptions)
+                    .then(response => response.json())
+                    .then(result => { console.log(result);
+                        theQuestionId = result["_id"];
+                        theQuestion = result;
+                        renderQuiz(theQuestion);
+                        resolve();
+                    })
+                    .catch(error => console.log('error', error));
+            })
+
+        }
+
+
+
+
+        let i = 0;
+        //Connecting to the socket
+        let socketConnection = () => {
+            socket = io('https://mighty-sea-62531.herokuapp.com/');
+            socket.on("connect", () => {
+                console.log(socket.connected)
+                socket.on("quiz ended", (data) => {
+                    if (data == actionId) {
+                        waitDiv.classList.remove("show")
+                        container.classList.add("show")
+                        renderQuiz({
+                            name: `The ${eventType} has ended`,
+                            options: []
+                        })
+                        document.querySelector(".text").innerHTML = "";
+                        sessionStorage.setItem("Answered", "false");
+                        setTimeout(() => {
+                            window.location.href = "event2.html";
+                        }, 2000)
+                    }
+                })
+            })
+            socket.on("next", async data => {
+                if (data == actionId) {
+                    if (show == true) {
+                        show == false;
+                    }
+                    await fetchNextQuestion();
+                    sessionStorage.setItem("Answered", "false");
+                    waitDiv.classList.remove("show");
+                    container.classList.add("show")
+                    i = 0;
+                }
+            })
+        }
+
+        let selectOption = (id) => {
+            console.log("selectOption")
+            console.log(id)
+            if (sessionStorage.getItem("Answered") == "false" || sessionStorage.getItem("Answered") === null) {
+                let mainButton = document.querySelectorAll(".main-button");
+                mainButton.forEach(ele => {
+                    console.log(ele.id)
+                    if (ele.value == id) {
+                        ele.classList.add("select");
+                    }
+                })
+            }
+        }
+        console.log(sessionStorage.getItem("Answered"))
+
+
+
+
+
+        //Handling the answers
+        let handleAnswers = (option_id) => {
+            console.log(option_id)
+            console.log("here")
+            if (sessionStorage.getItem("Answered") == "false" || sessionStorage.getItem("Answered") == null) {
+
+                socket.emit("option", option_id);
+                sessionStorage.setItem("Answered", "true");
+                sessionStorage.setItem("opt_id", option_id);
+                show = true;
+                setTimeout(() => {
+                    if (show == true) {
+                        container.classList.remove("show");
+                        waitDiv.classList.add("show")
+                    }
+                    show = false;
+                }, 1000)
+            }
+        }
+        //Rendering the quiz
+        function optionsMaster() {
+            console.log("optionsMaster")
+            if (i == 0) {
+                selectOption(this.value);
+                handleAnswers(this.value);
+                i++
+            }
+        }
+
+
+
+        let renderQuiz = (question) => {
+
+            questionDiv.innerHTML = question["name"];
+
+            options_div.innerHTML = "";
+            question["options"].forEach((opt, i) => {
+                let button = document.createElement("button");
+                button.innerHTML = `<strong class = "grey-text">${i + 1}. </strong>${opt["option"]}`;
+                button.value = opt["_id"];
+                button.classList.add("main-button");
+                button.addEventListener("click", optionsMaster)
+                options_div.appendChild(button);
+                let butt = document.querySelector(".options-div button").offsetHeight;
+                if (butt > 450) {
+                    options_div.style.gridTemplateColumns = `auto`;
+                }
+            })
+        }
+
+
+        //Setting variables of Quiz
+        let getQuiz = () => {
+            quiz_id = quiz["_id"]
+            action_type = quiz["action_type"]
+            questions = quiz["Questions"];
+            questions.forEach(ele => {
+                ele["options"].forEach(elem => {
+                    options.push(elem);
+                })
+                if (ele["isOpen"] == true) {
+                    theQuestion = ele;
+                }
+            });
+            console.log(theQuestion)
+            theQuestionId = theQuestion["_id"];
+            socketConnection();
+            renderQuiz(theQuestion);
+            if (sessionStorage.getItem("Answered") == "true") {
+                container.classList.remove("show")
+                waitDiv.classList.add("show");
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
