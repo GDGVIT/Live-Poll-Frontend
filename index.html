@@ -37,6 +37,8 @@
             position: relative;
             background: white;
             height: 8vh;
+            min-height: 55px;
+            max-height: 75px;
             -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.158);
             -moz-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.158);
             box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.158);
@@ -136,6 +138,10 @@
             box-shadow: var(--main-shadow);
             margin-right: 20px;
         }
+        .creators{
+            position: relative;
+            margin-top: 100px;
+        }
         .creators > h1{
             margin: 0 0;
         }
@@ -158,11 +164,11 @@
 
         @media(max-width: 600px){
             .left-feathers{
-                height: 200px;
+                height: 40vh;
                 max-width: 90vw;
             }
             .right-feathers{
-                height: 200px;
+                height: 40vh;
                 max-width: 90vw;
             }
             .project-by > img{
