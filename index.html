@@ -5,21 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
             --main-color: rgb(40, 131, 251);
         }
+
         * {
             font-family: 'Montserrat', sans-serif;
         }
-        p{
+
+        p {
             font-size: 1.1rem;
             /* font-weight: 600; */
         }
-        a{
-            color:var(--main-color);
+
+        a {
+            color: var(--main-color);
         }
+
         body {
             margin: 0;
             padding: 0;
@@ -56,7 +60,7 @@
         }
 
         .content-container {
-             
+
             background-color: #f5f5f5;
             align-self: start;
         }
@@ -110,16 +114,19 @@
             height: 70%;
             border-radius: 4px;
         }
-        .about{
+
+        .about {
             position: relative;
             width: 90%;
             margin-top: 10px;
             margin-bottom: 90px;
         }
-        .buttons{
+
+        .buttons {
             position: relative;
             margin-bottom: 50px;
         }
+
         .main-button {
             color: inherit;
             text-align: center;
@@ -138,17 +145,21 @@
             box-shadow: var(--main-shadow);
             margin-right: 20px;
         }
-        .creators{
+
+        .creators {
             position: relative;
             margin-top: 100px;
         }
-        .creators > h1{
+
+        .creators>h1 {
             margin: 0 0;
         }
-        .creators > p{
+
+        .creators>p {
             margin: 0;
         }
-        .creator-grid{
+
+        .creator-grid {
             display: grid;
             width: 90%;
             margin: 60px auto;
@@ -157,34 +168,40 @@
             justify-items: center;
             align-items: center;
         }
-        .ele{
+
+        .ele {
             font-size: 1.1rem;
             font-weight: 600;
         }
 
-        @media(max-width: 600px){
-            .left-feathers{
+        @media(max-width: 600px) {
+            .left-feathers {
                 height: 40vh;
                 max-width: 90vw;
             }
-            .right-feathers{
+
+            .right-feathers {
                 height: 40vh;
                 max-width: 90vw;
             }
-            .project-by > img{
+
+            .project-by>img {
                 height: auto;
                 width: 90%;
             }
-            .buttons{
+
+            .buttons {
                 width: 100%;
             }
-            .buttons > a{
+
+            .buttons>a {
                 display: block;
                 width: 90%;
                 margin: 0 auto;
                 margin-bottom: 20px;
             }
-            .creator-grid{
+
+            .creator-grid {
                 grid-template-columns: auto;
             }
         }
@@ -238,11 +255,11 @@
                 <img src="./img/right_feathers.png" alt="">
             </div>
             <div class="rest-container">
-                <div class="project-by">
+                <div class="project-by" data-aos="fade-down">
                     <p>A project developed by </p>
                     <img src="./img/dsclogo.png" alt="">
                 </div>
-                <div class="about">
+                <div class="about" data-aos="fade-down">
                     <h1>About</h1>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus odio non natus nulla, quod
                         quas, exercitationem minus error ducimus cum officia velit autem aut fugit! Mollitia delectus
@@ -253,16 +270,16 @@
                     <p>Visit the DSC VIT's official website to take a glimpse of our other projects, at <a
                             target="_blank" href="https://dscvit.com">dscvit.com</a></p>
                 </div>
-                <div class="buttons">
+                <div class="buttons" data-aos="fade-right" data-aos-duration="900">
                     <a href="./participate/event2.html" target="_blank" class="main-button">Participate in an Event</a>
                     <a href="./create/main2.html" target="_blank" class="main-button">Create an Event</a>
                 </div>
-                <div class="creators">
+                <div class="creators" data-aos="fade-up">
                     <h1>Behind the Project</h1>
                     <p>I don't know what to put in here, so i'm writing this!</p>
                     <div class="creator-grid">
                         <div class="ele">
-                            Md Hishaam 
+                            Md Hishaam
                         </div>
                         <div class="ele">
                             Prakhar Soni
@@ -292,6 +309,10 @@
 
         </div>
     </main>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
 
 </html>
