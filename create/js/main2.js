@@ -430,17 +430,11 @@ let renderEventHistory = (event, actions, just) => {
     EventDiv.classList.add("event-div");
     EventHeader.classList.add("collapsible-header")
     EventHeader.classList.add("event");
-    if (window.innerWidth > 600) {
-        EventHeader.innerHTML = `<p>${event["Name"]}</p>
+    EventHeader.innerHTML = `<p>${event["Name"]}</p>
         <p>${event["Code"]}</p>
         <p>${event["Participants"]}</p>
         <p><i class="material-icons drop">arrow_drop_down</i></p>`;
-    }
-    else {
-        EventHeader.innerHTML = `<p>${event["Name"]}</p>
-        <p>${event["Code"]}</p>
-        <p>${event["Participants"]}</p>`;
-    }
+
     EventDiv.appendChild(EventHeader)
 
     let EventBody = document.createElement("div");
@@ -754,9 +748,6 @@ let goToLogin = () => {
     removeShow();
     mainContainer.classList.add("login-background")
     userLoginDiv.classList.add("show");
-    if (window.innerWidth < 600) {
-        navText.innerHTML = "Login";
-    }
 }
 
 
@@ -790,6 +781,10 @@ let loggedIn = () => {
         tabItems.forEach(ele => {
             ele.removeEventListener("click", selectItem);
         })
+        document.querySelector(".nav-control").classList.remove("mobile-grid")
+        if (window.innerWidth < 600) {
+            document.querySelector(".main-container").classList.add("main-container-padding");
+        }
     }
     else {
         console.log("Logged In");
@@ -840,6 +835,8 @@ let loggedIn = () => {
             ele.style.color = "black";
             ele.addEventListener("click", selectItem);
         })
+        document.querySelector(".nav-control").classList.add("mobile-grid")
+        document.querySelector(".main-container").classList.remove("main-container-padding");
         login.innerHTML = "Logout";
         goTo(homeSelector);
         handleHistory();
@@ -2771,8 +2768,10 @@ ham.addEventListener("click", open);
 const navButtons = document.querySelectorAll(".options-container-mobile p");
 navButtons.forEach(ele => {
     ele.addEventListener("click", () => {
-        open();
-        changeText(ele);
+        if (ele.style.cssText == "color: black;") {
+            open();
+            changeText(ele);
+        }
     })
 })
 
