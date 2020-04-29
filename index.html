@@ -127,15 +127,19 @@
         .buttons {
             position: relative;
             margin-bottom: 50px;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            width: 40%;
+            column-gap: 10px;
         }
 
         .main-button {
             color: inherit;
             text-align: center;
-
             text-decoration: none;
-            padding: 12px 40px;
-            /* width: 50%; */
+            padding: 12px 0px;
+            position: relative;
+            width: 100%;
             box-sizing: border-box;
             white-space: normal !important;
             word-wrap: break-word;
@@ -237,6 +241,7 @@
 
             .buttons {
                 width: 100%;
+                display: block;
             }
 
             .buttons>a {
@@ -315,7 +320,7 @@
                     <a href="./participate/event2.html" target="_blank" class="main-button">Participate in an Event</a>
                     <a href="./create/main2.html" target="_blank" class="main-button">Create an Event</a>
                 </div>
-                <div class="creators" data-aos="fade-up">
+                <!-- <div class="creators" data-aos="fade-up">
                     <h1>Behind the Project</h1>
                     <p>The combined efforts of the members of the DSC technical team helped materialise this project!</p>
                     <div class="creator-grid">
@@ -339,7 +344,7 @@
                         <p>If you face any issues please email us at,</p>
                         <a href="mailto:emailus@gmail.com">emailus@gmail.com</a>
                     </div>
-                </div>
+                </div> -->
                 <div class="project-by">
                     <p>A project developed by </p>
                     <img src="./img/dsclogo.png" alt="">
