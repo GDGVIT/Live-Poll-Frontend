@@ -4,257 +4,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
             --main-color: rgb(40, 131, 251);
+            --header: 30px;
         }
 
         * {
             font-family: 'Montserrat', sans-serif;
-        }
 
-        p {
-            font-size: 1.1rem;
-            /* font-weight: 600; */
-        }
-
-        a {
-            color: var(--main-color);
         }
 
         body {
+            background-color: rgb(245, 245, 245);
+            text-align: center;
             margin: 0;
-            padding: 0;
         }
 
-        main {
-            display: block;
-            grid-template-rows: 7% 93%;
-            background-color: #f5f5f5;
-            min-height: 100vh;
+        p {
+            line-height: 1.4;
+            font-size: 1.15rem;
+            font-weight: 100 !important;
+            color: rgba(0, 0, 0, 0.74);
         }
 
-        nav {
-            position: relative;
-            background: white;
-            height: 8vh;
-            min-height: 55px;
-            max-height: 75px;
-            -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.158);
-            -moz-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.158);
-            box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.158);
-        }
-
-        nav>svg {
-            position: relative;
-            fill: var(--main-color);
-            height: 80%;
-            padding-left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            -webkit-transform: translateY(-50%);
-            -moz-transform: translateY(-50%);
-        }
-
-        .content-container {
-
-            background-color: #f5f5f5;
-            align-self: start;
-        }
-
-        .left-feathers {
-            position: fixed;
-            left: 0;
-            bottom: 0px;
-            z-index: 1;
-            opacity: 1;
-
-        }
-
-        .left-feathers>img {
-            position: relative;
-            left: -60px;
-            width: 80%;
+        h1 {
+            font-size: 2.2rem;
+            font-weight: bolder;
+            margin-bottom: var(--header);
         }
 
         .right-feathers {
-            position: fixed;
+            position: absolute;
             right: 0;
-            padding-top: 10px;
-            z-index: 1;
-            opacity: 1;
+            top: 0;
         }
 
         .right-feathers>img {
-            position: relative;
-            left: 40px;
-            width: 80%;
+            width: 10vw;
         }
 
-        .rest-container {
-            position: relative;
-            width: 90%;
-            margin: 0 auto;
-            padding-top: 40px;
-            z-index: 2;
+        .left-feathers>img {
+            width: 10vw;
         }
 
-        .project-by {
-            position: relative;
-            display: grid;
-            grid-template-columns: auto auto;
-            /* column-gap: 20px; */
-            margin-top: 50px;
+        .left-feathers {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .main-logo {
             width: fit-content;
-            width: -moz-max-content;
-            justify-items: center;
-            align-items: center;
+            margin: 30px auto;
+            margin-bottom: 50px;
+            /* fill: var(--main-color); */
         }
 
-        .project-by>img {
-            padding-left: 20px;
-            height: 70%;
-            border-radius: 4px;
+        .main-logo>svg {
+            width: fit-content;
+            height: 70px;
         }
 
         .about {
-            position: relative;
-            width: 70%;
-            margin-top: 10px;
+            width: 60%;
+            margin: 30px auto;
             margin-bottom: 90px;
         }
 
-        .buttons {
+
+        .sections {
             position: relative;
-            margin-bottom: 50px;
             display: grid;
             grid-template-columns: 50% 50%;
-            width: 40%;
-            column-gap: 10px;
+            width: 90%;
+            margin: 30px auto;
+            margin-bottom: 90px;
+        }
+
+        .sections>div>p {
+            width: 60%;
+            margin: auto;
+            margin-bottom: 40px;
+        }
+
+        .sections>div>h1 {
+            margin-bottom: 20px;
+        }
+
+        .sections>div:first-child {
+            border-right: rgb(40, 131, 251) solid 1px;
+        }
+
+        .sections>div:last-child {
+
+            border-left: rgb(40, 131, 251) solid 1px;
         }
 
         .main-button {
-            color: inherit;
-            text-align: center;
-            text-decoration: none;
-            padding: 12px 0px;
-            position: relative;
-            width: 100%;
-            box-sizing: border-box;
-            white-space: normal !important;
-            word-wrap: break-word;
-            border-radius: 3px;
+            width: 30%;
             background-color: var(--main-color);
+            padding: 12px 0;
             border: none;
             color: white;
-            font-size: 1.1rem;
-            box-shadow: var(--main-shadow);
-            margin-right: 20px;
+            font-weight: 500;
+            font-size: 1.2rem;
+            border-radius: 7px;
+            ;
         }
 
-        .creators {
+        .features {
             position: relative;
-            margin-top: 100px;
+            width: 70%;
+            margin: 30px auto;
         }
 
-        .creators>h1 {
-            margin: 0 0;
-        }
-
-        .creators>p {
-            margin: 0;
-        }
-
-        .creator-grid {
+        .features-grid {
+            position: relative;
             display: grid;
-            width: 90%;
-            margin: 60px auto;
-            grid-template-columns: repeat(3, auto);
-            row-gap: 50px;
-            justify-items: center;
+            grid-template-columns: repeat(4, auto);
+            margin: 40px auto;
+        }
+
+
+        .footer {
+            background-color: white;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            justify-items: left;
             align-items: center;
+            padding: 20px 0;
         }
 
-        .ele {
-            font-size: 1.1rem;
-            font-weight: 600;
+        .footer p {
+            margin-bottom: 5px;
         }
 
-        ::-webkit-scrollbar {
-            background-color: #f5f5f500;
-            width: 10px;
+        .right-section {
+            justify-self: right;
+            padding-right: 40px;
         }
 
-        /* background of the scrollbar except button or resizer */
-        ::-webkit-scrollbar-track {
-            background-color: rgba(245, 245, 245, 0);
+        .right-section>img {
+            height: 3vh;
+            margin: 0 auto;
         }
 
-        ::-webkit-scrollbar-track:hover {
-            background-color: #f4f4f4
+        .left-section {
+            padding-left: 40px;
         }
 
-        /* scrollbar itself */
-        ::-webkit-scrollbar-thumb {
-            background-color: #babac0;
-            border-radius: 16px;
-            /* border: 5px solid #f5f5f5; */
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #a0a0a5;
-        }
-
-        /* set button(top and bottom of the scrollbar) */
-        ::-webkit-scrollbar-button {
-            display: none
+        #Hermes {
+            /* fill: black; */
+            font-weight: 900;
+            font-size: 2.7rem
         }
 
         @media(max-width: 600px) {
-            .left-feathers {
-                max-width: 90vw;
-                bottom: 10px;
+            .container {
+                overflow-x: hidden;
             }
 
-            .left-feathers>img {
-                width: 70%;
-                left: -70px;
+            .main-logo {
+                /* height: auto; */
+                text-align: center;
             }
 
-            .right-feathers {
-                max-width: 90vw;
+            .main-logo>svg {
+                height: 50px;
             }
 
-            .right-feathers>img {
-                width: 70%;
-                left: 90px;
+            p {
+                line-height: 1.7;
+                font-size: 1.1rem;
+                font-weight: 100 !important;
+                color: rgba(0, 0, 0, 0.74);
+            }
+
+            h1 {
+                font-size: 2.2rem;
+                font-weight: bolder;
+                margin-bottom: var(--header);
             }
 
             .about {
                 width: 90%;
             }
 
-            .project-by>img {
+            .footer {
+                grid-template-columns: none;
+                grid-template-rows: 50% 50%;
+                justify-items: center;
+            }
+
+            .right-section {
+                padding: 0;
+                justify-self: center;
+                text-align: center;
+            }
+
+            .left-section {
+                padding: 0;
+                justify-self: center;
+                text-align: center;
+            }
+
+            .right-section>img {
                 height: auto;
-                width: 90%;
+                width: 80%;
             }
 
-            .buttons {
-                width: 100%;
-                display: block;
+            .sections {
+                grid-template-columns: none;
+                grid-template-rows: repeat(2, 50%);
             }
 
-            .buttons>a {
-                display: block;
-                width: 90%;
-                margin: 0 auto;
-                margin-bottom: 20px;
+            .sections>div:first-child {
+                border-right: none;
+                border-bottom: rgb(40, 131, 251) solid 1px;
             }
 
-            .creator-grid {
-                grid-template-columns: auto;
+            .sections>div:last-child {
+                border-left: none;
+                border-top: rgb(40, 131, 251) solid 1px;
+            }
+
+            .admin-side {
+                padding-bottom: 60px;
+            }
+
+            .right-feathers>img {
+                width: 20vw;
+            }
+
+            .left-feathers>img {
+                width: 20vw;
             }
         }
     </style>
@@ -263,10 +250,16 @@
 </head>
 
 <body>
-    <main>
-        <nav>
+    <div class="container">
+        <div class="right-feathers">
+            <img src="./img/right_feathers.png" alt="">
+        </div>
+        <div class="left-feathers">
+            <img src="./img/left_feathers.png" alt="">
+        </div>
+        <div class="main-logo" data-aos="zoom-in" data-aos-delay="200" data-aos-once="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 189.622 70.271">
-                <g id="Group_354" data-name="Group 354" transform="translate(-89.172 -74)">
+                <g id="Group_354" data-name="Group 354" transform="translate(-89.172 -74)" fill = "rgb(40, 131, 251)">
                     <g id="Group_349" data-name="Group 349" transform="translate(89.172 74)" class="logo-color">
                         <path id="Path_132" data-name="Path 132"
                             d="M711.584,398.894l-7.2-.9a1.6,1.6,0,0,0-1.681.976c-2.682,6.464-16.158,38.6-19.963,41.089-.127.083-.253.164-.373.255-1.338,1.023-8.456,6.362-11.28,6.362-1.431,0-1.312.746-.763,1.553a4.63,4.63,0,0,0,3.837,2H687.5a5.91,5.91,0,0,0,4.018-1.576l14.021-13a24.421,24.421,0,0,1,8.525-5.137l7.624-2.672a2.016,2.016,0,0,0,1.349-1.9v-4.558a5.034,5.034,0,0,0-.857-2.81l-3.426-5.093a4.766,4.766,0,0,1-.784-3.168l.182-1.7a.335.335,0,0,0-.453-.348l-4.316,1.65-1.066-10.262A.847.847,0,0,0,711.584,398.894Z"
@@ -293,69 +286,77 @@
                         transform="translate(109.766 113.059) rotate(23.201)" fill="#fff" />
                     <rect id="Rectangle_44" data-name="Rectangle 44" width="28.418" height="3.043"
                         transform="translate(133.403 102.119) rotate(84.846)" fill="#fff" />
-                    <text id="Hermes" transform="translate(155.794 136)" font-size="30"
+                    <text id="Hermes" fill = "black" transform="translate(155.794 136)" font-size="30"
                         font-family="Montserrat-Bold, Montserrat" font-weight="700">
                         <tspan x="0" y="0">Hermes</tspan>
                     </text>
                 </g>
             </svg>
-        </nav>
-        <div class="content-container">
-            <div class="left-feathers">
-                <img src="./img/left_feathers.png" alt="">
+        </div>
+        <div class="about" data-aos="zoom-in-down" data-aos-delay="500" data-aos-once="true">
+            <h1>About</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt qui quis quam soluta? Hic sequi
+                harum eos neque magni dicta, maiores optio quidem pariatur, delectus, quas similique impedit nemo?</p>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui alias accusamus eos eligendi, cupiditate
+                illo, ipsam fuga repudiandae tempora beatae enim in sit iste distinctio optio odio veniam expedita
+                voluptate!</p>
+            <p>Visit the DSC VIT's website to take a glimpse of our other projects at <a href="https://dscvit.com"
+                    target="_blank">dscvit.com</a></p>
+        </div>
+        <div class="sections">
+            <div class="admin-side" data-aos="fade-right" data-aos-delay="700" data-aos-once="true">
+                <h1>Create</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto tempore debitis qui tenetur
+                    consequuntur tempora? Quos commodi qui, magni </p>
+                <button class="main-button">Create</button>
             </div>
-            <div class="right-feathers">
-                <img src="./img/right_feathers.png" alt="">
-            </div>
-            <div class="rest-container">
-                <div class="about" data-aos="fade-down">
-                    <h1>About</h1>
-                    <p>Thea Hermes project is a live polling website which allows the operating party or organiser to
-                        create events while generating unique event codes. Under an established event, the organiser can
-                        add multiple polls, quizzes or feedback as found necessary.</p>
-                    <p> Other users can participate in the respective event by entering the valid event code and get
-                        engaged in the various activities of that particular event LIVE.</p>
-                    <p>Visit the DSC VIT's official website to take a glimpse of our other projects, at <a
-                            target="_blank" href="https://dscvit.com">dscvit.com</a></p>
-                </div>
-                <div class="buttons" data-aos="fade-right" data-aos-duration="900">
-                    <a href="./participate/event2.html" target="_blank" class="main-button">Participate in an Event</a>
-                    <a href="./create/main2.html" target="_blank" class="main-button">Create an Event</a>
-                </div>
-                <!-- <div class="creators" data-aos="fade-up">
-                    <h1>Behind the Project</h1>
-                    <p>The combined efforts of the members of the DSC technical team helped materialise this project!</p>
-                    <div class="creator-grid">
-                        <div class="ele" onclick="window.open('https://github.com/mdhishaamakhtar/')">
-                            Md Hishaam
-                        </div>
-                        <div class="ele" onclick="window.open('https://github.com/prakhar0912')">
-                            Prakhar Soni
-                        </div>
-                        <div class="ele">
-                            Shravani Shete
-                        </div>
-                        <div class="ele">
-                            Ubaid
-                        </div>
-                        <div class="ele">
-                            Angad
-                        </div>
-                    </div>
-                    <div class="issues">
-                        <p>If you face any issues please email us at,</p>
-                        <a href="mailto:emailus@gmail.com">emailus@gmail.com</a>
-                    </div>
-                </div> -->
-                <div class="project-by">
-                    <p>A project developed by </p>
-                    <img src="./img/dsclogo.png" alt="">
-                </div>
+            <div class="user-side" data-aos="fade-left" data-aos-delay="700" data-aos-once="true">
+                <h1>Participate</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto tempore debitis qui tenetur
+                    consequuntur tempora? Quos commodi qui, magni </p>
+                <button class="main-button">Participate</button>
             </div>
         </div>
-    </main>
+        <div class="features" id="features" data-aos="fade-down" data-aos-anchor="#features" data-aos-once="true">
+            <h1>Features</h1>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores laboriosam recusandae error harum,
+                doloremque repudiandae exercitationem fuga a libero voluptatibus minus culpa eaque neque facilis dolore,
+                beatae, tempora quisquam sequi.</p>
+            <div class="features-grid">
+                <div class="ele">
+                    <p>Text</p>
+                </div>
+                <div class="ele">
+                    <p>Text</p>
+                </div>
+                <div class="ele">
+                    <p>Text</p>
+                </div>
+                <div class="ele">
+                    <p>Text</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <div class="left-section">
+                <p>For any queries please contact us at,</p>
+                <a href="mailto:prakhar0912@gmail.com">prakhar0912@gmail.com</a>
+            </div>
+            <div class="right-section">
+                <p>A project developed by</p>
+                <img src="./img/dsclogo.png" alt="">
+            </div>
+        </div>
+    </div>
+
+
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // AOS.init({
+        //     disable: 'mobile'
+        // });
         AOS.init();
     </script>
 </body>
