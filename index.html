@@ -203,7 +203,7 @@
                 font-weight: bolder;
                 margin-bottom: var(--header);
             }
-
+            
             .about {
                 width: 90%;
             }
@@ -357,7 +357,11 @@
         // AOS.init({
         //     disable: 'mobile'
         // });
+        if(window.innerWidth < 600){
+            document.querySelector(".user-side").removeAttribute('data-aos-delay')
+        }
         AOS.init();
+        
     </script>
 </body>
 
