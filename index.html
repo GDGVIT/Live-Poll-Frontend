@@ -132,7 +132,7 @@
         .features-grid {
             position: relative;
             display: grid;
-            grid-template-columns: repeat(4, auto);
+            grid-template-columns: repeat(3, 33.3%);
             margin: 40px auto;
         }
 
@@ -163,6 +163,31 @@
 
         .left-section {
             padding-left: 40px;
+        }
+
+        .circle > img{
+            position: relative;
+            margin: auto;
+            width: 50px;
+            height: 100%;
+
+        }
+
+        strong{
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .circle{
+            position: relative;
+            height: fit-content;
+            background-color: white;
+            width: 90px;
+            height: 90px;
+            padding: 10px;
+            border-radius: 200px;
+            border: 2px solid var(--main-color);
+            margin: 20px auto;
         }
 
         #Hermes {
@@ -268,6 +293,10 @@
                 width: 30vw;
             }
 
+            .ele{
+                margin: 20px 0;
+            }
+
             .sections>div>p {
                 width: 90%;
                 margin: auto;
@@ -277,6 +306,14 @@
 
             .main-logo>img {
                 width: 41vw;
+            }
+
+            .features-grid{
+                grid-template-columns: auto;
+            }
+            .circle > img{
+                height: 100%;
+                width: 60px;
             }
 
         }
@@ -298,47 +335,47 @@
         </div>
         <div class="about" data-aos="zoom-in-down" data-aos-delay="500" data-aos-once="true">
             <h1>About</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt qui quis quam soluta? Hic sequi
-                harum eos neque magni dicta, maiores optio quidem pariatur, delectus, quas similique impedit nemo?</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui alias accusamus eos eligendi, cupiditate
-                illo, ipsam fuga repudiandae tempora beatae enim in sit iste distinctio optio odio veniam expedita
-                voluptate!</p>
+            <p>The Hermes project is a live polling website which allows the operating party or organiser to create events while generating unique event codes. Under an established event, the organiser can add multiple polls, quizzes or feedback as found necessary.?</p>
+            <p>Other users can participate in the respective event by entering the valid event code and get engaged in the various activities of that particular event LIVE.!</p>
             <p>Visit the DSC VIT's website to take a glimpse of our other projects at <a href="https://dscvit.com"
                     target="_blank">dscvit.com</a></p>
         </div>
         <div class="sections">
             <div class="admin-side" data-aos="fade-right" data-aos-delay="700" data-aos-once="true">
                 <h1>Create</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto tempore debitis qui tenetur
-                    consequuntur tempora? Quos commodi qui, magni </p>
-                <button class="main-button">Create</button>
+                <p>Visit the Create page to explore the various activities you can expose your audiences to!</p>
+                <button class="main-button" onclick="window.open('./create/main2.html')">Create</button>
             </div>
             <div class="user-side" data-aos="fade-left" data-aos-delay="700" data-aos-once="true">
                 <h1>Participate</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto tempore debitis qui tenetur
-                    consequuntur tempora? Quos commodi qui, magni </p>
-                <button class="main-button">Participate</button>
+                <p>If you wish to engage in any of the activities created for you, please visit the Participate page!</p>
+                <button class="main-button" onclick = "window.open('./participate/event2.html')">Participate</button>
             </div>
         </div>
         <div class="features" id="features" data-aos="fade-down" data-aos-anchor="#features" data-aos-once="true">
             <h1>Features</h1>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores laboriosam recusandae error harum,
-                doloremque repudiandae exercitationem fuga a libero voluptatibus minus culpa eaque neque facilis dolore,
-                beatae, tempora quisquam sequi.</p>
+            <p>As a creator you can create an Event which can consist of the following activities and users can engage with them in real time!</p>
             <div class="features-grid">
                 <div class="ele">
-                    
-                    <p>Text</p>
+                    <div class="circle">
+                        <img src="./img/qna.svg" alt="">
+                    </div>
+                    <strong>Create or take part in a Live Quiz!</strong>
 
                 </div>
                 <div class="ele">
-                    <p>Text</p>
+                    
+                    <div class="circle">
+                        <img src="./img/poll.svg" alt="">
+                    </div>
+                    <strong>Create or take part in a Live Polling session!</strong>
                 </div>
                 <div class="ele">
-                    <p>Text</p>
-                </div>
-                <div class="ele">
-                    <p>Text</p>
+                    
+                    <div class="circle">
+                        <img src="./img/feedback.svg" alt="">
+                    </div>
+                    <strong>Create or take part in a Feedback session!</strong>
                 </div>
             </div>
 
@@ -346,7 +383,7 @@
         <div class="footer">
             <div class="left-section">
                 <p>For any queries please contact us at,</p>
-                <a href="mailto:prakhar0912@gmail.com">prakhar0912@gmail.com</a>
+                <a href="mailto:prakhar0912@gmail.com">emailus@gmail.com</a>
             </div>
             <div class="right-section">
                 <p>A project developed by</p>
