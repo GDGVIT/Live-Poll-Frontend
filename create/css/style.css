@@ -4749,7 +4749,6 @@ body.keyboard-focused .dropdown-content li:focus {
     margin-right: 1rem
 }
 .keyboard-focused .collapsible-header:focus {
-    background-color: #eee
 }
 /* .collapsible-body {
     display: none;

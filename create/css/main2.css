@@ -647,7 +647,7 @@ label[for = "theme_feedback"] {
     margin-right: 10px;
 }
 .actions {
-    padding: 10px 0;
+    padding: 5px 0;
     width: fit-content;
     width: -moz-fit-content;
     list-style-type: disc;
@@ -666,7 +666,7 @@ label[for = "theme_feedback"] {
     width: -moz-fit-content;
     min-width: 300px;
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     justify-items: left;
     align-items: center;
     padding: 10px 0;
@@ -692,6 +692,35 @@ label[for = "theme_feedback"] {
     transform: rotate(90deg)
 }
 
+
+.event-code{
+    display: none;
+}
+
+
+.outerDiv{
+    display: grid;
+    grid-template-columns: 100px auto;
+    align-items: center;
+    justify-content: left;
+    margin: 5px 0;
+}
+.outerDiv > p{
+    cursor: pointer;
+    overflow-x: hidden;
+}
+.outerDiv:nth-child(1){
+    margin-top: 0px;
+}
+.outerDiv > i{
+    margin-left: 15px;
+    padding: 5px;
+    background: #F5F5F5;
+    border-radius: 20px;
+    color: var(--main-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
 
 .notify {
     position: absolute;

@@ -4,12 +4,14 @@ async function asyncForEach(array, callback) {
         await callback(array[index], index, array);
     }
 }
+
 let disableBtn = (btn) => {
     btn.disabled = true;
     setTimeout(() => {
         btn.disabled = false;
     }, 10000)
 }
+
 const notify = document.querySelector(".notify");
 let popup = (text, error) => {
     if (error) {
@@ -52,6 +54,7 @@ let checkEventExistance = (event_id) => {
         return true;
     }
 }
+
 let resetActionIds = (type) => {
     if (type) {
         sessionStorage.removeItem(`${type}_action_id`);
@@ -421,16 +424,143 @@ document.querySelector(".cancel-event-deets").addEventListener("click", () => {
 
 
 
+
+
+let deleteEvent = (id) => {
+
+    console.log(id)
+    var myHeaders = new Headers();
+    myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+
+    var requestOptions = {
+        method: 'DELETE',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch("https://mighty-sea-62531.herokuapp.com/api/events/deleteEvent/" + id, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            sessionStorage.removeItem("event_id");
+            sessionStorage.removeItem("the_current_event");
+        })
+        .catch(error => console.log('error', error));
+
+
+}
+
+let resetCreateEvent = () => {
+    document.querySelector("#event_name").value = "";
+    document.querySelector("#event_code").classList.remove("show");
+    document.querySelector(".add-action").classList.remove("show");
+
+}
+
+
+
+let deleteAction = (id, type, eventid) => {
+    if (sessionStorage.getItem(`${type}_action_id`) == id) {
+        if (window.confirm(`This is ${type} is currently active. Do you want to delete it?`)) {
+            let ele = document.getElementsByClassName(`${id}`)[0];
+            let parent = ele.parentElement;
+            ele.remove();
+            if (parent.childElementCount == 0) {
+                let pEmpty = document.createElement("p");
+                pEmpty.innerHTML = "There are no quizzes in this Event";
+                pEmpty.style.color = "red";
+                parent.appendChild(pEmpty)
+            }
+
+            
+            if (sessionStorage.getItem(`${type}_active`) == "true") {
+                console.log("here")
+                closeAction(type, "normal", "nohome").then(() => {
+                    var myHeaders = new Headers();
+                    myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+
+                    var requestOptions = {
+                        method: 'DELETE',
+                        headers: myHeaders,
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
+                        .then(response => response.text())
+                        .then(result => {
+                            console.log(result)
+                        })
+                        .catch(error => console.log('error', error));
+                })
+
+            }
+            else {
+                closeAction(type, "clean action", "nohome").then(() => {
+                    var myHeaders = new Headers();
+                    myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+
+                    var requestOptions = {
+                        method: 'DELETE',
+                        headers: myHeaders,
+                        redirect: 'follow'
+                    };
+
+                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
+                        .then(response => response.text())
+                        .then(result => console.log(result))
+                        .catch(error => console.log('error', error));
+                })
+
+            }
+
+        }
+        else {
+            return;
+        }
+    }
+    else {
+        let ele = document.getElementsByClassName(`${id}`)[0];
+        let parent = ele.parentElement;
+        ele.remove();
+        if (parent.childElementCount == 0) {
+            let pEmpty = document.createElement("p");
+            pEmpty.innerHTML = "There are no quizzes in this Event";
+            pEmpty.style.color = "red";
+            parent.appendChild(pEmpty)
+        }
+        var myHeaders = new Headers();
+        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
+
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));;
+
+    }
+}
+
+
+
+
 let renderEventHistory = (event, actions, just) => {
+    console.log(event, actions);
+
     let quizno = 0;
     let pollno = 0;
     let feedbackno = 0;
     let EventDiv = document.createElement("li");
+    EventDiv.id = event["_id"];
     let EventHeader = document.createElement("div");
     EventDiv.classList.add("event-div");
     EventHeader.classList.add("collapsible-header")
     EventHeader.classList.add("event");
-    EventHeader.innerHTML = `<p>${event["Name"]}</p>
+    EventHeader.innerHTML = `<p>${event["Name"]}</i></p>
         <p>${event["Code"]}</p>
         <p>${event["Participants"]}</p>
         <p><i class="material-icons drop">arrow_drop_down</i></p>`;
@@ -473,6 +603,11 @@ let renderEventHistory = (event, actions, just) => {
     feedbacksDiv.classList.add("actions")
 
     actions.forEach((ele, i) => {
+        if (ele == null) {
+            return;
+        }
+        let outerdiv = document.createElement("div");
+        outerdiv.classList = `outerDiv ${ele["_id"]}`
         let p = document.createElement("p");
         p.id = `${ele["_id"]}`
         p.value = `${event["_id"]}`
@@ -484,17 +619,42 @@ let renderEventHistory = (event, actions, just) => {
         if (ele["action_type"] == "Quiz") {
             quizno++;
             p.innerHTML = `${ele["title"]}`
-            quizzesDiv.appendChild(p)
+            let icon = document.createElement("i");
+            icon.classList = "material-icons delete-action";
+            icon.innerHTML = "delete";
+            icon.addEventListener("click", () => {
+                deleteAction(ele["_id"], "quiz", event["_id"])
+            })
+            outerdiv.appendChild(p)
+            outerdiv.appendChild(icon)
+            quizzesDiv.appendChild(outerdiv)
         }
         if (ele["action_type"] == "Poll") {
             pollno++;
-            p.innerHTML = `${ele["title"]}`
-            pollsDiv.appendChild(p)
+            p.innerHTML = `${ele["title"]}`;
+            let icon = document.createElement("i");
+            icon.classList = "material-icons delete-action";
+            icon.innerHTML = "delete";
+            icon.addEventListener("click", () => {
+                deleteAction(ele["_id"], "poll", event["_id"]);
+            })
+            outerdiv.appendChild(p)
+            outerdiv.appendChild(icon);
+            pollsDiv.appendChild(outerdiv)
         }
         if (ele["action_type"] == "Feedback") {
             feedbackno++;
-            p.innerHTML = `${ele["title"]}`
-            feedbacksDiv.appendChild(p)
+            p.innerHTML = `${ele["title"]}`;
+            let icon = document.createElement("i");
+            icon.classList = "material-icons delete-action";
+            icon.id = ele["_id"]
+            icon.innerHTML = "delete"
+            icon.addEventListener("click", () => {
+                deleteAction(ele["_id"], "feedback", event["_id"]);
+            })
+            outerdiv.appendChild(p)
+            outerdiv.appendChild(icon);
+            feedbacksDiv.appendChild(outerdiv)
         }
     })
     if (quizno == 0) {
@@ -527,12 +687,15 @@ let renderEventHistory = (event, actions, just) => {
     let but1 = document.createElement("button");
     let but2 = document.createElement("button");
     let but3 = document.createElement("button");
+    let but4 = document.createElement("button");
     but1.innerHTML = "+ Add Quiz";
     but2.innerHTML = "+ Add Poll";
     but3.innerHTML = "+ Add Feedback";
+    but4.innerHTML = "Delete Event"
     but1.classList.add("main-button");
     but2.classList.add("main-button");
     but3.classList.add("main-button");
+    but4.classList.add("main-button")
     but1.addEventListener("click", async () => {
         await multipleActions().then((res) => {
             if (res == true) {
@@ -634,9 +797,27 @@ let renderEventHistory = (event, actions, just) => {
             }
         })
     })
+    but4.addEventListener("click", async () => {
+        if (sessionStorage.getItem("event_id") == event["_id"]) {
+            await multipleActions("publish").then((res) => {
+                resetCreateEvent();
+                if (res == true) {
+                    deleteEvent(event["_id"]);
+                }
+                else {
+                    return;
+                }
+            })
+        }
+        else {
+            deleteEvent(event["_id"])
+        }
+        document.getElementById(`${event["_id"]}`).remove();
+    })
     PossibleActions.appendChild(but1);
     PossibleActions.appendChild(but2);
-    PossibleActions.appendChild(but3)
+    PossibleActions.appendChild(but3);
+    PossibleActions.appendChild(but4);
     EventBody.appendChild(ActionsDiv)
     EventBody.appendChild(PossibleActions)
     EventDiv.appendChild(EventBody);
@@ -707,7 +888,10 @@ let getEventDetails = () => {
         fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
             .then(response => response.json())
             .then(result => {
-                getActions(result);
+                if (result != null) {
+                    getActions(result);
+                }
+
             })
             .catch(error => console.log('error', error));
     })
@@ -2099,34 +2283,43 @@ let resetActionVariables = (type) => {
 
 
 let updateStats = (type, id) => {
-    let url;
-    if (type == "quiz") {
+    return new Promise((resolve, reject) => {
+        let url;
+
         url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + id;
-    }
-    if (type == "poll") {
-        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + id;
-    }
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
 
-    questionIds.forEach((questionId, index) => {
-        quiz_opts[index].forEach(opt => {
-            let raw = JSON.stringify({ "stat": `${opt["stat"]}`, "option": `${opt["option"]}` });
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
 
-            let requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
+        // questionIds.forEach((questionId, index) => {
+        //     quiz_opts[index].forEach(opt => {
+        //     })
 
-            fetch(url + "/" + questionId + "/" + opt["_id"], requestOptions)
-                .then(response => response.json())
-                .then(result => console.log(result))
-                .catch(error => console.log('error', error));
-        })
+        // })
+        for (let i = 0; i < questionIds.length; i++) {
+            for (let j = 0; j < quiz_opts[i].length; j++) {
+                let raw = JSON.stringify({ "stat": `${quiz_opts[i][j]["stat"]}`, "option": `${quiz_opts[i][j]["option"]}` });
+
+                let requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+                fetch(url + "/" + questionIds[i] + "/" + quiz_opts[i][j]["_id"], requestOptions)
+                    .then(response => response.json())
+                    .then(result => console.log(result))
+                    .catch(error => console.log('error', error));
+
+            }
+            if (i == (questionIds.length - 1)) {
+                resolve();
+            }
+        }
     })
+
 }
 
 
@@ -2150,7 +2343,7 @@ let closeAction = (type, ref, nohome) => {
 
         fetch(closeUrl, requestOptions)
             .then(response => response.text())
-            .then(result => {
+            .then(async (result) => {
                 console.log(result);
                 if (ref == "normal") {
                     continueResultBtn(type);
@@ -2164,16 +2357,19 @@ let closeAction = (type, ref, nohome) => {
                         })
                         console.log(socket)
                         socket.emit("close quiz", emitingData);
-                        updateStats("quiz", sessionStorage.getItem("quiz_action_id"))
-                        popup("Quiz Closed")
-                        socket.disconnect();
-                        resetActionIds("quiz");
-                        resetActionVariables("quiz");
-                        performCheck();
-                        if (nohome != "nohome") {
-                            goTo(homeSelector);
-                        }
-                        resolve();
+                        updateStats("quiz", sessionStorage.getItem("quiz_action_id")).then(() => {
+                            console.log("herea")
+                            popup("Quiz Closed")
+                            socket.disconnect();
+                            resetActionIds("quiz");
+                            resetActionVariables("quiz");
+                            performCheck();
+                            if (nohome != "nohome") {
+                                goTo(homeSelector);
+                            }
+                            resolve();
+
+                        })
                     }
                     if (type == "poll") {
                         emitingData.push(sessionStorage.getItem("poll_action_id"));
@@ -2184,7 +2380,42 @@ let closeAction = (type, ref, nohome) => {
                         })
                         socket.emit("close quiz", emitingData);
                         socket.disconnect();
-                        updateStats("poll", sessionStorage.getItem("poll_action_id"));
+                        await updateStats("poll", sessionStorage.getItem("poll_action_id")).then(() => {
+                            popup("Poll Closed")
+                            resetActionIds("poll");
+                            resetActionVariables("poll");
+                            performCheck();
+                            if (nohome != "nohome") {
+                                goTo(homeSelector);
+                            }
+                            resolve();
+                        })
+
+                    }
+                    if (type == "feedback") {
+                        popup("Feedback Closed")
+                        resetActionIds("feedback")
+                        resetFeedbackVariables("okay");
+                        performCheck();
+                        if (nohome != "nohome") {
+                            goTo(homeSelector);
+                        }
+                        resolve()
+                    }
+                    sessionStorage.setItem(`${type}_active`, "false")
+                }
+                else if (ref = "clean action") {
+                    if (type == "quiz") {
+                        popup("Quiz Closed")
+                        resetActionIds("quiz");
+                        resetActionVariables("quiz");
+                        performCheck();
+                        if (nohome != "nohome") {
+                            goTo(homeSelector);
+                        }
+                        resolve();
+                    }
+                    if (type == "poll") {
                         popup("Poll Closed")
                         resetActionIds("poll");
                         resetActionVariables("poll");
@@ -2205,6 +2436,7 @@ let closeAction = (type, ref, nohome) => {
                         resolve()
                     }
                     sessionStorage.setItem(`${type}_active`, "false")
+
                 }
                 else if (ref = "ref") {
                     let emitingData = [];
@@ -3155,7 +3387,7 @@ async function multipleActions(publish) {
             }
         })
         if (flag == 1) {
-            if (window.confirm("An Action is still live, you will have to close it to make another")) {
+            if (window.confirm("An Action is still live, you will have to close it?")) {
                 if (publish == "publish") {
                     await closeAction(closeTypes, "normal", "nohome")
                 }
