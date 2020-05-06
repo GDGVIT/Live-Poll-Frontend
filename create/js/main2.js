@@ -467,12 +467,17 @@ let deleteAction = (id, type, eventid) => {
             ele.remove();
             if (parent.childElementCount == 0) {
                 let pEmpty = document.createElement("p");
-                pEmpty.innerHTML = "There are no quizzes in this Event";
+                if (type == "quiz") {
+                    pEmpty.innerHTML = "There are no quizzes in this Event";
+                }
+                else {
+                    pEmpty.innerHTML = `There are no ${type}s in this Event`;
+                }
                 pEmpty.style.color = "red";
                 parent.appendChild(pEmpty)
             }
 
-            
+
             if (sessionStorage.getItem(`${type}_active`) == "true") {
                 console.log("here")
                 closeAction(type, "normal", "nohome").then(() => {
@@ -495,6 +500,7 @@ let deleteAction = (id, type, eventid) => {
 
             }
             else {
+                console.log("here too")
                 closeAction(type, "clean action", "nohome").then(() => {
                     var myHeaders = new Headers();
                     myHeaders.append("auth-token", sessionStorage.getItem("auth_key"));
@@ -524,7 +530,12 @@ let deleteAction = (id, type, eventid) => {
         ele.remove();
         if (parent.childElementCount == 0) {
             let pEmpty = document.createElement("p");
-            pEmpty.innerHTML = "There are no quizzes in this Event";
+            if (type == "quiz") {
+                pEmpty.innerHTML = "There are no quizzes in this Event";
+            }
+            else {
+                pEmpty.innerHTML = `There are no ${type}s in this Event`;
+            }
             pEmpty.style.color = "red";
             parent.appendChild(pEmpty)
         }
@@ -773,6 +784,7 @@ let renderEventHistory = (event, actions, just) => {
                         sessionStorage.setItem("event_id", event["_id"]);
                         resetActionIds();
                         performCheck();
+                        resetFeedbackVariables("okay");
                         sessionStorage.setItem("the_current_event", JSON.stringify(event));
                         renderCurrentEventDeets();
                         ActivateAction("feedback");
@@ -786,6 +798,7 @@ let renderEventHistory = (event, actions, just) => {
                     sessionStorage.setItem("event_id", event["_id"]);
                     resetActionIds("feedback");
                     performCheck();
+                    resetFeedbackVariables("okay")
                     sessionStorage.setItem("the_current_event", JSON.stringify(event));
                     renderCurrentEventDeets();
                     ActivateAction("feedback");
