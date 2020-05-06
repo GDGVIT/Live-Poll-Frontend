@@ -813,9 +813,14 @@ let renderEventHistory = (event, actions, just) => {
     but4.addEventListener("click", async () => {
         if (sessionStorage.getItem("event_id") == event["_id"]) {
             await multipleActions("publish").then((res) => {
-                resetCreateEvent();
                 if (res == true) {
                     deleteEvent(event["_id"]);
+                    resetActionIds();
+                    resetActionVariables();
+                    resetFeedbackVariables("okay")
+                    performCheck();
+
+                    resetCreateEvent();
                 }
                 else {
                     return;
