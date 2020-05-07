@@ -444,6 +444,7 @@ let deleteEvent = (id) => {
             console.log(result);
             sessionStorage.removeItem("event_id");
             sessionStorage.removeItem("the_current_event");
+            popup("Event Deleted")
         })
         .catch(error => console.log('error', error));
 
@@ -829,7 +830,6 @@ let renderEventHistory = (event, actions, just) => {
                         performCheck();
                         document.getElementById(`${event["_id"]}`).remove();
                         resetCreateEvent();
-                        popup("Event Deleted")
                     }
                     else {
                         return;
@@ -839,7 +839,6 @@ let renderEventHistory = (event, actions, just) => {
             else {
                 deleteEvent(event["_id"])
                 document.getElementById(`${event["_id"]}`).remove();
-                popup("Event Deleted")
             }
         }
         else {
