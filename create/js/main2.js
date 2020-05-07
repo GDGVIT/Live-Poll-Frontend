@@ -493,7 +493,8 @@ let deleteAction = (id, type, eventid) => {
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
                         .then(response => response.text())
                         .then(result => {
-                            console.log(result)
+                            console.log(result);
+                            popup("Action Deleted")
                         })
                         .catch(error => console.log('error', error));
                 })
@@ -513,7 +514,10 @@ let deleteAction = (id, type, eventid) => {
 
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
                         .then(response => response.text())
-                        .then(result => console.log(result))
+                        .then(result => {
+                            console.log(result)
+                            popup("Action Deleted")
+                        })
                         .catch(error => console.log('error', error));
                 })
 
@@ -550,7 +554,10 @@ let deleteAction = (id, type, eventid) => {
 
         fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result))
+            .then(result => {
+                console.log(result)
+                popup("Action Deleted")
+            })
             .catch(error => console.log('error', error));;
 
     }
@@ -811,26 +818,33 @@ let renderEventHistory = (event, actions, just) => {
         })
     })
     but4.addEventListener("click", async () => {
-        if (sessionStorage.getItem("event_id") == event["_id"]) {
-            await multipleActions("publish").then((res) => {
-                if (res == true) {
-                    deleteEvent(event["_id"]);
-                    resetActionIds();
-                    resetActionVariables();
-                    resetFeedbackVariables("okay")
-                    performCheck();
-
-                    resetCreateEvent();
-                }
-                else {
-                    return;
-                }
-            })
+        if (window.confirm("Are you sure you want to delete this event?")) {
+            if (sessionStorage.getItem("event_id") == event["_id"]) {
+                await multipleActions("publish").then((res) => {
+                    if (res == true) {
+                        deleteEvent(event["_id"]);
+                        resetActionIds();
+                        resetActionVariables();
+                        resetFeedbackVariables("okay")
+                        performCheck();
+                        document.getElementById(`${event["_id"]}`).remove();
+                        resetCreateEvent();
+                        popup("Event Deleted")
+                    }
+                    else {
+                        return;
+                    }
+                })
+            }
+            else {
+                deleteEvent(event["_id"])
+                document.getElementById(`${event["_id"]}`).remove();
+                popup("Event Deleted")
+            }
         }
         else {
-            deleteEvent(event["_id"])
+            return;
         }
-        document.getElementById(`${event["_id"]}`).remove();
     })
     PossibleActions.appendChild(but1);
     PossibleActions.appendChild(but2);

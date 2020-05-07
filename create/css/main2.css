@@ -674,7 +674,7 @@ label[for = "theme_feedback"] {
 .possible-actions > button {
     font-size: 0.9rem;
     padding: 7px 30px;
-    border-radius: 10px;
+    border-radius: 20px;
     margin: 0 20px;
 }
 .possible-actions > button:nth-child(1) {
@@ -708,6 +708,7 @@ label[for = "theme_feedback"] {
 .outerDiv > p{
     cursor: pointer;
     overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 .outerDiv:nth-child(1){
     margin-top: 0px;
@@ -1603,4 +1604,13 @@ button::-moz-focus-inner {
 }
 .not-show {
     display: none;
+}
+
+.possible-actions > button:nth-child(4){
+    background-color: red;
+
+}
+.possible-actions > button:nth-child(4):hover{
+    box-shadow:  inset -6px -6px 10px red, inset 6px 6px 20px rgba(0, 0, 0, 0.1);
+
 }
