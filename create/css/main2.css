@@ -1348,8 +1348,8 @@ button {
         z-index: 10;
         clip-path: circle(10px at -5% 10%);
         -webkit-clip-path: circle(10px at -5% 10%);
-        transition: clip-path ease-out 0.8s;
-        -webkit-transition: -webkit-clip-path ease-out 0.8s;
+        transition: clip-path linear 0.5s;
+        -webkit-transition: -webkit-clip-path linear 0.5s;
         background: white;
     }
     .question-header > i{
@@ -1365,8 +1365,8 @@ button {
         font-weight: 600;
     }
     .open {
-        clip-path: circle(1500px at 100.7% 3.5%);
-        -webkit-clip-path: circle(1500px at 100.7% 3.5%);
+        clip-path: circle(1000px at -5% 10%);
+        -webkit-clip-path: circle(1000px at -5% 10%);
     }
     .nav-container {
         position: relative;
