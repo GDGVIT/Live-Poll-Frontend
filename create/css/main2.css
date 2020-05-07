@@ -1348,8 +1348,8 @@ button {
         z-index: 10;
         clip-path: circle(10px at -5% 10%);
         -webkit-clip-path: circle(10px at -5% 10%);
-        transition: clip-path linear 0.5s;
-        -webkit-transition: -webkit-clip-path linear 0.5s;
+        transition: clip-path linear 0.4s;
+        -webkit-transition: -webkit-clip-path linear 0.4s;
         background: white;
     }
     .question-header > i{
