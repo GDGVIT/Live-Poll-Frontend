@@ -1,12 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --main-color: rgb(40, 131, 251);
+            --header: 30px;
+        }
+
+        * {
+            font-family: 'Montserrat', sans-serif;
+
+        }
+
+        body {
+            background-color: rgb(245, 245, 245);
+            text-align: center;
+            margin: 0;
+        }
+
+        .container {
+            overflow-x: hidden;
+        }
+
+        p {
+            line-height: 1.4;
+            font-size: 1.15rem;
+            font-weight: 100 !important;
+            color: rgba(0, 0, 0, 0.74);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: bolder;
+            margin-bottom: var(--header);
+        }
+
+        .right-feathers {
+            position: absolute;
+            right: 0;
+            top: 0;
+            overflow: hidden;
+        }
+
+        .right-feathers>img {
+            position: relative;
+            left: 4.6vw;
+            width: 20vw;
+            top: -2.5vw;
+        }
+
+        .left-feathers>img {
+            position: relative;
+            width: 20vw;
+            left: -5vw;
+            top: -3vw;
+        }
+
+        .left-feathers {
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+        }
+
+        .main-logo {
+            margin: 30px auto;
+            margin-bottom: 50px;
+        }
+
+        .main-logo>img {
+            width: 12.5vw;
+        }
+
+        .about {
+            width: 60%;
+            margin: 30px auto;
+            margin-bottom: 90px;
+        }
+
+
+        .sections {
+            position: relative;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            width: 90%;
+            margin: 30px auto;
+            margin-bottom: 90px;
+        }
+
+        .sections>div>p {
+            width: 60%;
+            margin: auto;
+            margin-bottom: 40px;
+        }
+
+        .sections>div>h1 {
+            margin-bottom: 20px;
+        }
+
+        .sections>div:first-child {
+            border-right: rgb(97, 165, 255) solid 1px;
+        }
+
+        .sections>div:last-child {
+
+            border-left: rgb(40, 131, 251) solid 1px;
+        }
+
+        .main-button {
+            width: 30%;
+            background-color: var(--main-color);
+            padding: 12px 0;
+            border: none;
+            color: white;
+            font-weight: 500;
+            font-size: 1.2rem;
+            border-radius: 7px;
+        }
+
+        .features {
+            position: relative;
+            width: 70%;
+            margin: 30px auto;
+        }
+
+        .features-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(3, 33.3%);
+            margin: 40px auto;
+        }
+
+
+        .footer {
+            background-color: white;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            justify-items: left;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .footer p {
+            margin-bottom: 5px;
+        }
+
+        .right-section {
+            justify-self: right;
+            padding-right: 40px;
+        }
+
+        .right-section>img {
+            height: 5vh;
+            margin: 0 auto;
+        }
+
+        .left-section {
+            padding-left: 40px;
+        }
+
+        .circle > img{
+            position: relative;
+            margin: auto;
+            width: 50px;
+            height: 100%;
+
+        }
+
+        strong{
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .circle{
+            position: relative;
+            background-color: white;
+            width: 90px;
+            height: 90px;
+            padding: 10px;
+            border-radius: 200px;
+            border: 2px solid var(--main-color);
+            margin: 20px auto;
+        }
+
+        #Hermes {
+            /* fill: black; */
+            font-weight: 900;
+            font-size: 2.7rem
+        }
+
+        ::-webkit-scrollbar {
+            background-color: #f5f5f5;
+            width: 9px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(40, 131, 251);
+        }
+
+        @media(max-width: 600px) {
+            .container {
+                overflow-x: hidden;
+            }
+
+            .main-logo {
+                /* height: auto; */
+                text-align: center;
+            }
+
+            .main-logo>svg {
+                height: 50px;
+            }
+
+            p {
+                line-height: 1.7;
+                font-size: 1.1rem;
+                font-weight: 100 !important;
+                color: rgba(0, 0, 0, 0.74);
+            }
+
+            h1 {
+                font-size: 2.2rem;
+                font-weight: bolder;
+                margin-bottom: var(--header);
+            }
+
+            .about {
+                width: 90%;
+            }
+
+            .footer {
+                grid-template-columns: none;
+                grid-template-rows: 50% 50%;
+                justify-items: center;
+            }
+
+            .right-section {
+                padding: 0;
+                justify-self: center;
+                text-align: center;
+            }
+
+            .left-section {
+                padding: 0;
+                justify-self: center;
+                text-align: center;
+            }
+
+            .right-section>img {
+                height: auto;
+                width: 70%;
+            }
+
+            .sections {
+                grid-template-columns: none;
+                grid-template-rows: repeat(2, 50%);
+            }
+
+            .sections>div:first-child {
+                border-right: none;
+                padding-bottom: 50px;
+                border-bottom: rgb(40, 131, 251) solid 1px;
+            }
+
+            .sections>div:last-child {
+                border-left: none;
+                padding-top: 10px;
+                border-top: none;
+            }
+
+            .main-button {
+                width: 60%;
+            }
+
+
+            .right-feathers>img {
+                width: 30vw;
+                left: 5vw;
+            }
+
+            .left-feathers>img {
+                width: 30vw;
+            }
+
+            .ele{
+                margin: 20px 0;
+            }
+
+            .sections>div>p {
+                width: 90%;
+                margin: auto;
+                margin-bottom: 40px;
+            }
+
+
+            .main-logo>img {
+                width: 41vw;
+            }
+
+            .features-grid{
+                grid-template-columns: auto;
+            }
+            .circle > img{
+                height: 100%;
+                width: 60px;
+            }
+
+        }
+    </style>
+    <title>Hermes</title>
+    <link rel="icon" type="image/png" href="./img/favicon.png">
 </head>
+
 <body>
-    <a href="./participate/event2.html">Link to participate in a quiz</a>
-    <a href="./create/main2.html">Link to create a quiz</a>
+    <div class="container">
+        <div class="right-feathers">
+            <img src="./img/right_feathers.png" alt="">
+        </div>
+        <div class="left-feathers">
+            <img src="./img/left_feathers.png" alt="">
+        </div>
+        <div class="main-logo" data-aos="zoom-in" data-aos-delay="200" data-aos-once="true">
+            <img src="./img/hermes-logo.png" alt="">
+        </div>
+        <div class="about" data-aos="zoom-in-down" data-aos-delay="500" data-aos-once="true">
+            <h1>About</h1>
+            <p>The Hermes project is a live polling website which allows the operating party or organiser to create events while generating unique event codes. Under an established event, the organiser can add multiple polls, quizzes or feedback as found necessary.</p>
+            <p>Other users can participate in the respective event by entering the valid event code and get engaged in the various activities of that particular event LIVE!</p>
+            <p>Visit the DSC VIT's website to take a glimpse of our other projects at <a href="https://dscvit.com"
+                    target="_blank">dscvit.com</a></p>
+        </div>
+        <div class="sections">
+            <div class="admin-side" data-aos="fade-right" data-aos-delay="700" data-aos-once="true">
+                <h1>Create</h1>
+                <p>Visit the Create page to explore the various activities you can expose your audiences to!</p>
+                <button class="main-button" onclick="window.open('./create/main2.html')">Create</button>
+            </div>
+            <div class="user-side" data-aos="fade-left" data-aos-delay="700" data-aos-once="true">
+                <h1>Participate</h1>
+                <p>If you wish to engage in any of the activities created for you, please visit the Participate page!</p>
+                <button class="main-button" onclick = "window.open('./participate/event2.html')">Participate</button>
+            </div>
+        </div>
+        <div class="features" id="features" data-aos="fade-down" data-aos-anchor="#features" data-aos-once="true">
+            <h1>Features</h1>
+            <p>As a creator you can create an Event for which the following activities can be added. The users can engage with them in real time!</p>
+            <div class="features-grid">
+                <div class="ele">
+                    <div class="circle">
+                        <img src="./img/qna.svg" alt="">
+                    </div>
+                    <strong>Create or take part in a Live Quiz!</strong>
+
+                </div>
+                <div class="ele">
+                    
+                    <div class="circle">
+                        <img src="./img/poll.svg" alt="">
+                    </div>
+                    <strong>Create or take part in a Live Polling session!</strong>
+                </div>
+                <div class="ele">
+                    
+                    <div class="circle">
+                        <img src="./img/feedback.svg" alt="">
+                    </div>
+                    <strong>Create or take part in a Feedback session!</strong>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <div class="left-section">
+                <p>For any queries please contact us at,</p>
+                <a href="mailto:dscvitvellore@gmail.com">dscvitvellore@gmail.com</a>
+            </div>
+            <div class="right-section">
+                <p>A project developed by</p>
+                <img src="./img/dsclogo.png" alt="">
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // AOS.init({
+        //     disable: 'mobile'
+        // });
+        if (window.innerWidth < 600) {
+            document.querySelector(".user-side").removeAttribute('data-aos-delay')
+            document.querySelector(".admin-side").removeAttribute('data-aos-delay')
+        }
+        AOS.init();
+
+    </script>
 </body>
+
 </html>

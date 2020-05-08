@@ -647,7 +647,7 @@ label[for = "theme_feedback"] {
     margin-right: 10px;
 }
 .actions {
-    padding: 10px 0;
+    padding: 5px 0;
     width: fit-content;
     width: -moz-fit-content;
     list-style-type: disc;
@@ -666,7 +666,7 @@ label[for = "theme_feedback"] {
     width: -moz-fit-content;
     min-width: 300px;
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     justify-items: left;
     align-items: center;
     padding: 10px 0;
@@ -674,7 +674,7 @@ label[for = "theme_feedback"] {
 .possible-actions > button {
     font-size: 0.9rem;
     padding: 7px 30px;
-    border-radius: 10px;
+    border-radius: 20px;
     margin: 0 20px;
 }
 .possible-actions > button:nth-child(1) {
@@ -692,6 +692,36 @@ label[for = "theme_feedback"] {
     transform: rotate(90deg)
 }
 
+
+.event-code{
+    display: none;
+}
+
+
+.outerDiv{
+    display: grid;
+    grid-template-columns: 100px auto;
+    align-items: center;
+    justify-content: left;
+    margin: 5px 0;
+}
+.outerDiv > p{
+    cursor: pointer;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+.outerDiv:nth-child(1){
+    margin-top: 0px;
+}
+.outerDiv > i{
+    margin-left: 15px;
+    padding: 5px;
+    background: #F5F5F5;
+    border-radius: 20px;
+    color: var(--main-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
 
 .notify {
     position: absolute;
@@ -1049,7 +1079,7 @@ label[for = "theme_feedback"] {
     display: none
 }
 
-.main-container::-webkit-scrollbar {
+.main-container::-webkit-scrollbar{
     display: block;
 }
 
@@ -1266,6 +1296,7 @@ button {
     } */
     .user-login-container {
         width: 95%;
+
     }
     .user-login-container > h1 {
         font-size: 2rem;
@@ -1317,8 +1348,8 @@ button {
         z-index: 10;
         clip-path: circle(10px at -5% 10%);
         -webkit-clip-path: circle(10px at -5% 10%);
-        transition: clip-path ease-out 1s;
-        -webkit-transition: -webkit-clip-path ease-out 1s;
+        transition: clip-path linear 0.4s;
+        -webkit-transition: -webkit-clip-path linear 0.4s;
         background: white;
     }
     .question-header > i{
@@ -1334,8 +1365,8 @@ button {
         font-weight: 600;
     }
     .open {
-        clip-path: circle(2500px at 100.7% 3.5%);
-        -webkit-clip-path: circle(2500px at 100.7% 3.5%);
+        clip-path: circle(1000px at -5% 10%);
+        -webkit-clip-path: circle(1000px at -5% 10%);
     }
     .nav-container {
         position: relative;
@@ -1543,6 +1574,12 @@ button {
     .mobile-grid {
         display: grid;
     }
+    .main-container-padding{
+        margin-top: 5vh;
+    }
+    .event > p > i{
+        display: none;
+    }
     
 }
 button::-moz-focus-inner {
@@ -1567,4 +1604,13 @@ button::-moz-focus-inner {
 }
 .not-show {
     display: none;
+}
+
+.possible-actions > button:nth-child(4){
+    background-color: red;
+
+}
+.possible-actions > button:nth-child(4):hover{
+    box-shadow:  inset -6px -6px 10px red, inset 6px 6px 20px rgba(0, 0, 0, 0.1);
+
 }
