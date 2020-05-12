@@ -122,7 +122,8 @@
 
         .active-actions {
             color: red;
-            font-weight: 700;
+            width: 80%;
+            margin: auto;
         }
 
         @media only screen and (max-width: 600px) {
@@ -134,9 +135,11 @@
             h1 {
                 font-size: 1.1rem;
             }
-            .header > svg{
+
+            .header>svg {
                 height: 80%;
             }
+
             input {
                 width: 70%;
             }
@@ -279,7 +282,7 @@
         function showActions(res) {
             actions = res["Actions"];
             if (actions.length == 0) {
-                activeActionsDiv.innerHTML = "No Active Actions";
+                activeActionsDiv.innerHTML = "It seems your Admin hasn't created any activities for you yet!";
             }
             let i = 0;
             var requestOptions = {
@@ -308,7 +311,7 @@
                         console.log(i)
                         console.log(actions.length)
                         if (i == (actions.length)) {
-                            activeActionsDiv.innerHTML = "No Active Actions"
+                            activeActionsDiv.innerHTML = "It seems your Admin hasn't created any activities for you yet!"
                         }
                     })
                     .catch(error => console.log('error', error));

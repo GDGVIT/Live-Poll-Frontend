@@ -462,7 +462,7 @@ let resetCreateEvent = () => {
 
 let deleteAction = (id, type, eventid) => {
     if (sessionStorage.getItem(`${type}_action_id`) == id) {
-        if (window.confirm(`This is ${type} is currently active. Do you want to delete it?`)) {
+        if (window.confirm(`This is ${type} is currently active. Do you want to procede?`)) {
             let ele = document.getElementsByClassName(`${id}`)[0];
             let parent = ele.parentElement;
             ele.remove();
@@ -719,7 +719,7 @@ let renderEventHistory = (event, actions, just) => {
         await multipleActions().then((res) => {
             if (res == true) {
                 if (checkEventExistance(event["_id"])) {
-                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                    if (window.confirm("If you wish to work on another event, click OK")) {
                         sessionStorage.setItem("event_id", event["_id"]);
                         resetActionIds();
                         performCheck();
@@ -754,7 +754,7 @@ let renderEventHistory = (event, actions, just) => {
             if (res == true) {
                 if (checkEventExistance(event["_id"])) {
                     /* dialog("An Event already exists, you will lose that data?"); */
-                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                    if (window.confirm("If you wish to work on another event, click OK")) {
                         sessionStorage.setItem("event_id", event["_id"]);
                         resetActionIds();
                         performCheck();
@@ -788,7 +788,7 @@ let renderEventHistory = (event, actions, just) => {
             if (res == true) {
                 if (checkEventExistance(event["_id"])) {
                     /* dialog("An Event already exists, you will lose that data?"); */
-                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                    if (window.confirm("If you wish to work on another event, click OK")) {
                         sessionStorage.setItem("event_id", event["_id"]);
                         resetActionIds();
                         performCheck();
@@ -982,16 +982,16 @@ let loggedIn = () => {
         console.log("Not logged in")
         goToLogin();
         homeSelector.forEach(ele => {
-            ele.style.color = "rgb(189, 189, 189)";
+            ele.style.color = "white";
         })
         quizSelector.forEach(ele => {
-            ele.style.color = "rgb(189, 189, 189)"
+            ele.style.color = "white"
         })
         pollSelector.forEach(ele => {
-            ele.style.color = "rgb(189, 189, 189)"
+            ele.style.color = "white"
         })
         feedbackSelector.forEach(ele => {
-            ele.style.color = "rgb(189, 189, 189)"
+            ele.style.color = "white"
         })
         tabItems.forEach(ele => {
             ele.removeEventListener("click", selectItem);
@@ -1012,7 +1012,7 @@ let loggedIn = () => {
         })
         if (!sessionStorage.getItem("quiz_action_id")) {
             quizSelector.forEach(ele => {
-                ele.style.color = "rgb(189, 189, 189)";
+                ele.style.color = "white";
                 ele.removeEventListener("click", selectItem);
             })
         }
@@ -1024,7 +1024,7 @@ let loggedIn = () => {
         }
         if (!sessionStorage.getItem("poll_action_id")) {
             pollSelector.forEach(ele => {
-                ele.style.color = "rgb(189, 189, 189)";
+                ele.style.color = "white";
                 ele.removeEventListener("click", selectItem);
             })
         }
@@ -1036,7 +1036,7 @@ let loggedIn = () => {
         }
         if (!sessionStorage.getItem("feedback_action_id")) {
             feedbackSelector.forEach(ele => {
-                ele.style.color = "rgb(189, 189, 189)"
+                ele.style.color = "white"
                 ele.removeEventListener("click", selectItem);
             })
         }
@@ -1162,7 +1162,7 @@ function createEvent(e) {
     multipleActions("publish").then(res => {
         if (res == true) {
             if (sessionStorage.getItem("event_id")) {
-                if (window.confirm("An Event already exists, you will lose that data?")) {
+                if (window.confirm("If you wish to work on another event, click OK")) {
                     sessionStorage.removeItem("event_id")
                     resetFeedbackVariables("okay")
                     resetActionIds();
@@ -1224,7 +1224,7 @@ async function ActionRedirect(e) {
         if (res == true) {
             if (this.innerHTML == "Quiz") {
                 if (checkEventExistance(eventCreated["_id"])) {
-                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                    if (window.confirm("If you wish to work on another event, click OK")) {
                         sessionStorage.setItem("event_id", eventCreated["_id"]);
                         sessionStorage.setItem("the_current_event", JSON.stringify(eventCreated));
                         renderCurrentEventDeets();
@@ -1241,7 +1241,7 @@ async function ActionRedirect(e) {
             }
             if (this.innerHTML == "Poll") {
                 if (checkEventExistance(eventCreated["_id"])) {
-                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                    if (window.confirm("If you wish to work on another event, click OK")) {
                         sessionStorage.setItem("event_id", eventCreated["_id"]);
                         sessionStorage.setItem("the_current_event", eventCreated);
                         renderCurrentEventDeets();
@@ -1257,7 +1257,7 @@ async function ActionRedirect(e) {
             }
             if (this.innerHTML == "Feedback") {
                 if (checkEventExistance(eventCreated["_id"])) {
-                    if (window.confirm("An Event already exists, you will lose that data?")) {
+                    if (window.confirm("If you wish to work on another event, click OK")) {
                         sessionStorage.setItem("event_id", eventCreated["_id"]);
                         sessionStorage.setItem("the_current_event", eventCreated);
                         renderCurrentEventDeets();
@@ -3059,7 +3059,7 @@ navButtons.forEach(ele => {
 let performCheck = () => {
     if (!sessionStorage.getItem("quiz_action_id")) {
         quizSelector.forEach(ele => {
-            ele.style.color = "rgb(189, 189, 189)";
+            ele.style.color = "white";
             ele.removeEventListener("click", selectItem);
         })
         document.querySelector(".Quiz-internal").classList.remove("show-action");
@@ -3072,7 +3072,7 @@ let performCheck = () => {
     }
     if (!sessionStorage.getItem("poll_action_id")) {
         pollSelector.forEach(ele => {
-            ele.style.color = "rgb(189, 189, 189)";
+            ele.style.color = "white";
             ele.removeEventListener("click", selectItem);
         })
 
@@ -3086,7 +3086,7 @@ let performCheck = () => {
     }
     if (!sessionStorage.getItem("feedback_action_id")) {
         feedbackSelector.forEach(ele => {
-            ele.style.color = "rgb(189, 189, 189)"
+            ele.style.color = "white"
             ele.removeEventListener("click", selectItem);
         })
         document.querySelector(".Feedback-internal").classList.remove("show-action");
