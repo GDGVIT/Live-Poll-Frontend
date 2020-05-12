@@ -85,8 +85,8 @@ main {
     padding-left: 20px;
     align-self: center;
     height: 7vh;
-    width: fit-content;
-    width: -moz-max-content;
+
+
 }
 .header > button {
     align-self: center;
