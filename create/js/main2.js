@@ -982,16 +982,16 @@ let loggedIn = () => {
         console.log("Not logged in")
         goToLogin();
         homeSelector.forEach(ele => {
-            ele.style.color = "white";
+            ele.style.color = "rgb(189,189,189)";
         })
         quizSelector.forEach(ele => {
-            ele.style.color = "white"
+            ele.style.color = "rgb(189,189,189)"
         })
         pollSelector.forEach(ele => {
-            ele.style.color = "white"
+            ele.style.color = "rgb(189,189,189)"
         })
         feedbackSelector.forEach(ele => {
-            ele.style.color = "white"
+            ele.style.color = "rgb(189,189,189)"
         })
         tabItems.forEach(ele => {
             ele.removeEventListener("click", selectItem);
@@ -1012,7 +1012,7 @@ let loggedIn = () => {
         })
         if (!sessionStorage.getItem("quiz_action_id")) {
             quizSelector.forEach(ele => {
-                ele.style.color = "white";
+                ele.style.color = "rgb(189,189,189)";
                 ele.removeEventListener("click", selectItem);
             })
         }
@@ -1024,7 +1024,7 @@ let loggedIn = () => {
         }
         if (!sessionStorage.getItem("poll_action_id")) {
             pollSelector.forEach(ele => {
-                ele.style.color = "white";
+                ele.style.color = "rgb(189,189,189)";
                 ele.removeEventListener("click", selectItem);
             })
         }
@@ -1036,7 +1036,7 @@ let loggedIn = () => {
         }
         if (!sessionStorage.getItem("feedback_action_id")) {
             feedbackSelector.forEach(ele => {
-                ele.style.color = "white"
+                ele.style.color = "rgb(189,189,189)"
                 ele.removeEventListener("click", selectItem);
             })
         }
@@ -3059,7 +3059,7 @@ navButtons.forEach(ele => {
 let performCheck = () => {
     if (!sessionStorage.getItem("quiz_action_id")) {
         quizSelector.forEach(ele => {
-            ele.style.color = "white";
+            ele.style.color = "rgb(189,189,189)";
             ele.removeEventListener("click", selectItem);
         })
         document.querySelector(".Quiz-internal").classList.remove("show-action");
@@ -3072,7 +3072,7 @@ let performCheck = () => {
     }
     if (!sessionStorage.getItem("poll_action_id")) {
         pollSelector.forEach(ele => {
-            ele.style.color = "white";
+            ele.style.color = "rgb(189,189,189)";
             ele.removeEventListener("click", selectItem);
         })
 
@@ -3086,7 +3086,7 @@ let performCheck = () => {
     }
     if (!sessionStorage.getItem("feedback_action_id")) {
         feedbackSelector.forEach(ele => {
-            ele.style.color = "white"
+            ele.style.color = "rgb(189,189,189)"
             ele.removeEventListener("click", selectItem);
         })
         document.querySelector(".Feedback-internal").classList.remove("show-action");
