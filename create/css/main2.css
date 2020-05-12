@@ -1351,6 +1351,7 @@ button {
         transition: clip-path linear 0.4s;
         -webkit-transition: -webkit-clip-path linear 0.4s;
         background: white;
+        z-index: -1;
     }
     .question-header > i{
         display: none;
@@ -1365,6 +1366,7 @@ button {
         font-weight: 600;
     }
     .open {
+        z-index: 1;
         clip-path: circle(1000px at -5% 10%);
         -webkit-clip-path: circle(1000px at -5% 10%);
     }
