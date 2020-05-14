@@ -5,11 +5,8 @@ async function asyncForEach(array, callback) {
     }
 }
 
-let disableBtn = (btn) => {
-    btn.disabled = true;
-    setTimeout(() => {
-        btn.disabled = false;
-    }, 10000)
+let disableBtn = (btn, boo) => {
+    btn.disabled = boo;
 }
 
 const notify = document.querySelector(".notify");
@@ -1060,10 +1057,36 @@ let loggedIn = () => {
 loggedIn();
 let handleLogin = (e) => {
     e.preventDefault();
-    addLoader(loginButton);
+
+
+
+
+    let flag = 0;
     const userEmail = document.querySelector("#user_email");
     const userPass = document.querySelector("#user_pass");
     const loginForm = document.querySelector("#login_form");
+    userEmail.classList.remove("Opt-match")
+    userEmail.placeholder = "Email"
+
+
+    userPass.classList.remove("Opt-match")
+    userPass.placeholder = "Password";
+    if (userEmail.value == "") {
+        userEmail.classList.add("Opt-match")
+        userEmail.placeholder = "Email is Required"
+        flag++;
+    }
+    if (userPass.value == "") {
+        userPass.classList.add("Opt-match")
+        userPass.placeholder = "Password is Required";
+        flag++;
+    }
+    if (flag != 0) {
+        return;
+    }
+
+    addLoader(loginButton);
+    disableBtn(createEventBtn, true);
     var myHeaders_login = new Headers();
     myHeaders_login.append("Content-Type", "application/json");
     var raw_login = JSON.stringify({ "email": userEmail.value, "password": userPass.value });
@@ -1077,6 +1100,7 @@ let handleLogin = (e) => {
     fetch("https://mighty-sea-62531.herokuapp.com/api/user/login", requestOptions)
         .then(res => {
             loginForm.reset();
+            disableBtn(loginButton, false);
             return res.json()
         })
         .then(result => {
@@ -1090,8 +1114,6 @@ let handleLogin = (e) => {
             removeLoader(loginButton, "Login")
             popup("Invalid Credentials", "Error")
         });
-
-    disableBtn(loginButton);
 
 }
 
@@ -1159,6 +1181,19 @@ let eventCreated = {};
 
 function createEvent(e) {
     e.preventDefault();
+
+    EventName.classList.remove("Opt-match")
+    EventName.placeholder = "Enter Event Name";
+
+
+    if (EventName.value.replace(/\s/g, "") == "") {
+        EventName.classList.add("Opt-match");
+        EventName.placeholder = "A valid entry is Required";
+        EventName.value = "";
+        return;
+    }
+
+
     multipleActions("publish").then(res => {
         if (res == true) {
             if (sessionStorage.getItem("event_id")) {
@@ -1174,6 +1209,7 @@ function createEvent(e) {
                 }
             }
             addLoader(createEventBtn)
+            disableBtn(createEventBtn, true);
             const data = {
                 Name: EventName.value,
             }
@@ -1190,7 +1226,10 @@ function createEvent(e) {
             };
 
             fetch("https://mighty-sea-62531.herokuapp.com/api/events/addEvent", requestOptions)
-                .then(response => { return response.json() })
+                .then(response => {
+                    disableBtn(createEventBtn, false);
+                    return response.json();
+                })
                 .then(result => {
                     console.log("Event Added", result);
                     removeLoader(createEventBtn, "Generate Event Code")
@@ -1210,7 +1249,6 @@ function createEvent(e) {
                     popup("Event Generation Error", "Error")
                 });
 
-            disableBtn(createEventBtn);
         }
         else {
             return;
@@ -1301,8 +1339,22 @@ createEventBtn.addEventListener("click", createEvent)
 
 function AddAction(e) {
     e.preventDefault();
-    addLoader(this);
     const name = document.querySelector(`#${this.classList[2]}_name`);
+
+
+    name.classList.remove("Opt-match");
+    name.placeholder = `Enter ${this.classList[2]} Name`;
+
+    if (name.value.replace(/\s/g, "") == "") {
+        name.classList.add("Opt-match")
+        name.placeholder = "A valid value is Required";
+        name.value = "";
+        return;
+    }
+
+
+    addLoader(this);
+    disableBtn(this, true);
     const action_data = {
         action_type: this.classList[2],
         title: name.value
@@ -1318,7 +1370,10 @@ function AddAction(e) {
         redirect: 'follow'
     };
     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/addAction/" + sessionStorage.getItem("event_id"), requestOptions)
-        .then(response => { return response.json(); })
+        .then(response => {
+            disableBtn(this, false);
+            return response.json();
+        })
         .then(result => {
             console.log("Action Added", result);
             document.querySelector(`.${this.classList[2]}-name`).classList.remove("show-action")
@@ -1351,7 +1406,7 @@ function AddAction(e) {
             console.log('Action Error', error);
             popup("Error Adding Action", "Error")
         });
-    disableBtn(this);
+
 }
 
 const AddActionBtn = document.querySelectorAll(".action-btn")
@@ -3449,10 +3504,10 @@ async function multipleActions(publish) {
 
 
 
+// Login Validation
 
 
 
 
 
-
-
+// Login Validataion: End 

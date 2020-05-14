@@ -83,8 +83,8 @@
                                 <h1>Create Event</h1>
                                 <form action="" method="post" id="create_event_form">
                                     <label for="event_name">Event Name</label>
-                                    <input type="text" id="event_name" placeholder="Enter Event name"
-                                        class="main-input">
+                                    <input type="text" id="event_name" placeholder="Enter Event name" class="main-input"
+                                        required>
                                     <button type="submit" class="main-button" id="create_event_btn">Generate Event
                                         Code</button>
                                 </form>
@@ -275,7 +275,8 @@
                                         <p class="current-event-code"></p>
                                     </div>
                                     <label for="Quiz_name">Title</label>
-                                    <input type="text" id="Quiz_name" class="main-input" placeholder="Enter Quiz Name">
+                                    <input type="text" id="Quiz_name" class="main-input" placeholder="Enter Quiz Name"
+                                        required>
                                     <button class="main-button action-btn Quiz">Make quiz</button>
                                 </form>
                             </div>
@@ -424,7 +425,8 @@
                                         <p class="current-event-code"></p>
                                     </div>
                                     <label for="Poll_name">Title</label>
-                                    <input type="text" id="Poll_name" class="main-input" placeholder="Enter Poll Name">
+                                    <input type="text" id="Poll_name" class="main-input" placeholder="Enter Poll Name"
+                                        required>
                                     <button class="main-button action-btn Poll">Make Poll</button>
                                 </form>
                             </div>
@@ -543,7 +545,7 @@
                                     </div>
                                     <label for="Feedback_name">Title</label>
                                     <input type="text" id="Feedback_name" class="main-input"
-                                        placeholder="Enter Feedback Name">
+                                        placeholder="Enter Feedback Name" required>
                                     <button class="main-button action-btn Feedback">Make Feedback</button>
                                 </form>
                             </div>
@@ -558,10 +560,10 @@
                         <h1>Get Started!</h1>
                         <form action="" method="post" id="login_form">
                             <label for="user_email" class="login-label-1">Email</label>
-                            <input type="email" name="" id="user_email" placeholder="Email">
+                            <input type="email" name="" id="user_email" class="user-email" placeholder="Email" required>
                             <label for="user_pass" class="login-label-2">Password</label>
-                            <input type="password" id="user_pass" placeholder="Password">
-                            <button id="login_button" class="main-button">Login</button>
+                            <input type="password" id="user_pass" class="user-pass" placeholder="Password" required>
+                            <button id="login_button" class="main-button" type="submit">Login</button>
                         </form>
                         <div class="choose-theme">
                             <h1>Choose a Theme</h1>
