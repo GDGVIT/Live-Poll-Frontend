@@ -1404,6 +1404,8 @@ function AddAction(e) {
         })
         .catch(error => {
             console.log('Action Error', error);
+            removeLoader(this, `Make ${this.classList[2]}`)
+
             popup("Error Adding Action", "Error")
         });
 
