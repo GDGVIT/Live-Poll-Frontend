@@ -84,7 +84,10 @@ main {
     justify-self: left;
     padding-left: 20px;
     align-self: center;
-    height: 7vh;
+    width: 20vw;
+    max-width: 215px;
+    min-width: 160px;
+
 }
 .header > button {
     align-self: center;
@@ -186,7 +189,7 @@ main {
     font-weight: 900;
     font-size: 1.2rem;
 }
-#user_email {
+.user-email {
     grid-area: input1;
     margin-top: 60px;
     margin-bottom: 30px;
@@ -197,7 +200,7 @@ main {
     /* box-shadow: var(--main-shadow); */
     outline: none;
 }
-#user_pass {
+.user-pass {
     grid-area: input2;
     width: calc(90% - 10px);
     margin-bottom: 30px;
@@ -1277,6 +1280,9 @@ button {
     .header > svg {
         height: 70%;
         padding-left: 15px;
+        min-width: initial;
+        width: initial;
+        max-width: initial;
     }
     .header > button {
         justify-self: right;
@@ -1351,6 +1357,7 @@ button {
         transition: clip-path linear 0.4s;
         -webkit-transition: -webkit-clip-path linear 0.4s;
         background: white;
+        z-index: -1;
     }
     .question-header > i{
         display: none;
@@ -1365,6 +1372,7 @@ button {
         font-weight: 600;
     }
     .open {
+        z-index: 1;
         clip-path: circle(1000px at -5% 10%);
         -webkit-clip-path: circle(1000px at -5% 10%);
     }

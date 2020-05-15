@@ -7,6 +7,10 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../img/favicon.png">
     <title>Hermes | Join Event</title>
+    <meta name="description" content="Participate in an Event created for you!">
+    <meta name=”robots” content="index, nofollow">
+    <link rel="canonical" href="https://dsc-hermes.netlify.app/participate/event2.html">
+
     <style>
         :root {
             --main-color: #2784FB;
@@ -122,7 +126,8 @@
 
         .active-actions {
             color: red;
-            font-weight: 700;
+            width: 80%;
+            margin: auto;
         }
 
         @media only screen and (max-width: 600px) {
@@ -134,9 +139,11 @@
             h1 {
                 font-size: 1.1rem;
             }
-            .header > svg{
+
+            .header>svg {
                 height: 80%;
             }
+
             input {
                 width: 70%;
             }
@@ -279,7 +286,7 @@
         function showActions(res) {
             actions = res["Actions"];
             if (actions.length == 0) {
-                activeActionsDiv.innerHTML = "No Active Actions";
+                activeActionsDiv.innerHTML = "It seems your Admin hasn't created any activities for you yet!";
             }
             let i = 0;
             var requestOptions = {
@@ -308,7 +315,7 @@
                         console.log(i)
                         console.log(actions.length)
                         if (i == (actions.length)) {
-                            activeActionsDiv.innerHTML = "No Active Actions"
+                            activeActionsDiv.innerHTML = "It seems your Admin hasn't created any activities for you yet!"
                         }
                     })
                     .catch(error => console.log('error', error));

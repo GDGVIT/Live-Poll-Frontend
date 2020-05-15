@@ -11,7 +11,11 @@
     <link rel="icon" type="image/png" href="../img/favicon.png">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
-    <title>Hermes | Admin</title>
+    <title>Hermes | Create</title>
+    <meta name="description"
+        content="A unique solution for anyone who wants to expose their audiences to quizzes, polls or feedback sessions!">
+    <meta name=”robots” content="index, nofollow">
+    <link rel="canonical" href="https://dsc-hermes.netlify.app/create/main2.html">
 </head>
 
 <body>
@@ -25,7 +29,7 @@
     </div>
     <main>
         <div class="header">
-            <svg xmlns="http://www.w3.org/2000/svg" height="70.271" viewBox="0 0 189.622 70.271">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.622 70.271">
                 <g id="Group_354" data-name="Group 354" transform="translate(-89.172 -74)">
                     <g id="Group_349" data-name="Group 349" transform="translate(89.172 74)" class="logo-color">
                         <path id="Path_132" data-name="Path 132"
@@ -83,8 +87,8 @@
                                 <h1>Create Event</h1>
                                 <form action="" method="post" id="create_event_form">
                                     <label for="event_name">Event Name</label>
-                                    <input type="text" id="event_name" placeholder="Enter Event name"
-                                        class="main-input">
+                                    <input type="text" id="event_name" placeholder="Enter Event name" class="main-input"
+                                        required>
                                     <button type="submit" class="main-button" id="create_event_btn">Generate Event
                                         Code</button>
                                 </form>
@@ -275,7 +279,8 @@
                                         <p class="current-event-code"></p>
                                     </div>
                                     <label for="Quiz_name">Title</label>
-                                    <input type="text" id="Quiz_name" class="main-input" placeholder="Enter Quiz Name">
+                                    <input type="text" id="Quiz_name" class="main-input" placeholder="Enter Quiz Name"
+                                        required>
                                     <button class="main-button action-btn Quiz">Make quiz</button>
                                 </form>
                             </div>
@@ -424,7 +429,8 @@
                                         <p class="current-event-code"></p>
                                     </div>
                                     <label for="Poll_name">Title</label>
-                                    <input type="text" id="Poll_name" class="main-input" placeholder="Enter Poll Name">
+                                    <input type="text" id="Poll_name" class="main-input" placeholder="Enter Poll Name"
+                                        required>
                                     <button class="main-button action-btn Poll">Make Poll</button>
                                 </form>
                             </div>
@@ -483,10 +489,12 @@
                                                     <textarea rows="3" type="text" id="feedback_name" class="main-input"
                                                         placeholder="Enter Feedback Question"></textarea>
                                                     <div class="feedback-actions">
-                                                        <button id="add_feedback_btn" class="main-button 1" onclick="addFeedbackQuestion(this)">+ Add
+                                                        <button id="add_feedback_btn" class="main-button 1"
+                                                            onclick="addFeedbackQuestion(this)">+ Add
                                                             Question</button>
-                                                        <button class="main-button feedback 1 del-btn" id="del_question_btn"
-                                                            onclick="delQuestion(this)">Delete Question</button>
+                                                        <button class="main-button feedback 1 del-btn"
+                                                            id="del_question_btn" onclick="delQuestion(this)">Delete
+                                                            Question</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -541,7 +549,7 @@
                                     </div>
                                     <label for="Feedback_name">Title</label>
                                     <input type="text" id="Feedback_name" class="main-input"
-                                        placeholder="Enter Feedback Name">
+                                        placeholder="Enter Feedback Name" required>
                                     <button class="main-button action-btn Feedback">Make Feedback</button>
                                 </form>
                             </div>
@@ -556,10 +564,10 @@
                         <h1>Get Started!</h1>
                         <form action="" method="post" id="login_form">
                             <label for="user_email" class="login-label-1">Email</label>
-                            <input type="email" name="" id="user_email" placeholder="Email">
+                            <input type="email" name="" id="user_email" class="user-email" placeholder="Email" required>
                             <label for="user_pass" class="login-label-2">Password</label>
-                            <input type="password" id="user_pass" placeholder="Password">
-                            <button id="login_button" class="main-button">Login</button>
+                            <input type="password" id="user_pass" class="user-pass" placeholder="Password" required>
+                            <button id="login_button" class="main-button" type="submit">Login</button>
                         </form>
                         <div class="choose-theme">
                             <h1>Choose a Theme</h1>
