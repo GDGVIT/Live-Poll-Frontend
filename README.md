@@ -1,30 +1,25 @@
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/30529572/72455010-fb38d400-37e7-11ea-9c1e-8cdeb5f5906e.png" />
-	<h2 align="center"> < Insert Project Title Here > </h2>
-	<h4 align="center"> < Insert Project Description Here > <h4>
+	<h2 align="center"> <Hermes> </h2>
+	<h4 align="center"> <A solution for people to expose their audiences to live quizzes, polls and feedback sessions> <h4>
 </p>
 
 ---
-[![DOCS](https://img.shields.io/badge/Documentation-see%20docs-green?style=flat-square&logo=appveyor)](INSERT_LINK_FOR_DOCS_HERE) 
-  [![UI ](https://img.shields.io/badge/User%20Interface-Link%20to%20UI-orange?style=flat-square&logo=appveyor)](INSERT_UI_LINK_HERE)
+
 
 
 ## Functionalities
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
+- [:tick]  <Conduct a Live Quiz, Poll or Feedback Session>
+- [ ]  <Add Questions Mid Quiz or Poll>
 
 <br>
 
 
 ## Instructions to run
 
-* Pre-requisites:
-	-  < insert pre-requisite >
-	-  < insert pre-requisite >
 
-* < directions to install > 
+* <Clone the Repo, and open index.html> 
+* <or go to: https://dsc-hermes.netlify.app/> 
 ```bash
 < insert code >
 ```
@@ -39,8 +34,7 @@
 
 ## Contributors
 
-* [ < INSERT NAME HERE > ](INSERT_PROFILE_URL_HERE)
-* [ < INSERT NAME HERE > ](INSERT_PROFILE_URL_HERE)
+* [ <Prakhar Soni> ](https://github.com/prakhar0912)
 
 
 
