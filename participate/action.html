@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../img/favicon.png">
     <title>Hermes | Participate</title>
@@ -526,7 +525,8 @@
                 console.log(theQuestionId)
                 fetch("https://mighty-sea-62531.herokuapp.com/api/questions/nextQuestion/" + actionId + "/" + theQuestionId, requestOptions)
                     .then(response => response.json())
-                    .then(result => { console.log(result);
+                    .then(result => {
+                        console.log(result);
                         theQuestionId = result["_id"];
                         theQuestion = result;
                         renderQuiz(theQuestion);
