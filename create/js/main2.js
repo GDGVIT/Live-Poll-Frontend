@@ -9,6 +9,11 @@ let disableBtn = (btn, boo) => {
     btn.disabled = boo;
 }
 
+let masterErrorHandler = (err) => {
+    window.alert("An error has occured in handling your request, the page will be refreshed once you press OK");
+    location.reload();
+}
+
 const notify = document.querySelector(".notify");
 let popup = (text, error) => {
     if (error) {
@@ -884,7 +889,13 @@ let getActions = async (event) => {
             };
 
             fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + action, requestOptions)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw Error(response.statusText);
+                    }
+                    return response.json()
+
+                })
                 .then(result => {
                     actionDeets.push(result);
                     i++;
@@ -893,7 +904,8 @@ let getActions = async (event) => {
                     }
                 })
                 .catch(error => {
-                    // console.log('error', error)
+                    console.log('error', error);
+                    masterErrorHandler(error);
                 });
         })
     })
@@ -920,7 +932,12 @@ let getEventDetails = () => {
         };
 
         fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json()
+            })
             .then(result => {
                 if (result != null) {
                     getActions(result);
@@ -928,7 +945,8 @@ let getEventDetails = () => {
 
             })
             .catch(error => {
-                // console.log('error', error)
+                console.log('error', error)
+                masterErrorHandler(error);
             });
     })
 }
@@ -947,13 +965,21 @@ let handleHistory = () => {
     };
 
     fetch("https://mighty-sea-62531.herokuapp.com/api/user/getEvents", requestOptions)
-        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+
+        })
         .then(result => {
             event_ids = result;
             getEventDetails();
         })
         .catch(error => {
-            // console.log('error', error)
+            console.log('error', error)
+            masterErrorHandler(error);
         });
 }
 
@@ -1109,8 +1135,14 @@ let handleLogin = (e) => {
 
     fetch("https://mighty-sea-62531.herokuapp.com/api/user/login", requestOptions)
         .then(res => {
+
             loginForm.reset();
+            // console.log(res)
             disableBtn(loginButton, false);
+            if (!res.ok) {
+                throw Error(res.statusText)
+            }
+
             return res.json()
         })
         .then(result => {
