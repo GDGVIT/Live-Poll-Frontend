@@ -990,8 +990,11 @@ let handleHistory = () => {
 
         })
         .then(result => {
-            event_ids = result;
-            getEventDetails();
+            if (result.lenght != 0) {
+                event_ids = result;
+                getEventDetails();
+            }
+
         })
         .catch(error => {
             console.log('error', error)
