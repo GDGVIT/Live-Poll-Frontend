@@ -600,7 +600,16 @@
                 })
                 .catch(error => {
                     console.log('error', error)
+                    if (res["message"]) {
 
+
+                        removeLoader(but, `${res["message"]}! Click to try again!`)
+                        but.style.background = "red";
+
+                        but.removeEventListener("click", nice);
+                        but.addEventListener("click", okay);
+                        return;
+                    }
                     removeLoader(but, "Error! Click to retry!");
                     but.style.background = "red";
                     but.removeEventListener("click", nice);
