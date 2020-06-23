@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+    <script>
+        let option_id = "00";
+
+        socket = io('https://hermes.dscomg.com');
+        socket.on("connect", () => {
+            console.log(socket.connected);
+            for (i = 0; i < 2; i++) {
+                socket.emit("option", option_id);
+                console.log("doing")
+            }
+        })
+
+        socket.on('connect_error', (err) => {
+            console.log("There was an error: ", err);
+        })
+        socket.on('connect_timeout', (timeout) => {
+            console.log("There was an error: ", timeout);
+
+        });
+        socket.on('error', (error) => {
+            console.log("There was an error: ", error);
+
+        });
+        socket.on('disconnect', (reason) => {
+            if (reason === 'io server disconnect') {
+                // the disconnection was initiated by the server, you need to reconnect manually
+                console.log("There was an error: ");
+
+                socket.connect();
+            }
+            // else the socket will automatically try to reconnect
+            console.log("There was an error: ");
+
+        });
+        socket.on('reconnect', (attemptNumber) => {
+            console.log(attemptNumber)
+        });
+
+    </script>
+</body>
+
+</html>

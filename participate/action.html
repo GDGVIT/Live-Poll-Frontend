@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../img/favicon.png">
     <title>Hermes | Participate</title>
@@ -393,24 +392,30 @@
         let feedbackNo = 0;
         let eventType;
         const container = document.querySelector(".container");
-        const waitDiv = document.querySelector(".next-question-wait")
+        const waitDiv = document.querySelector(".next-question-wait");
+
+        let masterErrorHandler = (err) => {
+            window.alert("There was an error. The please join the activity(quiz/poll/feedback) again!");
+            sessionStorage.clear();
+            window.location.href = "event2.html";
+        }
+
+
         let fetchQuestions = () => {
             var requestOptions = {
                 method: 'GET',
                 redirect: 'follow'
             };
-            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + actionId, requestOptions)
+            fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + actionId, requestOptions)
                 .then(response => {
-                    if (response.status == 200) {
-                        return response.json();
+                    if (!response.ok) {
+                        throw Error(response.statusText);
                     }
-                    else {
-                        return "Error";
-                    }
+                    return response.json();
                 })
                 .then(result => {
                     if (result == "Error") {
-                        console.log("Error")
+                        console.log("Error");
                     }
                     else {
                         eventType = result["action_type"];
@@ -443,7 +448,10 @@
                         }
                     }
                 })
-                .catch(error => console.log('error', error));
+                .catch(error => {
+                    console.log('error', error);
+                    masterErrorHandler(error);
+                });
         }
         fetchQuestions();
 
@@ -477,7 +485,7 @@
                 body: raw,
                 redirect: 'follow'
             };
-            let url = "https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + this.value + "/" + this.id;
+            let url = "https://hermes.dscomg.com/api/options/addOption/" + this.value + "/" + this.id;
             console.log(url)
             fetch(url, requestOptions)
                 .then(response => response.text())
@@ -524,15 +532,24 @@
                     redirect: 'follow'
                 };
                 console.log(theQuestionId)
-                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/nextQuestion/" + actionId + "/" + theQuestionId, requestOptions)
-                    .then(response => response.json())
-                    .then(result => { console.log(result);
+                fetch("https://hermes.dscomg.com/api/questions/nextQuestion/" + actionId + "/" + theQuestionId, requestOptions)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw Error(response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log(result);
                         theQuestionId = result["_id"];
                         theQuestion = result;
                         renderQuiz(theQuestion);
                         resolve();
                     })
-                    .catch(error => console.log('error', error));
+                    .catch(error => {
+                        console.log('error', error);
+                        masterErrorHandler(error)
+                    });
             })
 
         }
@@ -543,7 +560,7 @@
         let i = 0;
         //Connecting to the socket
         let socketConnection = () => {
-            socket = io('https://mighty-sea-62531.herokuapp.com/');
+            socket = io('https://hermes.dscomg.com/');
             socket.on("connect", () => {
                 console.log(socket.connected)
                 socket.on("quiz ended", (data) => {
