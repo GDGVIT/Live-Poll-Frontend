@@ -350,7 +350,7 @@ let handleEventDeets = (event_id, action_id) => {
         redirect: 'follow'
     };
 
-    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + action_id, requestOptions)
+    fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + action_id, requestOptions)
         .then(response => {
             if (!response.ok) {
                 throw Error(response.statusText);
@@ -452,7 +452,7 @@ let deleteEvent = (id) => {
         redirect: 'follow'
     };
 
-    fetch("https://mighty-sea-62531.herokuapp.com/api/events/deleteEvent/" + id, requestOptions)
+    fetch("https://hermes.dscomg.com/api/events/deleteEvent/" + id, requestOptions)
         .then(response => response.json())
         .then(result => {
             //console.log(result);
@@ -507,7 +507,7 @@ let deleteAction = (id, type, eventid) => {
                         redirect: 'follow'
                     };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
+                    fetch("https://hermes.dscomg.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
                         .then(response => response.text())
                         .then(result => {
                             //console.log(result);
@@ -531,7 +531,7 @@ let deleteAction = (id, type, eventid) => {
                         redirect: 'follow'
                     };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
+                    fetch("https://hermes.dscomg.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
                         .then(response => response.text())
                         .then(result => {
                             //console.log(result)
@@ -573,7 +573,7 @@ let deleteAction = (id, type, eventid) => {
             redirect: 'follow'
         };
 
-        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
+        fetch("https://hermes.dscomg.com/api/actions/deleteAction/" + eventid + "/" + id, requestOptions)
             .then(response => response.text())
             .then(result => {
                 //console.log(result)
@@ -904,7 +904,7 @@ let getActions = async (event) => {
                 redirect: 'follow'
             };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + action, requestOptions)
+            fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + action, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw Error(response.statusText);
@@ -947,7 +947,7 @@ let getEventDetails = () => {
             redirect: 'follow'
         };
 
-        fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEventdetail/" + event_id, requestOptions)
+        fetch("https://hermes.dscomg.com/api/events/getEventdetail/" + event_id, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw Error(response.statusText);
@@ -980,7 +980,7 @@ let handleHistory = () => {
         redirect: 'follow'
     };
 
-    fetch("https://mighty-sea-62531.herokuapp.com/api/user/getEvents", requestOptions)
+    fetch("https://hermes.dscomg.com/api/user/getEvents", requestOptions)
         .then(response => {
             console.log(response)
             if (!response.ok) {
@@ -1283,7 +1283,7 @@ function createEvent(e) {
                 redirect: 'follow'
             };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/events/addEvent", requestOptions)
+            fetch("https://hermes.dscomg.com/api/events/addEvent", requestOptions)
                 .then(response => {
                     disableBtn(createEventBtn, false);
                     if (!response.ok) {
@@ -1430,7 +1430,7 @@ function AddAction(e) {
         body: JSON.stringify(action_data),
         redirect: 'follow'
     };
-    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/addAction/" + sessionStorage.getItem("event_id"), requestOptions)
+    fetch("https://hermes.dscomg.com/api/actions/addAction/" + sessionStorage.getItem("event_id"), requestOptions)
         .then(response => {
             disableBtn(this, false);
             if (!response.ok) {
@@ -2079,10 +2079,10 @@ let nextQuestionTrue = (type) => {
     };
     let url;
     if (type == "quiz") {
-        url = "https://mighty-sea-62531.herokuapp.com/api/questions/next/" + sessionStorage.getItem("quiz_action_id") + "/" + currentQuestionId;
+        url = "https://hermes.dscomg.com/api/questions/next/" + sessionStorage.getItem("quiz_action_id") + "/" + currentQuestionId;
     }
     if (type == "poll") {
-        url = "https://mighty-sea-62531.herokuapp.com/api/questions/next/" + sessionStorage.getItem("poll_action_id") + "/" + currentQuestionId
+        url = "https://hermes.dscomg.com/api/questions/next/" + sessionStorage.getItem("poll_action_id") + "/" + currentQuestionId
     }
     fetch(url, requestOptions)
         .then(response => response.json())
@@ -2137,7 +2137,7 @@ let getQuizDetails = (numberFrom) => {
         method: 'GET',
         redirect: 'follow'
     };
-    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+    fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
         .then(response => {
             if (response.status == 200) {
                 return response.json();
@@ -2186,7 +2186,7 @@ let getQuizOptions = (numberFrom) => {
 }
 
 let socketConnection = () => {
-    socket = io('https://mighty-sea-62531.herokuapp.com/');
+    socket = io('https://hermes.dscomg.com/');
     socket.on("connect", () => {
         //console.log(socket.connected)
         renderQuizDetails();
@@ -2437,7 +2437,7 @@ let updateStats = (type, id) => {
     return new Promise((resolve, reject) => {
         let url;
 
-        url = "https://mighty-sea-62531.herokuapp.com/api/options/updateStat/" + id;
+        url = "https://hermes.dscomg.com/api/options/updateStat/" + id;
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -2483,13 +2483,13 @@ let closeAction = (type, ref, nohome) => {
     return new Promise((resolve, reject) => {
         let closeUrl;
         if (type == "quiz") {
-            closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("quiz_action_id");
+            closeUrl = "https://hermes.dscomg.com/api/actions/closeAction/" + sessionStorage.getItem("quiz_action_id");
         }
         if (type == "poll") {
-            closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("poll_action_id");
+            closeUrl = "https://hermes.dscomg.com/api/actions/closeAction/" + sessionStorage.getItem("poll_action_id");
         }
         if (type == "feedback") {
-            closeUrl = "https://mighty-sea-62531.herokuapp.com/api/actions/closeAction/" + sessionStorage.getItem("feedback_action_id");
+            closeUrl = "https://hermes.dscomg.com/api/actions/closeAction/" + sessionStorage.getItem("feedback_action_id");
         }
         var requestOptions = {
             method: 'GET',
@@ -2598,7 +2598,7 @@ let closeAction = (type, ref, nohome) => {
                     emitingData.push(sessionStorage.getItem(`${type}_action_id`));
                     sessionStorage.removeItem(`${type}_action_id`);
                     performCheck();
-                    socket = io('https://mighty-sea-62531.herokuapp.com/');
+                    socket = io('https://hermes.dscomg.com/');
                     socket.on("connect", () => {
                         socket.emit("close quiz", emitingData);
                     })
@@ -2643,7 +2643,7 @@ let getPollDetails = (numberFrom) => {
         method: 'GET',
         redirect: 'follow'
     };
-    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("poll_action_id"), requestOptions)
+    fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + sessionStorage.getItem("poll_action_id"), requestOptions)
         .then(response => {
             if (response.status == 200) {
                 return response.json();
@@ -2756,7 +2756,7 @@ let getFeedbackDeets = () => {
             redirect: 'follow'
         };
 
-        fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
+        fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
             .then(response => response.json())
             .then(result => {
                 //console.log(result);
@@ -2856,7 +2856,7 @@ let firstQuestionPublish = (id, type) => {
         redirect: 'follow'
     };
 
-    fetch("https://mighty-sea-62531.herokuapp.com/api/questions/publishQuestion/" + id, requestOptions)
+    fetch("https://hermes.dscomg.com/api/questions/publishQuestion/" + id, requestOptions)
         .then(response => response.text())
         .then(result => {
             //console.log(result);
@@ -2916,7 +2916,7 @@ let addQuestionPublish = (type, numberFrom) => {
             redirect: 'follow'
         };
 
-        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+        fetch("https://hermes.dscomg.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw Error(response.statusText);
@@ -2939,7 +2939,7 @@ let addQuestionPublish = (type, numberFrom) => {
                         redirect: 'follow'
                     };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
+                    fetch("https://hermes.dscomg.com/api/actions/openAction/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
                         .then(response => {
                             if (!response.ok) {
                                 throw Error(response.statusText);
@@ -2987,7 +2987,7 @@ let addQuestionPublish = (type, numberFrom) => {
             redirect: 'follow'
         };
 
-        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("poll_action_id"), requestOptions)
+        fetch("https://hermes.dscomg.com/api/questions/addquestionsall/" + sessionStorage.getItem("poll_action_id"), requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw Error(response.statusText);
@@ -3009,7 +3009,7 @@ let addQuestionPublish = (type, numberFrom) => {
                         redirect: 'follow'
                     };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("poll_action_id"), requestOptions)
+                    fetch("https://hermes.dscomg.com/api/actions/openAction/" + sessionStorage.getItem("poll_action_id"), requestOptions)
                         .then(response => {
                             if (!response.ok) {
                                 throw Error(response.statusText);
@@ -3058,7 +3058,7 @@ let addQuestionPublish = (type, numberFrom) => {
             redirect: 'follow'
         };
 
-        fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
+        fetch("https://hermes.dscomg.com/api/questions/addquestionsall/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw Error(response.statusText);
@@ -3079,7 +3079,7 @@ let addQuestionPublish = (type, numberFrom) => {
                         redirect: 'follow'
                     };
 
-                    fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
+                    fetch("https://hermes.dscomg.com/api/actions/openAction/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
                         .then(response => {
                             if (!response.ok) {
                                 throw Error(response.statusText);

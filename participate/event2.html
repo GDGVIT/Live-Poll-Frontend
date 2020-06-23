@@ -247,7 +247,7 @@
                 redirect: 'follow'
             };
 
-            fetch("https://mighty-sea-62531.herokuapp.com/api/events/getEvent/" + eventCode.value, requestOptions)
+            fetch("https://hermes.dscomg.com/api/events/getEvent/" + eventCode.value, requestOptions)
                 .then(response => {
                     console.log(response)
                     if (!response.ok) {
@@ -274,7 +274,7 @@
                     redirect: 'follow'
                 };
 
-                fetch("https://mighty-sea-62531.herokuapp.com/api/events/updateparticipant/" + eventCode.value, requestOptions)
+                fetch("https://hermes.dscomg.com/api/events/updateparticipant/" + eventCode.value, requestOptions)
                     .then(response => response.text())
                     .then(result => { console.log(result); resolve(); })
                     .catch(error => console.log('error', error));
@@ -296,7 +296,7 @@
                 redirect: 'follow'
             };
             actions.forEach((ele, index) => {
-                fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + ele, requestOptions)
+                fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + ele, requestOptions)
                     .then(response => {
                         if (!response.ok) {
                             throw Error(response.statusText);
