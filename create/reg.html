@@ -571,8 +571,9 @@
             fetch("https://hermes.dscomg.com/api/user/register", requestOptions)
                 .then(response => {
                     console.log(response)
+
                     if (!response.ok) {
-                        throw Error(response.statusText);
+                        throw Error(response.json());
                     }
                     return response.json();
                 })
@@ -598,8 +599,8 @@
                     }
 
                 })
-                .catch(error => {
-                    console.log('error', error)
+                .catch(res => {
+                    console.log('error', res)
                     if (res["message"]) {
 
 
