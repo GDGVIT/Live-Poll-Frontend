@@ -9,7 +9,17 @@ let disableBtn = (btn, boo) => {
     btn.disabled = boo;
 }
 
-let masterErrorHandler = (err) => {
+let masterErrorHandler = (err, option) => {
+    if (option == "reload") {
+        window.alert("An error has occured in the action(quiz/poll/feedback), the page will be refreshed once you press OK, once it refreshes please delete the action and make a new one!");
+        return;
+
+    }
+    if (option == "new action") {
+        window.alert("There was an error in adding the questions, please delete this action(quiz/poll/feedback) and make a new one!");
+        return;
+    }
+
     window.alert("An error has occured in handling your request, the page will be refreshed once you press OK");
     location.reload();
 }
@@ -1270,6 +1280,9 @@ function createEvent(e) {
             fetch("https://mighty-sea-62531.herokuapp.com/api/events/addEvent", requestOptions)
                 .then(response => {
                     disableBtn(createEventBtn, false);
+                    if (!response.ok) {
+                        throw Error(response.statusText);
+                    }
                     return response.json();
                 })
                 .then(result => {
@@ -1286,7 +1299,7 @@ function createEvent(e) {
                     popup("Event Generated");
                 })
                 .catch(error => {
-                    //console.log('Event Error', error);
+                    console.log('Event Error', error);
                     removeLoader(createEventBtn, "Generate Event Code")
                     popup("Event Generation Error", "Error")
                 });
@@ -1414,6 +1427,9 @@ function AddAction(e) {
     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/addAction/" + sessionStorage.getItem("event_id"), requestOptions)
         .then(response => {
             disableBtn(this, false);
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
             return response.json();
         })
         .then(result => {
@@ -1445,7 +1461,7 @@ function AddAction(e) {
             handleHistory();
         })
         .catch(error => {
-            //console.log('Action Error', error);
+            console.log('Action Error', error);
             removeLoader(this, `Make ${this.classList[2]}`)
 
             popup("Error Adding Action", "Error")
@@ -2895,7 +2911,12 @@ let addQuestionPublish = (type, numberFrom) => {
         };
 
         fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json()
+            })
             .then(result => {
                 //console.log(result);
                 quizQuestionsLength = questionsData.length - 1;
@@ -2913,7 +2934,12 @@ let addQuestionPublish = (type, numberFrom) => {
                     };
 
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("quiz_action_id"), requestOptions)
-                        .then(response => response.text())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw Error(response.statusText);
+                            }
+                            return response.json()
+                        })
                         .then(result => {
                             //console.log(result);
                             sessionStorage.setItem("quiz_active", "true");
@@ -2921,12 +2947,14 @@ let addQuestionPublish = (type, numberFrom) => {
                             firstQuestionPublish(sessionStorage.getItem("quiz_action_id"), "quiz");
                         })
                         .catch(error => {
-                            // console.log('error', error)
+                            console.log('error', error);
+                            masterErrorHandler(error, "reload")
                         });
                 }
             })
             .catch(error => {
-                // console.log('error', error)
+                console.log('error', error);
+                masterErrorHandler(error, "new action")
             });
     }
     if (type == "poll") {
@@ -2954,7 +2982,12 @@ let addQuestionPublish = (type, numberFrom) => {
         };
 
         fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("poll_action_id"), requestOptions)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json()
+            })
             .then(result => {
                 //console.log(result);
                 pollQuestionsLength = pollQuestionsData.length - 1;
@@ -2971,7 +3004,12 @@ let addQuestionPublish = (type, numberFrom) => {
                     };
 
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("poll_action_id"), requestOptions)
-                        .then(response => response.text())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw Error(response.statusText);
+                            }
+                            return response.json()
+                        })
                         .then(result => {
                             //console.log(result);
                             sessionStorage.setItem("poll_active", "true");
@@ -2979,12 +3017,14 @@ let addQuestionPublish = (type, numberFrom) => {
                             firstQuestionPublish(sessionStorage.getItem("poll_action_id"), "poll");
                         })
                         .catch(error => {
-                            // console.log('error', error)
+                            console.log('error', error);
+                            masterErrorHandler(error, "reload")
                         });
                 }
             })
             .catch(error => {
-                // console.log('error', error)
+                console.log('error', error);
+                masterErrorHandler(error, "new action")
             });
     }
     if (type == "feedback") {
@@ -3013,7 +3053,12 @@ let addQuestionPublish = (type, numberFrom) => {
         };
 
         fetch("https://mighty-sea-62531.herokuapp.com/api/questions/addquestionsall/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
             .then(result => {
                 //console.log(result);
                 feedbackQuestionsLength = feedbackQuestions.length - 1;
@@ -3029,7 +3074,12 @@ let addQuestionPublish = (type, numberFrom) => {
                     };
 
                     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/openAction/" + sessionStorage.getItem("feedback_action_id"), requestOptions)
-                        .then(response => response.text())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw Error(response.statusText);
+                            }
+                            return response.json();
+                        })
                         .then(result => {
                             //console.log(result);
                             sessionStorage.setItem("feedback_active", "true");
@@ -3037,12 +3087,14 @@ let addQuestionPublish = (type, numberFrom) => {
                             firstQuestionPublish(sessionStorage.getItem("feedback_action_id"), "feedback");
                         })
                         .catch(error => {
-                            // console.log('error', error)
+                            console.log('error', error);
+                            masterErrorHandler(error, "reload");
                         });
                 }
             })
             .catch(error => {
-                // console.log('error', error)
+                console.log('error', error);
+                masterErrorHandler(error, "new action")
             });
     }
 }
