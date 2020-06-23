@@ -228,13 +228,13 @@ let renderChart = () => {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true,
+                        beginAtZero: true
                     }
                 }]
             },
             title: {
                 display: true,
-                text: "",
+                text: ""
             },
             maintainAspectRatio: false
         }
