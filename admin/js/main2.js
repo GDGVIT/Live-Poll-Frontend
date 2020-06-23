@@ -228,13 +228,13 @@ let renderChart = () => {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
                     }
                 }]
             },
             title: {
                 display: true,
-                text: ""
+                text: "",
             },
             maintainAspectRatio: false
         }
@@ -245,12 +245,23 @@ let renderChart = () => {
 
 
 let updateChartData = () => {
-    displayChart.options.title.text = renderQuestions[renderQuestionNumber];
+    if (renderQuestions[renderQuestionNumber].length > 80) {
+        displayChart.options.title.text = `${renderQuestions[renderQuestionNumber].substr(0, 80)}...`;
+    }
+    else {
+        displayChart.options.title.text = `${renderQuestions[renderQuestionNumber]}`;
+
+    }
     displayChart.data.labels = [];
     displayChart.data.datasets[0].data = []
     // //console.log(displayChart.data.labels)
     renderOptions[renderQuestionNumber].forEach((ele, index) => {
-        displayChart.data.labels[index] = ele["option"]
+        if (ele["option"].length > 30) {
+            displayChart.data.labels[index] = ele["option"].substr(0, 30) + "...";
+        }
+        else {
+            displayChart.data.labels[index] = ele["option"]
+        }
         displayChart.data.datasets[0].data[index] = ele["stat"];
     })
     displayChart.update();
@@ -2286,12 +2297,22 @@ let createChart = (chartDiv, ty) => {
 
 
 let renderQuizDetails = () => {
-    MyChart.options.title.text = questions[questionNumber]["name"];
+    if (questions[questionNumber]["name"].length > 80) {
+        MyChart.options.title.text = questions[questionNumber]["name"].substr(0, 80) + "...";
+    }
+    else {
+        MyChart.options.title.text = questions[questionNumber]["name"];
+    }
     MyChart.data.labels = [];
     MyChart.data.datasets[0].data = []
     quiz_opts[questionNumber].forEach((ele, index) => {
         quiz_labels.push(ele["option"])
-        MyChart.data.labels[index] = ele["option"]
+        if (ele["option"].length > 30) {
+            MyChart.data.labels[index] = ele["option"].substr(0, 30) + "...";
+        }
+        else {
+            MyChart.data.labels[index] = ele["option"];
+        }
         quiz_data.push(ele["stat"]);
         MyChart.data.datasets[0].data[index] = ele["stat"];
     })
