@@ -351,7 +351,12 @@ let handleEventDeets = (event_id, action_id) => {
     };
 
     fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + action_id, requestOptions)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+        })
         .then(result => {
             //console.log(result);
             event_type = result["action_type"];
@@ -390,7 +395,8 @@ let handleEventDeets = (event_id, action_id) => {
             }
         })
         .catch(error => {
-            // console.log('error', error)
+            console.log('error', error);
+            masterErrorHandler(error);
         });
 }
 
