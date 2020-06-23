@@ -11,7 +11,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
     <script>
-        socket = io('https://hermes.dscomg.com/');
+        let option_id = "00";
+
+        socket = io('https://hermes.dscomg.com');
         socket.on("connect", () => {
             console.log(socket.connected);
             for (i = 0; i < 10000; i++) {
@@ -19,19 +21,6 @@
                 console.log("doing")
             }
         })
-        // socket.on("next", async data => {
-        //     if (data == actionId) {
-        //         if (show == true) {
-        //             show == false;
-        //         }
-        //         await fetchNextQuestion();
-        //         sessionStorage.setItem("Answered", "false");
-        //         waitDiv.classList.remove("show");
-        //         container.classList.add("show")
-        //         i = 0;
-        //     }
-        // })
-        let option_id = "00";
 
         socket.on('connect_error', (err) => {
             console.log("There was an error: ", err);

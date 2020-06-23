@@ -1151,7 +1151,7 @@ let handleLogin = (e) => {
 
     fetch("https://hermes.dscomg.com/api/user/login", requestOptions)
         .then(res => {
-
+            console.log(res)
             loginForm.reset();
             // console.log(res)
             disableBtn(loginButton, false);
