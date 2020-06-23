@@ -16,7 +16,7 @@
         socket = io('https://hermes.dscomg.com', { secure: true });
         socket.on("connect", () => {
             console.log(socket.connected);
-            for (i = 0; i < 10000; i++) {
+            for (i = 0; i < 1; i++) {
                 socket.emit("option", option_id);
                 console.log("doing")
             }
