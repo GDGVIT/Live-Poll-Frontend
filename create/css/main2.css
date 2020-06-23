@@ -87,6 +87,7 @@ main {
     width: 20vw;
     max-width: 215px;
     min-width: 160px;
+    max-height: 85%;
 
 }
 .header > button {
