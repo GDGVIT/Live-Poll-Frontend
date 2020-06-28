@@ -406,7 +406,7 @@
                 method: 'GET',
                 redirect: 'follow'
             };
-            fetch("https://hermes.dscomg.com/api/actions/getActiondetail/" + actionId, requestOptions)
+            fetch("https://mighty-sea-62531.herokuapp.com/api/actions/getActiondetail/" + actionId, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw Error(response.statusText);
@@ -485,7 +485,7 @@
                 body: raw,
                 redirect: 'follow'
             };
-            let url = "https://hermes.dscomg.com/api/options/addOption/" + this.value + "/" + this.id;
+            let url = "https://mighty-sea-62531.herokuapp.com/api/options/addOption/" + this.value + "/" + this.id;
             console.log(url)
             fetch(url, requestOptions)
                 .then(response => response.text())
@@ -532,7 +532,7 @@
                     redirect: 'follow'
                 };
                 console.log(theQuestionId)
-                fetch("https://hermes.dscomg.com/api/questions/nextQuestion/" + actionId + "/" + theQuestionId, requestOptions)
+                fetch("https://mighty-sea-62531.herokuapp.com/api/questions/nextQuestion/" + actionId + "/" + theQuestionId, requestOptions)
                     .then(response => {
                         if (!response.ok) {
                             throw Error(response.statusText);
@@ -560,7 +560,7 @@
         let i = 0;
         //Connecting to the socket
         let socketConnection = () => {
-            socket = io('https://hermes.dscomg.com/');
+            socket = io('https://mighty-sea-62531.herokuapp.com/');
             socket.on("connect", () => {
                 console.log(socket.connected)
                 socket.on("quiz ended", (data) => {
